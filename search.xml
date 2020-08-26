@@ -3,7 +3,7 @@
   <entry>
     <title>git常用指令总结</title>
     <url>/2020/08/23/git%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<p><img src="/images/git.png" alt="git"></p>
+    <content><![CDATA[<p><img data-src="/images/git.png" alt="git"></p>
 <p>在这里记录一些常用的<code>git</code>指令，以及使用时碰到的一些问题及相应的解决办法。</p>
 <a id="more"></a>
 
