@@ -1,81 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>git常用指令总结</title>
-    <url>/2020/08/23/git%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<p><img data-src="/images/git.png" alt="git"></p>
-<p>在这里记录一些常用的<code>git</code>指令，以及使用时碰到的一些问题及相应的解决办法。</p>
-<a id="more"></a>
-
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git init [local repository]</span><br></pre></td></tr></table></figure>
-
-<h2 id="克隆到本地"><a href="#克隆到本地" class="headerlink" title="克隆到本地"></a>克隆到本地</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone &lt;url&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="添加变化至暂存区-index"><a href="#添加变化至暂存区-index" class="headerlink" title="添加变化至暂存区(index)"></a>添加变化至暂存区(index)</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add &lt;filename&gt;</span><br><span class="line">git add *</span><br><span class="line">git commit -m &quot;&lt;commit message&gt;&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="推送"><a href="#推送" class="headerlink" title="推送"></a>推送</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 推送到指定的远程分支</span></span><br><span class="line">git push oringin &lt;master&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 绑定远程分支并推送</span></span><br><span class="line">git romete add origin &lt;master&gt;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
-
-<h2 id="分支-branch-相关"><a href="#分支-branch-相关" class="headerlink" title="分支(branch)相关"></a>分支(branch)相关</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch # 查看本地分支</span><br><span class="line">git branch -r # 查看远程分支</span><br><span class="line">git branch -a # 查看所有分支</span><br><span class="line"></span><br><span class="line">git checkout -b &lt;dev&gt; # 创建本地分支</span><br><span class="line">git checkout &lt;dev&gt; # 切换到本地分支（没有会根据远程分支创建本地分支）</span><br><span class="line"></span><br><span class="line">git branch -d &lt;dev&gt; # 删除本地分支</span><br><span class="line">git push origin -d &lt;remote_dev&gt; # 删除远程分支</span><br><span class="line"></span><br><span class="line">git push origin &lt;dev&gt; # 推送到远程分支，没有会自动创建</span><br><span class="line"></span><br><span class="line">git checkout [branch name] # 切换分支</span><br></pre></td></tr></table></figure>
-
-<h2 id="拉取"><a href="#拉取" class="headerlink" title="拉取"></a>拉取</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git pull</span><br><span class="line">git fetch [origin]</span><br></pre></td></tr></table></figure>
-
-<h2 id="缓存-stash-相关"><a href="#缓存-stash-相关" class="headerlink" title="缓存(stash)相关"></a>缓存(stash)相关</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git stash list</span><br><span class="line">git stash save &#x27;&lt;stash name&gt;&#x27;</span><br><span class="line">git stash show</span><br><span class="line">git stash show -p</span><br><span class="line">git stash apply [@&#123;num&#125;]</span><br><span class="line">git stash pop [@&#123;num&#125;]</span><br><span class="line">git stash drop</span><br><span class="line">git stash clear</span><br></pre></td></tr></table></figure>
-
-<h2 id="状态-status"><a href="#状态-status" class="headerlink" title="状态(status)"></a>状态(status)</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>guide</category>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode算法题之日期间隔天数</title>
-    <url>/2020/08/24/LeetCode%E7%AE%97%E6%B3%95%E9%A2%98%E4%B9%8B%E6%97%A5%E6%9C%9F%E9%97%B4%E9%9A%94%E5%A4%A9%E6%95%B0/</url>
-    <content><![CDATA[<p>一道来自<a href="https://leetcode-cn.com/">LeetCode</a>的算法题。</p>
-<blockquote>
-<p><strong>难度</strong>：简单</p>
-<p><strong>来源</strong>：<a href="https://leetcode-cn.com/problems/number-of-days-between-two-dates/">https://leetcode-cn.com/problems/number-of-days-between-two-dates/</a></p>
-<p><strong>题目</strong>：请你编写一个程序来计算两个日期之间隔了多少天。日期以字符串形式给出，格式为 <code>YYYY-MM-DD</code>。（注：给定的日期是 <code>1971</code> 年到 <code>2100</code> 年之间的有效日期）</p>
-</blockquote>
-<a id="more"></a>
-
-<h2 id="待实现模板"><a href="#待实现模板" class="headerlink" title="待实现模板"></a>待实现模板</h2><p><strong>typescript</strong>：</p>
-<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">daysBetweenDates</span>(<span class="params">date1: <span class="built_in">string</span>, date2: <span class="built_in">string</span></span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><strong>python</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">daysBetweenDates</span>(<span class="params">self, date1, date2</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type date1: str</span></span><br><span class="line"><span class="string">        :type date2: str</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="分析-amp-示例"><a href="#分析-amp-示例" class="headerlink" title="分析&amp;示例"></a>分析&amp;示例</h2><p><strong>示例1：</strong></p>
-<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">输入：date1 = &quot;2019-06-29&quot;, date2 = &quot;2019-06-30&quot;</span><br><span class="line">输出：1</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例2：</strong></p>
-<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">输入：date1 = &quot;2020-01-15&quot;, date2 = &quot;2019-12-31&quot;</span><br><span class="line">输出：15</span><br></pre></td></tr></table></figure>
-
-<p><strong>分析：</strong></p>
-<p>计算天数间隔，我们可以以给定的最小日期<code>1971.1.1</code>为基准，分别计算给定日期经过了多少天，这样两者相减的绝对值就是间隔天数了。</p>
-<p>关键的部分在于如何计算出从<code>1971.1.1</code>到给定日期经过了多少天，一种方法是从给定日期，一天一天递减，直到<code>1971.1.1</code>，但这样比较<strong>简单粗暴</strong>，我们可以找到一些规律来节约我们的计算：每个月的天数是固定的，或者说每年的天数是固定的，除了闰年2月多一天，有了这个规律，我们就可以直接递减年份来计算，而不必一天一天递减。</p>
-<p>注：闰年指能被<code>4</code>整除但又不能被<code>100</code>整除的年份，除了能被<code>400</code>整除的世纪闰年。</p>
-<h2 id="实现-TypeScript"><a href="#实现-TypeScript" class="headerlink" title="实现(TypeScript)"></a>实现(TypeScript)</h2><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">daysBetweenDates</span>(<span class="params">date1: <span class="built_in">string</span>, date2: <span class="built_in">string</span></span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> d1 = getDays(date1);</span><br><span class="line">    <span class="keyword">let</span> d2 = getDays(date2);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.abs(d1 - d2);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDays</span>(<span class="params">str: <span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> arr = str.split(<span class="string">&#x27;-&#x27;</span>);</span><br><span class="line">    <span class="keyword">let</span> year = <span class="built_in">parseInt</span>(arr[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">let</span> month = <span class="built_in">parseInt</span>(arr[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">let</span> day = <span class="built_in">parseInt</span>(arr[<span class="number">2</span>]);</span><br><span class="line">    <span class="keyword">let</span> months = [<span class="number">0</span>, <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>]; <span class="comment">// 365</span></span><br><span class="line">    <span class="keyword">const</span> startY = <span class="number">1971</span>,</span><br><span class="line">        startM = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 日</span></span><br><span class="line">    <span class="keyword">let</span> allDays = day;</span><br><span class="line">    <span class="comment">// 月</span></span><br><span class="line">    <span class="keyword">if</span>(month &gt; <span class="number">2</span> &amp;&amp; isLeapYear(year))&#123;</span><br><span class="line">        allDays += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; month; i++)&#123;</span><br><span class="line">        allDays += months[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 年</span></span><br><span class="line">    <span class="keyword">while</span>(year &gt; startY)&#123;</span><br><span class="line">        allDays += <span class="number">365</span>;</span><br><span class="line">        <span class="keyword">if</span>(isLeapYear(--year)) &#123;</span><br><span class="line">            allDays += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> allDays;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isLeapYear</span>(<span class="params">year: <span class="built_in">number</span></span>): <span class="title">boolean</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (year % <span class="number">4</span> === <span class="number">0</span> &amp;&amp; year % <span class="number">100</span> != <span class="number">0</span>) || (year % <span class="number">400</span> === <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="实现（Python）"><a href="#实现（Python）" class="headerlink" title="实现（Python）"></a>实现（Python）</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">daysBetweenDates</span>(<span class="params">self, date1, date2</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type date1: str</span></span><br><span class="line"><span class="string">        :type date2: str</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> abs(self.getDays(date1) - self.getDays(date2));</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isLeapYear</span>(<span class="params">self, year</span>):</span></span><br><span class="line">        <span class="keyword">return</span> (year % <span class="number">400</span> == <span class="number">0</span>) <span class="keyword">or</span> (year % <span class="number">100</span> != <span class="number">0</span> <span class="keyword">and</span> year % <span class="number">4</span> == <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getDays</span>(<span class="params">self, date</span>):</span></span><br><span class="line">        dataArr = date.split(<span class="string">&#x27;-&#x27;</span>);</span><br><span class="line">        year = int(dataArr[<span class="number">0</span>]);</span><br><span class="line">        month = int(dataArr[<span class="number">1</span>]);</span><br><span class="line">        allDays = int(dataArr[<span class="number">2</span>]); <span class="comment"># 日</span></span><br><span class="line">        months = [<span class="number">0</span>, <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>];</span><br><span class="line">        <span class="keyword">if</span> month &gt; <span class="number">2</span> <span class="keyword">and</span> self.isLeapYear(year):</span><br><span class="line">            allDays += <span class="number">1</span>;</span><br><span class="line">        <span class="comment"># 月</span></span><br><span class="line">        i = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> month &gt; i:</span><br><span class="line">            allDays += months[i]</span><br><span class="line">            i += <span class="number">1</span>;</span><br><span class="line">        <span class="comment"># 年</span></span><br><span class="line">        <span class="keyword">while</span> year &gt; <span class="number">1971</span>:</span><br><span class="line">            year -= <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> self.isLeapYear(year):</span><br><span class="line">                allDays += <span class="number">1</span>;</span><br><span class="line">            allDays += <span class="number">365</span>;</span><br><span class="line">        <span class="keyword">return</span> allDays;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>编程题</category>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>算法题</tag>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hexo Next主题配置更改及优化</title>
     <url>/2020/08/30/Hexo%20Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%9B%B4%E6%94%B9%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<p><img data-src="https://user-images.githubusercontent.com/16272760/63487983-da41b080-c4df-11e9-951c-64883a8a5e9b.png"></p>
@@ -222,6 +147,777 @@
       </categories>
       <tags>
         <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode算法题之日期间隔天数</title>
+    <url>/2020/08/24/LeetCode%E7%AE%97%E6%B3%95%E9%A2%98%E4%B9%8B%E6%97%A5%E6%9C%9F%E9%97%B4%E9%9A%94%E5%A4%A9%E6%95%B0/</url>
+    <content><![CDATA[<p>一道来自<a href="https://leetcode-cn.com/">LeetCode</a>的算法题。</p>
+<blockquote>
+<p><strong>难度</strong>：简单</p>
+<p><strong>来源</strong>：<a href="https://leetcode-cn.com/problems/number-of-days-between-two-dates/">https://leetcode-cn.com/problems/number-of-days-between-two-dates/</a></p>
+<p><strong>题目</strong>：请你编写一个程序来计算两个日期之间隔了多少天。日期以字符串形式给出，格式为 <code>YYYY-MM-DD</code>。（注：给定的日期是 <code>1971</code> 年到 <code>2100</code> 年之间的有效日期）</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="待实现模板"><a href="#待实现模板" class="headerlink" title="待实现模板"></a>待实现模板</h2><p><strong>typescript</strong>：</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">daysBetweenDates</span>(<span class="params">date1: <span class="built_in">string</span>, date2: <span class="built_in">string</span></span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>python</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">daysBetweenDates</span>(<span class="params">self, date1, date2</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type date1: str</span></span><br><span class="line"><span class="string">        :type date2: str</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-amp-示例"><a href="#分析-amp-示例" class="headerlink" title="分析&amp;示例"></a>分析&amp;示例</h2><p><strong>示例1：</strong></p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">输入：date1 = &quot;2019-06-29&quot;, date2 = &quot;2019-06-30&quot;</span><br><span class="line">输出：1</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例2：</strong></p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">输入：date1 = &quot;2020-01-15&quot;, date2 = &quot;2019-12-31&quot;</span><br><span class="line">输出：15</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析：</strong></p>
+<p>计算天数间隔，我们可以以给定的最小日期<code>1971.1.1</code>为基准，分别计算给定日期经过了多少天，这样两者相减的绝对值就是间隔天数了。</p>
+<p>关键的部分在于如何计算出从<code>1971.1.1</code>到给定日期经过了多少天，一种方法是从给定日期，一天一天递减，直到<code>1971.1.1</code>，但这样比较<strong>简单粗暴</strong>，我们可以找到一些规律来节约我们的计算：每个月的天数是固定的，或者说每年的天数是固定的，除了闰年2月多一天，有了这个规律，我们就可以直接递减年份来计算，而不必一天一天递减。</p>
+<p>注：闰年指能被<code>4</code>整除但又不能被<code>100</code>整除的年份，除了能被<code>400</code>整除的世纪闰年。</p>
+<h2 id="实现-TypeScript"><a href="#实现-TypeScript" class="headerlink" title="实现(TypeScript)"></a>实现(TypeScript)</h2><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">daysBetweenDates</span>(<span class="params">date1: <span class="built_in">string</span>, date2: <span class="built_in">string</span></span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> d1 = getDays(date1);</span><br><span class="line">    <span class="keyword">let</span> d2 = getDays(date2);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.abs(d1 - d2);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDays</span>(<span class="params">str: <span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> arr = str.split(<span class="string">&#x27;-&#x27;</span>);</span><br><span class="line">    <span class="keyword">let</span> year = <span class="built_in">parseInt</span>(arr[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">let</span> month = <span class="built_in">parseInt</span>(arr[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">let</span> day = <span class="built_in">parseInt</span>(arr[<span class="number">2</span>]);</span><br><span class="line">    <span class="keyword">let</span> months = [<span class="number">0</span>, <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>]; <span class="comment">// 365</span></span><br><span class="line">    <span class="keyword">const</span> startY = <span class="number">1971</span>,</span><br><span class="line">        startM = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 日</span></span><br><span class="line">    <span class="keyword">let</span> allDays = day;</span><br><span class="line">    <span class="comment">// 月</span></span><br><span class="line">    <span class="keyword">if</span>(month &gt; <span class="number">2</span> &amp;&amp; isLeapYear(year))&#123;</span><br><span class="line">        allDays += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; month; i++)&#123;</span><br><span class="line">        allDays += months[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 年</span></span><br><span class="line">    <span class="keyword">while</span>(year &gt; startY)&#123;</span><br><span class="line">        allDays += <span class="number">365</span>;</span><br><span class="line">        <span class="keyword">if</span>(isLeapYear(--year)) &#123;</span><br><span class="line">            allDays += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> allDays;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isLeapYear</span>(<span class="params">year: <span class="built_in">number</span></span>): <span class="title">boolean</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (year % <span class="number">4</span> === <span class="number">0</span> &amp;&amp; year % <span class="number">100</span> != <span class="number">0</span>) || (year % <span class="number">400</span> === <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现（Python）"><a href="#实现（Python）" class="headerlink" title="实现（Python）"></a>实现（Python）</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">daysBetweenDates</span>(<span class="params">self, date1, date2</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type date1: str</span></span><br><span class="line"><span class="string">        :type date2: str</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> abs(self.getDays(date1) - self.getDays(date2));</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isLeapYear</span>(<span class="params">self, year</span>):</span></span><br><span class="line">        <span class="keyword">return</span> (year % <span class="number">400</span> == <span class="number">0</span>) <span class="keyword">or</span> (year % <span class="number">100</span> != <span class="number">0</span> <span class="keyword">and</span> year % <span class="number">4</span> == <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getDays</span>(<span class="params">self, date</span>):</span></span><br><span class="line">        dataArr = date.split(<span class="string">&#x27;-&#x27;</span>);</span><br><span class="line">        year = int(dataArr[<span class="number">0</span>]);</span><br><span class="line">        month = int(dataArr[<span class="number">1</span>]);</span><br><span class="line">        allDays = int(dataArr[<span class="number">2</span>]); <span class="comment"># 日</span></span><br><span class="line">        months = [<span class="number">0</span>, <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>];</span><br><span class="line">        <span class="keyword">if</span> month &gt; <span class="number">2</span> <span class="keyword">and</span> self.isLeapYear(year):</span><br><span class="line">            allDays += <span class="number">1</span>;</span><br><span class="line">        <span class="comment"># 月</span></span><br><span class="line">        i = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> month &gt; i:</span><br><span class="line">            allDays += months[i]</span><br><span class="line">            i += <span class="number">1</span>;</span><br><span class="line">        <span class="comment"># 年</span></span><br><span class="line">        <span class="keyword">while</span> year &gt; <span class="number">1971</span>:</span><br><span class="line">            year -= <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> self.isLeapYear(year):</span><br><span class="line">                allDays += <span class="number">1</span>;</span><br><span class="line">            allDays += <span class="number">365</span>;</span><br><span class="line">        <span class="keyword">return</span> allDays;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>编程题</category>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法题</tag>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git常用指令总结</title>
+    <url>/2020/08/23/git%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<p><img data-src="/images/git.png" alt="git"></p>
+<p>在这里记录一些常用的<code>git</code>指令，以及使用时碰到的一些问题及相应的解决办法。</p>
+<a id="more"></a>
+
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git init [local repository]</span><br></pre></td></tr></table></figure>
+
+<h2 id="克隆到本地"><a href="#克隆到本地" class="headerlink" title="克隆到本地"></a>克隆到本地</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone &lt;url&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加变化至暂存区-index"><a href="#添加变化至暂存区-index" class="headerlink" title="添加变化至暂存区(index)"></a>添加变化至暂存区(index)</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add &lt;filename&gt;</span><br><span class="line">git add *</span><br><span class="line">git commit -m &quot;&lt;commit message&gt;&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="推送"><a href="#推送" class="headerlink" title="推送"></a>推送</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 推送到指定的远程分支</span></span><br><span class="line">git push oringin &lt;master&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 绑定远程分支并推送</span></span><br><span class="line">git romete add origin &lt;master&gt;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<h2 id="分支-branch-相关"><a href="#分支-branch-相关" class="headerlink" title="分支(branch)相关"></a>分支(branch)相关</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch # 查看本地分支</span><br><span class="line">git branch -r # 查看远程分支</span><br><span class="line">git branch -a # 查看所有分支</span><br><span class="line"></span><br><span class="line">git checkout -b &lt;dev&gt; # 创建本地分支</span><br><span class="line">git checkout &lt;dev&gt; # 切换到本地分支（没有会根据远程分支创建本地分支）</span><br><span class="line"></span><br><span class="line">git branch -d &lt;dev&gt; # 删除本地分支</span><br><span class="line">git push origin -d &lt;remote_dev&gt; # 删除远程分支</span><br><span class="line"></span><br><span class="line">git push origin &lt;dev&gt; # 推送到远程分支，没有会自动创建</span><br><span class="line"></span><br><span class="line">git checkout [branch name] # 切换分支</span><br></pre></td></tr></table></figure>
+
+<h2 id="拉取"><a href="#拉取" class="headerlink" title="拉取"></a>拉取</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git pull</span><br><span class="line">git fetch [origin]</span><br></pre></td></tr></table></figure>
+
+<h2 id="缓存-stash-相关"><a href="#缓存-stash-相关" class="headerlink" title="缓存(stash)相关"></a>缓存(stash)相关</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git stash list</span><br><span class="line">git stash save &#x27;&lt;stash name&gt;&#x27;</span><br><span class="line">git stash show</span><br><span class="line">git stash show -p</span><br><span class="line">git stash apply [@&#123;num&#125;]</span><br><span class="line">git stash pop [@&#123;num&#125;]</span><br><span class="line">git stash drop</span><br><span class="line">git stash clear</span><br></pre></td></tr></table></figure>
+
+<h2 id="状态-status"><a href="#状态-status" class="headerlink" title="状态(status)"></a>状态(status)</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>guide</category>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ECMAScript新特性</title>
+    <url>/2020/09/13/ECMAScript%E6%96%B0%E7%89%B9%E6%80%A7/</url>
+    <content><![CDATA[<p><code>ECMAScript</code>是<code>JavaScript</code>语言的规范，从2011年的<code>ES5</code>.1到2015年的<code>ES6</code>跨度比较大，这个版本更新的内容也是最多的，由此，本文主要针对<code>ES6</code>提出的新特性和新方法进行梳理归纳。</p>
+<p><img data-src="/images/ecmascript.png"></p>
+<a id="more"></a>
+
+<h2 id="什么是ECMAScript"><a href="#什么是ECMAScript" class="headerlink" title="什么是ECMAScript"></a>什么是<code>ECMAScript</code></h2><blockquote>
+<p><strong>ECMAScript</strong>是一种由<a href="https://zh.wikipedia.org/wiki/Ecma%E5%9B%BD%E9%99%85">Ecma国际</a>（前身为<a href="https://zh.wikipedia.org/wiki/%E6%AC%A7%E6%B4%B2%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%88%B6%E9%80%A0%E5%95%86%E5%8D%8F%E4%BC%9A">欧洲计算机制造商协会</a>）在标准ECMA-262中定义的<a href="https://zh.wikipedia.org/wiki/%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80">脚本语言</a>规范。这种语言在<a href="https://zh.wikipedia.org/wiki/%E4%B8%87%E7%BB%B4%E7%BD%91">万维网</a>上应用广泛，它往往被称为<a href="https://zh.wikipedia.org/wiki/JavaScript">JavaScript</a>或<a href="https://zh.wikipedia.org/wiki/JScript">JScript</a>，但实际上后两者是ECMA-262标准的<strong>实现和扩展</strong>。</p>
+</blockquote>
+<p>ECMAScript是由<a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E6%99%AF%E5%85%AC%E5%8F%B8">网景</a>的<a href="https://zh.wikipedia.org/wiki/%E5%B8%83%E8%98%AD%E7%99%BB%C2%B7%E8%89%BE%E5%85%8B">布兰登·艾克</a>开发的一种脚本语言的标准化规范；最初命名为Mocha，后来改名为LiveScript，最后重命名为JavaScript[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-1">1]</a>。1995年12月，<a href="https://zh.wikipedia.org/wiki/%E6%98%87%E9%99%BD%E9%9B%BB%E8%85%A6%E5%85%AC%E5%8F%B8">升阳</a>与网景联合发表了JavaScript[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-2">2]</a>。1996年11月，网景公司将JavaScript提交给欧洲计算机制造商协会进行标准化。ECMA-262的第一个版本于1997年6月被Ecma组织采纳。ECMAScript是由ECMA-262标准化的脚本语言的名称。</p>
+<p>尽管JavaScript和JScript与ECMAScript兼容，但包含超出ECMAScript的功能[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-3">3]</a>。</p>
+<p>通常，js又有web端和node本地两种实现：</p>
+<p>在浏览器端或者说web端，<code>javaScript</code>包含了：</p>
+<ul>
+<li>ECMAScript。</li>
+<li>Web API，即<code>Bom</code> 和 <code>Dom</code>两部分。</li>
+</ul>
+<p>在<code>Node.js</code>中的<code>javaScript</code>包含了：</p>
+<ul>
+<li>ECMAScript。</li>
+<li>Node API，包含<code>fs</code>模块、<code>net</code>模块等等。</li>
+</ul>
+<blockquote>
+<p>所以说<code>javaScript</code>是<code>ecmaScript</code>的实现与扩展，扩展的部分就是提供的各种api。</p>
+</blockquote>
+<h2 id="ECMAScript的发展历程"><a href="#ECMAScript的发展历程" class="headerlink" title="ECMAScript的发展历程"></a><code>ECMAScript</code>的发展历程</h2><p>从1997年发布以来，es的迭代版本信息主要为：</p>
+<table>
+<thead>
+<tr>
+<th align="center">版本</th>
+<th align="center">发表日期</th>
+<th align="center">与前版本的差异</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1997年6月</td>
+<td align="center">首版</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">1998年6月</td>
+<td align="center">格式修正，以使得其形式与ISO/IEC16262国际标准一致</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">1999年12月</td>
+<td align="center">强大的正则表达式，更好的词法作用域链处理，新的控制指令，异常处理，错误定义更加明确，数据输出的格式化及其它改变</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">放弃</td>
+<td align="center">由于关于语言的复杂性出现分歧，第4版本被放弃，其中的部分成为了第5版本及Harmony的基础</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">2009年12月</td>
+<td align="center">新增“严格模式（strict mode）”，一个子集用作提供更彻底的错误检查,以避免结构出错。澄清了许多第3版本的模糊规范，并适应了与规范不一致的真实世界实现的行为。增加了部分新功能，如getters及setters，支持<a href="https://zh.wikipedia.org/wiki/JSON">JSON</a>以及在对象属性上更完整的<a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%B0%84_(%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6)">反射</a>[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-4">4]</a>[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-5">5]</a>[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-6">6]</a>[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-7">7]</a>[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-8">8]</a></td>
+</tr>
+<tr>
+<td align="center">5.1</td>
+<td align="center">2011年6月</td>
+<td align="center">ECMAScript标5.1版形式上完全一致于国际标准ISO/IEC 16262:2011。</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">2015年6月</td>
+<td align="center">ECMAScript 2015（ES2015），第 6 版，最早被称作是 ECMAScript 6（ES6），添加了类和模块的语法，其他特性包括迭代器，Python风格的生成器和生成器表达式，箭头函数，二进制数据，静态类型数组，集合（maps，sets 和 weak maps），promise，reflection 和 proxies。作为最早的 ECMAScript Harmony 版本，也被叫做ES6 Harmony。</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">2016年6月</td>
+<td align="center">ECMAScript 2016（ES2016），第 7 版，多个新的概念和语言特性[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-ES2016-9">9]</a></td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">2017年6月</td>
+<td align="center">ECMAScript 2017（ES2017），第 8 版，多个新的概念和语言特性[<a href="https://zh.wikipedia.org/wiki/ECMAScript#cite_note-:0-10">10]</a></td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">2018年6月</td>
+<td align="center">ECMAScript 2018 （ES2018），第 9 版，包含了异步循环，生成器，新的正则表达式特性和 rest/spread 语法。</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">2019年6月</td>
+<td align="center">ECMAScript 2019 （ES2019），第 10 版</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">2020年6月</td>
+<td align="center">ECMAScript 2020 （ES2020），第 11 版</td>
+</tr>
+</tbody></table>
+<p>从上面的版本更迭中有个特殊的阶段，就是2011年的<code>es5.1</code>到2015年的<code>es6</code>，由于间隔年份较大，语法和使用特性上的变化也最大，<code>ECMAScript2015</code>的新特性在<code>ES5.1</code>的基础上做了大量的优化，所以这也是本文将要探讨的内容。</p>
+<h2 id="let和const与var的区别"><a href="#let和const与var的区别" class="headerlink" title="let和const与var的区别"></a><code>let</code>和<code>const</code>与<code>var</code>的区别</h2><p><code>let</code>和<code>const</code>都是<code>ES6</code>新增的变量申明关键字。与<code>var</code>最主要的不同之处在于，<strong>变量作用域的不同</strong>。</p>
+<p>在<code>ES6</code>之前，<code>js</code>的作用域一般分为：全局作用域和函数作用域。这样，有时候我们在使用回调函数等场景时往往由于变量的作用域问题，而不得不使用闭包特性来解决变量属于函数作用域的问题。</p>
+<p>典型的一个问题，在循环中闭包的使用：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> elements = [&#123;&#125;, &#123;&#125;, &#123;&#125;]</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; elements.length; i++) &#123;</span><br><span class="line">    elements[i].onClick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">elements[<span class="number">0</span>].onClick()  <span class="comment">// 3</span></span><br><span class="line">elements[<span class="number">1</span>].onClick()  <span class="comment">// 3</span></span><br><span class="line">elements[<span class="number">2</span>].onClick()  <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p>我们构建了elements的<code>onClick</code>函数并手动触发，但我们发现，给自的打印结果都是<code>3</code>，而不是我们预期的<code>0, 1, 2</code>。</p>
+<p>原因是赋值给<code>onClick</code>函数的是闭包，而这个参数<code>i</code>是函数作用域，闭包指向的也就是循环结束后最终的<code>i</code>值。</p>
+<p>解决这个问题，我们需要再使用一层闭包，将<code>i</code>作为参数时的作用域不再是<code>for</code>循环中的函数作用域，而属于当前闭包：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">eleClick</span>(<span class="params">elements, i</span>) </span>&#123;</span><br><span class="line">    elements[i].onClick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> elements = [&#123;&#125;, &#123;&#125;, &#123;&#125;]</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; elements.length; i++) &#123;</span><br><span class="line">    eleClick(elements, i);</span><br><span class="line">&#125;</span><br><span class="line">elements[<span class="number">0</span>].onClick()  <span class="comment">// 0</span></span><br><span class="line">elements[<span class="number">1</span>].onClick()  <span class="comment">// 1</span></span><br><span class="line">elements[<span class="number">2</span>].onClick()  <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>这样，我们就创建了一个<code>eleClick</code>函数来应用闭包特性，也就独立维护了参数<code>i</code>的作用域，不再是外层函数的作用域。</p>
+<p>当然，可能我们更常使用匿名闭包，但都是一个原理：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> elements = [&#123;&#125;, &#123;&#125;, &#123;&#125;]</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; elements.length; i++) &#123;</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</span><br><span class="line">        elements[i].onClick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(i)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是，有了<code>es6</code>提供的<code>let</code>变量申明关键字，我们不需要再使用闭包。除了上面说的全局作用局和函数作用域，<code>es6</code>新增了<strong>块级作用域</strong>的概念，即更小单位的作用域，一般的代码块都可以拥有自己的变量作用域，比如一个循环体内部，一个<code>if else</code>代码块内部，一个<code>try catch</code>代码块内部，代码块中的变量将不会自动变量提升，作用域只属于当前代码块，<strong>使用<code>let</code>或者<code>const</code>申明的变量就是块级作用域变量</strong>。</p>
+<p>我们将上面的循环案例中的<code>var</code>换成<code>let</code>试试看：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> elements = [&#123;&#125;, &#123;&#125;, &#123;&#125;]</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; elements.length; i++) &#123;</span><br><span class="line">    elements[i].onClick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">elements[<span class="number">0</span>].onClick()  <span class="comment">// 0</span></span><br><span class="line">elements[<span class="number">1</span>].onClick()  <span class="comment">// 1</span></span><br><span class="line">elements[<span class="number">2</span>].onClick()  <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>效果显而易见，我们只是将<code>i</code>声明为块作用域，这时，<code>i</code>是只能在循环这个代码块中访问的，所以变量也不会提升，自然不会在循环结束后保留<code>i = 3</code>，而且在循环外部我们将无法再访问这个变量。</p>
+<p>总结<code>let</code>与<code>var</code>的<strong>区别就是</strong>：作用域不同，<code>let</code>申明的变量是块级作用域，而<code>var</code>申明的变量是函数作用域，且能自动提升（即可以使用后申明）。</p>
+<p>而<code>const</code>也是块级作用域，与<code>let</code>的区别是，<code>const</code>是<strong>只读变量</strong>申明，即申明的时候就需要初始化变量，且后续<strong>不能进行赋值</strong>操作。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">    <span class="keyword">const</span> a = <span class="string">&#x27;hello&#x27;</span></span><br><span class="line">    <span class="built_in">console</span>.log(a) <span class="comment">// hello</span></span><br><span class="line">    a = <span class="string">&#x27;hi&#x27;</span></span><br><span class="line">    <span class="built_in">console</span>.log(a) <span class="comment">// TypeError: Assignment to constant variable.</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// const也是块级作用域，在外部使用会报错</span></span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// ReferenceError: a is not defined</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>最佳实践</strong>，建议<strong>不再使用</strong><code>var</code>，主用<code>const</code>，搭配使用<code>let</code>。</p>
+</blockquote>
+<h2 id="数组和对象的解构赋值"><a href="#数组和对象的解构赋值" class="headerlink" title="数组和对象的解构赋值"></a>数组和对象的解构赋值</h2><blockquote>
+<p><strong>解构赋值</strong>是<code>ES6</code>提出的一种新语法，通过<strong>解构赋值,</strong> 可以将属性/值从对象/数组中取出,赋值给其他变量。</p>
+</blockquote>
+<p>对象和数组逐个对应表达式，或称对象字面量和数组字面量，提供了一种简单的定义一个特定的数据组的方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<p>解构赋值使用了相同的语法，不同的是在表达式左边定义了要从原变量中取出什么变量。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="keyword">const</span> [a, b, c] = arr <span class="comment">// 对数组arr进行解构</span></span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(b) <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">console</span>.log(c) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="数组解构"><a href="#数组解构" class="headerlink" title="数组解构"></a>数组解构</h3><p>上面的例子已经很浅显的表示了解构的基本语法，我们只需要<strong>在赋值表达式左边使用相同的装箱构造</strong>就能达到解构的目的。</p>
+<p>左边的构造会和右边的数据一一对应，并逐一进行赋值。</p>
+<p>有时候数组太长，我们只希望<strong>解构其中部分数据</strong>可以这样写：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 解构部分</span></span><br><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="keyword">const</span> [a, , c] = arr</span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(c) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p>有时候数组过长，可以<strong>将剩余数组赋值给一个变量</strong>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="keyword">const</span> [a, b, ...c] = arr</span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(b) <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">console</span>.log(c) <span class="comment">// [3, 4, 5]</span></span><br></pre></td></tr></table></figure>
+
+<p>还可以给解构时的变量<strong>设置默认值</strong>（当解构赋值的值为<code>undefined</code>时会使用默认值）：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"><span class="keyword">const</span> [a, b, c=<span class="number">0</span>] = arr</span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(b) <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">console</span>.log(c) <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<p>使用数组解构的特性，我们还能用来<strong>交换变量</strong>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> b = <span class="number">2</span>;</span><br><span class="line">[a, b] = [b, a]</span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">console</span>.log(b) <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意，这里的<code>;</code>不写会报Cannot access ‘b’ before initialization的错误。算是一个小bug?</p>
+</blockquote>
+<p>利用解构的特性，我们可以<strong>复制一个数组</strong>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">const</span> [...arr2] = arr</span><br><span class="line">arr[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line"><span class="built_in">console</span>.log(arr) <span class="comment">// [ 0, 2, 3 ]</span></span><br><span class="line"><span class="built_in">console</span>.log(arr2) <span class="comment">// [ 1, 2, 3 ]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="对象解构"><a href="#对象解构" class="headerlink" title="对象解构"></a>对象解构</h3><p>和数组的解构一样，我们在表达式左边书写对象的封装表达即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Json&#x27;</span>,</span><br><span class="line">    age: <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> &#123;name, age&#125; = obj <span class="comment">// 对象的解构</span></span><br><span class="line"><span class="built_in">console</span>.log(name) <span class="comment">// Json</span></span><br><span class="line"><span class="built_in">console</span>.log(age) <span class="comment">// 18</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，我们使用<strong>对象的键</strong>作为解构赋值的提取关键字和变量名，可能存在这样的情况，<strong>关键字已经被占用了</strong>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> name = <span class="string">&#x27;Zoom&#x27;</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Json&#x27;</span>,</span><br><span class="line">    age: <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> &#123;<span class="attr">name</span>: name2, age&#125; = obj</span><br><span class="line"><span class="built_in">console</span>.log(name) <span class="comment">// Zoom</span></span><br><span class="line"><span class="built_in">console</span>.log(name2) <span class="comment">// Json</span></span><br></pre></td></tr></table></figure>
+
+<p>同样，我们也能<strong>设置默认值</strong>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;<span class="attr">name</span>: name2 = <span class="string">&#x27;&#x27;</span>, age = <span class="number">0</span>&#125; = obj</span><br></pre></td></tr></table></figure>
+
+<p>有时候对象里嵌套了数组，我们同样能进行嵌套解构：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 示例对象</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    hobbies: [<span class="string">&#x27;reading&#x27;</span>, <span class="string">&#x27;gaming&#x27;</span>, <span class="string">&#x27;coding&#x27;</span>],</span><br><span class="line">    info: &#123;</span><br><span class="line">        name: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">        age: <span class="number">28</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 解构</span></span><br><span class="line"><span class="keyword">const</span> &#123;</span><br><span class="line">    hobbies: [h1, h2, h3],</span><br><span class="line">    info: &#123;</span><br><span class="line">        name,</span><br><span class="line">        age,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125; = obj</span><br><span class="line"><span class="comment">// 验证</span></span><br><span class="line"><span class="built_in">console</span>.log(h1) <span class="comment">// reading</span></span><br><span class="line"><span class="built_in">console</span>.log(h2) <span class="comment">// gaming</span></span><br><span class="line"><span class="built_in">console</span>.log(h3) <span class="comment">// coding</span></span><br><span class="line"><span class="built_in">console</span>.log(name) <span class="comment">// Jinx</span></span><br><span class="line"><span class="built_in">console</span>.log(age) <span class="comment">// 28</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="模板字符串"><a href="#模板字符串" class="headerlink" title="模板字符串"></a>模板字符串</h2><blockquote>
+<p><strong>模板字面量</strong>是允许嵌入表达式的字符串字面量。你可以使用多行字符串和字符串插值功能。它们在ES2015规范的先前版本中被称为<strong>“模板字符串</strong>“。</p>
+<p>我们使用符号 <strong>`</strong> 将字符串包裹起来即可。</p>
+</blockquote>
+<p>使用模板字符串表示多行字符串，能<strong>保留原有的格式</strong>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str = </span><br><span class="line"><span class="string">`晚风吹尽 荷花叶 任我醉倒在池边</span></span><br><span class="line"><span class="string">等你清除看见我的美 月光晒成眼泪`</span></span><br><span class="line"><span class="built_in">console</span>.log(str)</span><br></pre></td></tr></table></figure>
+
+<p>更方便的地方在于，我们能使用<strong>插值表达式</strong>进行字符串构造：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> name = <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    age = <span class="number">24</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`I&#x27;m <span class="subst">$&#123;name&#125;</span>, I am <span class="subst">$&#123;age&#125;</span> years old.`</span>) <span class="comment">// I&#x27;m Jinx, I am 24 years old.</span></span><br></pre></td></tr></table></figure>
+
+<p>更高级的一种用法是：<strong>带标签的模板字符串</strong>，标签使您可以<strong>用函数解析模板字符串</strong>。</p>
+<p>标签函数的第一个参数包含一个字符串值的数组。其余的参数与表达式相关。最后，你的函数可以返回处理好的的字符串（或者它可以返回完全不同的东西）。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> person = <span class="string">&#x27;Mike&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> age = <span class="number">28</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTag</span>(<span class="params">strings, personExp, ageExp</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> str0 = strings[<span class="number">0</span>]; <span class="comment">// &quot;that &quot;</span></span><br><span class="line">  <span class="keyword">const</span> str1 = strings[<span class="number">1</span>]; <span class="comment">// &quot; is a &quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> ageStr = ageExp &gt; <span class="number">99</span> ? <span class="string">&#x27;centenarian&#x27;</span> : <span class="string">&#x27;youngster&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> str0 + personExp + str1 + ageStr;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> output = myTag<span class="string">`that <span class="subst">$&#123; person &#125;</span> is a <span class="subst">$&#123; age &#125;</span>`</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(output); <span class="comment">// that Mike is a youngster</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串的扩展方法"><a href="#字符串的扩展方法" class="headerlink" title="字符串的扩展方法"></a>字符串的扩展方法</h2><blockquote>
+<p><code>ES2015</code>新增三个字符串的原型方法：includes、startsWith、endsWith。</p>
+</blockquote>
+<h3 id="includes"><a href="#includes" class="headerlink" title="includes"></a>includes</h3><blockquote>
+<p>这个方法可以帮你判断一个字符串是否包含另外一个字符串。</p>
+<p>语法：str.includes(searchString[, position])</p>
+<ul>
+<li><p>searchString：搜索的字符串</p>
+</li>
+<li><p>position：从当前字符串的哪个索引位置开始搜寻子字符串，默认值为 <code>0</code>。</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;Blue Whale&#x27;</span>.includes(<span class="string">&#x27;blue&#x27;</span>); <span class="comment">// return false</span></span><br></pre></td></tr></table></figure>
+
+<p>注：和数组的<code>includes</code>的用法一致。</p>
+<h3 id="startsWith"><a href="#startsWith" class="headerlink" title="startsWith"></a>startsWith</h3><blockquote>
+<p>这个方法用来判断字符串是否以某个字符串开头。</p>
+<p>语法：str.startWidth(searchString[, startPosition])</p>
+<p>变量意义同<code>includs</code>一样。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;Blue Whale&#x27;</span>.startsWith(<span class="string">&#x27;Blue&#x27;</span>)) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;Blue Whale&#x27;</span>.startsWith(<span class="string">&#x27;lue&#x27;</span>, <span class="number">1</span>)) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="endsWith"><a href="#endsWith" class="headerlink" title="endsWith"></a>endsWith</h3><blockquote>
+<p>这个方法用来判断字符串是否以某个字符串开头。</p>
+<p>语法：str.startWidth(searchString[, endPosition])</p>
+<p>不同的是，endPosition是规定结束的位置，默认为字符串长度。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;Blue Whale&#x27;</span>.endsWith(<span class="string">&#x27;ale&#x27;</span>)) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;Blue Whale&#x27;</span>.endsWith(<span class="string">&#x27;ue&#x27;</span>, <span class="number">4</span>)) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="参数默认值"><a href="#参数默认值" class="headerlink" title="参数默认值"></a>参数默认值</h2><p>在ES2015之前，我们常常需要在函数内部进行参数默认值赋值：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num1, num2</span>)</span>&#123;</span><br><span class="line">    num1 = num1 === <span class="literal">undefined</span> ? <span class="number">0</span> : num1;</span><br><span class="line">    num2 = num2 === <span class="literal">undefined</span> ? <span class="number">0</span> : num2;</span><br><span class="line">    <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(add(<span class="number">3</span>)) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p>有了默认参数值这种语法结构，我们可以更为简单的书写代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num1=<span class="number">0</span>, num2=<span class="number">0</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(add(<span class="number">3</span>)) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>值得注意的是，带有默认值的参数必须写在非默认参数的后面。</p>
+</blockquote>
+<h2 id="剩余参数"><a href="#剩余参数" class="headerlink" title="剩余参数"></a>剩余参数</h2><p>当我们申明一个未知参数数量的函数时，我们常常使用内置的类数组对象<code>arguments</code>来接受所有参数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> n = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">Array</span>.from(<span class="built_in">arguments</span>).forEach(<span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">        n += arg;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(add(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)) <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<p>而ES6提供了一种新的<strong>展开语法</strong>，使用<code>...</code> 可以让我们直接封装剩余参数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num = <span class="number">0</span>, ...others</span>)</span>&#123;</span><br><span class="line">    others.forEach(<span class="function"><span class="params">n</span> =&gt;</span> &#123;</span><br><span class="line">        num += n;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(add(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)) <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>剩余参数会将多余未接受的参数放到一个数组中，最为一个参数传递到函数中。</p>
+</blockquote>
+<h2 id="展开操作符"><a href="#展开操作符" class="headerlink" title="展开操作符..."></a>展开操作符<code>...</code></h2><p>上面我们已经提到了剩余参数就是使用<code>...</code>来实现的。此外<code>...</code>操作符还有别的用法。</p>
+<p>比如我们想要循环打印一个数组，你可能会这样来操作：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印方法1</span></span><br><span class="line"><span class="built_in">console</span>.log(arr[<span class="number">0</span>], arr[<span class="number">1</span>], arr[<span class="number">2</span>]);</span><br><span class="line"><span class="comment">// 打印方法2</span></span><br><span class="line"><span class="built_in">console</span>.log.apply(<span class="built_in">this</span>, arr);</span><br></pre></td></tr></table></figure>
+
+<p>有了展开操作符，我们可以直接这样写：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="built_in">console</span>.log(...arr);</span><br></pre></td></tr></table></figure>
+
+<h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2><blockquote>
+<p><strong>箭头函数表达式</strong>的语法比<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/function">函数表达式</a>更简洁，并且没有自己的<code>this</code>，<code>arguments</code>，<code>super</code>或<code>new.target</code>。箭头函数表达式更适用于那些本来需要匿名函数的地方，并且它不能用作构造函数。</p>
+</blockquote>
+<p>让你的代码<strong>更简洁优美</strong>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 一般写法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">n1, n2</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> n1 + n2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 箭头函数</span></span><br><span class="line"><span class="keyword">const</span> add2 = <span class="function">(<span class="params">n1, n2</span>) =&gt;</span> n1 + n2;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 回调箭头函数</span></span><br><span class="line"><span class="keyword">let</span> num = <span class="number">0</span>;</span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].forEach(<span class="function"><span class="params">n</span> =&gt;</span> num += n)</span><br><span class="line"><span class="built_in">console</span>.log(num) <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>没有单独的<code>this</code>对象</strong></p>
+<p>在箭头函数出现之前，每一个新函数根据它是被如何调用的来定义这个函数的this值：</p>
+<ul>
+<li>如果是该函数是一个构造函数，this指针指向一个新的对象</li>
+<li>在严格模式下的函数调用下，this指向undefined</li>
+<li>如果是该函数是一个对象的方法，则它的this指针指向这个对象</li>
+<li>等等</li>
+</ul>
+<p><code>this</code>被证明是令人厌烦的面向对象风格的编程。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Person() 构造函数定义 `this`作为它自己的实例.</span></span><br><span class="line">  <span class="built_in">this</span>.age = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> <span class="title">growUp</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 在非严格模式, growUp()函数定义 `this`作为全局对象, </span></span><br><span class="line">    <span class="comment">// 与在 Person()构造函数中定义的 `this`并不相同.</span></span><br><span class="line">    <span class="built_in">this</span>.age++;</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Person();</span><br></pre></td></tr></table></figure>
+
+<p>而通过箭头函数来书写可以解决这个问题：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> that = <span class="built_in">this</span>;</span><br><span class="line">  that.age = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> <span class="title">growUp</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 回调引用的是`that`变量, 其值是预期的对象.</span></span><br><span class="line">    that.age++;</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p><strong>通过 call 或 apply 调用</strong>时需要注意：由于 箭头函数没有自己的this指针，通过 <code>call()</code> <em>或</em> <code>apply()</code> 方法调用一个函数时，只能传递参数，他们的第一个参数会被忽略。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> adder = &#123;</span><br><span class="line">  base : <span class="number">1</span>,</span><br><span class="line">    </span><br><span class="line">  add : <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> f = <span class="function"><span class="params">v</span> =&gt;</span> v + <span class="built_in">this</span>.base;</span><br><span class="line">    <span class="keyword">return</span> f(a);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  addThruCall: <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> f = <span class="function"><span class="params">v</span> =&gt;</span> v + <span class="built_in">this</span>.base;</span><br><span class="line">    <span class="keyword">var</span> b = &#123;</span><br><span class="line">      base : <span class="number">2</span></span><br><span class="line">    &#125;;</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> f.call(b, a);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(adder.add(<span class="number">1</span>));         <span class="comment">// 输出 2</span></span><br><span class="line"><span class="built_in">console</span>.log(adder.addThruCall(<span class="number">1</span>)); <span class="comment">// 仍然输出 2</span></span><br></pre></td></tr></table></figure>
+
+<p>其他需要注意的点：</p>
+<ul>
+<li><p>箭头函数不绑定<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments">Arguments 对象</a>。因此，<code>arguments</code>只是引用了封闭作用域内的。</p>
+</li>
+<li><p>箭头函数不能用作构造器，和 <code>new</code>一起用会抛出错误。</p>
+</li>
+<li><p>箭头函数没有<code>prototype</code>属性。</p>
+</li>
+<li><p><code>yield</code> 关键字通常不能在箭头函数中使用（除非是嵌套在允许使用的函数内）。因此，箭头函数不能用作函数生成器。</p>
+</li>
+<li><p>写法</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> func = <span class="function"><span class="params">x</span> =&gt;</span> x * x;                  </span><br><span class="line"><span class="comment">// 简写函数 省略return</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> func = <span class="function">(<span class="params">x, y</span>) =&gt;</span> &#123; <span class="keyword">return</span> x + y; &#125;; </span><br><span class="line"><span class="comment">//常规编写 明确的返回值</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="对象字面量的增强"><a href="#对象字面量的增强" class="headerlink" title="对象字面量的增强"></a>对象字面量的增强</h2><p>在<code>ES6</code>之前，我们在构建对象时需要严格按照键值对的写法：<code>key: value</code>，现在我们可以更简洁自由得书写：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> name = <span class="string">&#x27;Jinx&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> age = <span class="number">22</span>;</span><br><span class="line"><span class="comment">// 增强写法1</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name,</span><br><span class="line">    age,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 增强写法2</span></span><br><span class="line"><span class="keyword">const</span> key = <span class="string">&#x27;haha&#x27;</span></span><br><span class="line">obj[[key]] = <span class="string">&#x27;hehe&#x27;</span> <span class="comment">// 我们可以在[]内写一些表达式</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.key) <span class="comment">// undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.haha) <span class="comment">// hehe</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Object的新增的一些方法"><a href="#Object的新增的一些方法" class="headerlink" title="Object的新增的一些方法"></a>Object的新增的一些方法</h2><h3 id="Object-assign"><a href="#Object-assign" class="headerlink" title="Object.assign"></a>Object.assign</h3><blockquote>
+<p><code>Object.assign()</code> 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> target = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> source = &#123; <span class="attr">b</span>: <span class="number">4</span>, <span class="attr">c</span>: <span class="number">5</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> returnedTarget = <span class="built_in">Object</span>.assign(target, source);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(target); <span class="built_in">Object</span> &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">4</span>, <span class="attr">c</span>: <span class="number">5</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>借此，我们可以用来<strong>拷贝一个对象</strong>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> objCopy = <span class="built_in">Object</span>.assign(&#123;&#125;, obj);</span><br></pre></td></tr></table></figure>
+
+<p>但需要注意的是，针对深拷贝，需要使用其他办法，因为 <code>Object.assign()</code><strong>拷贝的是（可枚举）属性值。</strong></p>
+<h3 id="Object-is"><a href="#Object-is" class="headerlink" title="Object.is"></a>Object.is</h3><blockquote>
+<p><code>Object.is()</code> 方法判断两个值是否为<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Equality_comparisons_and_sameness">同一个值</a>。</p>
+</blockquote>
+<p>判断两个值是否相等，我们常常使用<code>==</code>或者<code>===</code>来判断，那这个<code>Object.is</code>又有什么不同呢？</p>
+<p><code>Object.is</code>的规则如下：</p>
+<ul>
+<li>都是 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/undefined"><code>undefined</code></a></li>
+<li>都是 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/null"><code>null</code></a></li>
+<li>都是 <code>true</code> 或 <code>false</code></li>
+<li>都是相同长度的字符串且相同字符按相同顺序排列</li>
+<li>都是相同对象（意味着每个对象有同一个引用）</li>
+<li>都是数字且<ul>
+<li>都是 <code>+0</code></li>
+<li>都是 <code>-0</code></li>
+<li>都是 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/NaN"><code>NaN</code></a></li>
+<li>或都是非零而且非 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/NaN"><code>NaN</code></a> 且为同一个值</li>
+</ul>
+</li>
+</ul>
+<p>对于严格比较运算符（<code>===</code>）来说，仅当两个操作数的类型相同且值相等为 true，而对于被广泛使用的比较运算符（<code>==</code>）来说，会在进行比较之前，将两个操作数转换成相同的类型。</p>
+<p>与<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality"><code>==</code></a> 运算<em>不同。</em> <code>==</code> 运算符在判断相等前对两边的变量(如果它们不是同一类型) 进行强制转换 (这种行为的结果会将 <code>&quot;&quot; == false</code> 判断为 <code>true</code>), 而 <code>Object.is</code>不会强制转换两边的值。</p>
+<p>与<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity"><code>===</code></a> 运算也不相同。 <code>===</code> 运算符 (也包括 <code>==</code> 运算符) 将数字 <code>-0</code> 和 <code>+0</code> 视为相等 ，而将<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/NaN"><code>Number.NaN</code></a> 与<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/NaN"><code>NaN</code></a>视为不相等.</p>
+<p><strong>简单来说</strong>，<code>Object.is</code>与<code>===</code>严格程度很接近，但不同在于<code>-0</code>和<code>+0</code>前者视为不等，后者视为相等；而对于<code>NaN</code>则是前者视为相等，后者视为不等。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(+<span class="number">0</span> === <span class="number">-0</span>)  <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">NaN</span> === <span class="literal">NaN</span>) <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.is(+<span class="number">0</span>, <span class="number">-0</span>)) <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.is(<span class="literal">NaN</span>, <span class="literal">NaN</span>)) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="代理对象Proxy"><a href="#代理对象Proxy" class="headerlink" title="代理对象Proxy"></a>代理对象Proxy</h2><blockquote>
+<p><strong>Proxy</strong> 对象用于定义基本操作的自定义行为（如属性查找、赋值、枚举、函数调用等）。</p>
+</blockquote>
+<p><code>proxy</code>是<strong>代理</strong>的意思，正如引用描述的一样，<strong>Proxy</strong> 对象用于定义基本操作的自定义行为，即我们可以使用<strong>Proxy</strong>来自定义基本操作，也就达到了监听数据变化的作用。</p>
+<blockquote>
+<p><strong>语法</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Proxy</span>(target, handler)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>target：<strong>被 Proxy 代理虚拟化的对象</strong>。它常被作为代理的存储后端。根据目标验证关于对象不可扩展性或不可配置属性的不变量（保持不变的语义）。要使用 <code>Proxy</code> 包装的目标对象（可以是任何类型的对象，包括原生数组，函数，甚至另一个代理）。</li>
+<li>handler：包含捕捉器（trap）的占位符对象，可译为处理器对象。一个通常以函数作为属性的对象，各属性中的函数分别定义了在执行各种操作时代理 <code>p</code> 的行为。</li>
+</ul>
+</blockquote>
+<p><code>handler</code> 对象是一个容纳一批特定属性的占位符对象。它包含有 <code>Proxy</code> 的各个捕获器（trap）。</p>
+<h3 id="handler对象的方法"><a href="#handler对象的方法" class="headerlink" title="handler对象的方法"></a>handler对象的方法</h3><ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/get"><code>handler.get()</code></a>：属性读取操作的捕捉器。</li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/set"><code>handler.set()</code></a>：属性设置操作的捕捉器。</li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/deleteProperty"><code>handler.deleteProperty()</code></a>：<code>delete</code>操作符的捕捉器。</li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/apply"><code>handler.apply()</code></a>：函数调用的捕捉器。</li>
+<li>等等</li>
+</ul>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>一个简单的示例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Proxy</span>(&#123;&#125;, &#123;</span><br><span class="line">    get(obj, prop)&#123;</span><br><span class="line">        <span class="keyword">return</span> prop <span class="keyword">in</span> obj ? obj[prop] : <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">p.a = <span class="string">&#x27;haha&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(p.a) <span class="comment">// haha</span></span><br><span class="line"><span class="built_in">console</span>.log(p.b) <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<p>通过代理，你可以轻松地验证向一个对象的传值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> validator = &#123;</span><br><span class="line">    set: <span class="function"><span class="keyword">function</span>(<span class="params">obj, prop, value</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (prop === <span class="string">&#x27;age&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">Number</span>.isInteger(value)) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">&#x27;The age is not an integer&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (value &gt; <span class="number">200</span>) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">RangeError</span>(<span class="string">&#x27;The age seems invalid&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  </span><br><span class="line">      <span class="comment">// The default behavior to store the value</span></span><br><span class="line">      obj[prop] = value;</span><br><span class="line">  </span><br><span class="line">      <span class="comment">// 表示成功</span></span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Proxy</span>(&#123;&#125;, validator);</span><br><span class="line"></span><br><span class="line">  p.age = <span class="string">&#x27;&#x27;</span> <span class="comment">// TypeError</span></span><br><span class="line">  p.age = <span class="number">300</span> <span class="comment">// RangeError</span></span><br><span class="line">  p.age = <span class="number">89</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="与Object-defineProperty的对比"><a href="#与Object-defineProperty的对比" class="headerlink" title="与Object.defineProperty的对比"></a>与<code>Object.defineProperty</code>的对比</h3><blockquote>
+<p><code>Object.defineProperty()</code> 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
+</blockquote>
+<p>其实<code>defineProperty</code>也是一种代理对象，但<code>proxy</code>更为强大，实现的捕捉器更多。</p>
+<p>此外，<code>proxy</code>对数组的捕获有更好地支持，比如<code>set</code>方法能够监听数组的<code>push</code>等赋值的方法。</p>
+<h2 id="统一对象的操作API-Reflect"><a href="#统一对象的操作API-Reflect" class="headerlink" title="统一对象的操作API: Reflect"></a>统一对象的操作API: <code>Reflect</code></h2><blockquote>
+<p><strong>Reflect</strong> 是一个内置的对象，它提供拦截 JavaScript 操作的方法。这些方法与<a href="https://wiki.developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler">proxy handlers</a>的方法相同。<code>Reflect</code>不是一个函数对象，因此它是不可构造的。</p>
+</blockquote>
+<p>当我们使用<code>Proxy</code>代理对象时，没有进行处理器对象<code>proxy.handles</code>的初始化也能正常使用代理对象，这是因为默认处理器对象中的方法默认都是<code>Reflect</code>提供的静态方法，此外，<code>Reflect</code>对象中还提供了一些对象的方法。具体参考：<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect">Reflect - MDN</a>。</p>
+<p>可能你在使用中发现<code>Reflect</code>中的方法都可能有别的写法，比如下面一些常见的对象操作方法：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    age: <span class="number">18</span>,</span><br><span class="line">    hobbies: [],</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;name&#x27;</span> <span class="keyword">in</span> obj) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.keys(obj)) <span class="comment">// [ &#x27;name&#x27;, &#x27;age&#x27;, &#x27;hobbies&#x27; ]</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">delete</span> obj.hobbies) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>可以发现，既有操作符也有对象方法，使用起来比较混乱，我们可以使用<code>Reflect</code>中的方法来替代，会更具语义化：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    age: <span class="number">18</span>,</span><br><span class="line">    hobbies: [],</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Reflect</span>.has(obj, <span class="string">&#x27;name&#x27;</span>)) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Reflect</span>.ownKeys(obj)) <span class="comment">// [ &#x27;name&#x27;, &#x27;age&#x27;, &#x27;hobbies&#x27; ]</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Reflect</span>.deleteProperty(obj, <span class="string">&#x27;hobbies&#x27;</span>)) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><blockquote>
+<p><strong>Promise</strong> 对象用于表示一个异步操作的最终完成 (或失败), 及其结果值。</p>
+</blockquote>
+<p><code>Promise</code>对象是ES6提出的一个用于解决传统异步编程回调函数嵌套过深等问题而设计的，<code>Promise</code>的内容比较多，本文不在此展开，而会在另一篇文章中详细介绍，你可以访问这里进行查看：<a href="">TODO</a></p>
+<p>或者你可以浏览官方说明：<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise - MDN</a>。</p>
+<h2 id="类class"><a href="#类class" class="headerlink" title="类class"></a>类class</h2><blockquote>
+<p>ECMAScript 2015 中引入的 JavaScript 类实质上是 JavaScript 现有的<strong>基于原型的继承的语法糖</strong>。类语法<strong>不会</strong>为JavaScript引入新的面向对象的继承模型。</p>
+</blockquote>
+<p>类<code>Class</code>实际上是个“特殊的<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions">函数</a>”，就像你能够定义的<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/function">函数表达式</a>和<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/function">函数声明</a>一样，类语法有两个组成部分：<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/class">类表达式</a>和<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/class">类声明</a>。</p>
+<p>类的出现只是相较于原型链，能让我们更好地理解和处理面向对象的逻辑关系，本质还是一个函数。</p>
+<h3 id="类的定义"><a href="#类的定义" class="headerlink" title="类的定义"></a>类的定义</h3><p>类的定义有两种方法，类似函数的定义，我们使用关键字<code>class</code>进行声明，或者使用类表达式：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name, age) &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> Person(<span class="string">&#x27;Jinx&#x27;</span>, <span class="number">22</span>);</span><br><span class="line"><span class="built_in">console</span>.log(p.name) <span class="comment">// Jinx</span></span><br></pre></td></tr></table></figure>
+
+<p>类声明和类表达式的主体都执行在<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode">严格模式</a>下。比如，构造函数，静态方法，原型方法，<code>getter</code>和<code>setter</code>都在严格模式下执行。</p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor">constructor</a>方法是一个特殊的方法，这种方法用于创建和初始化一个由<code>class</code>创建的对象。一个类只能拥有一个名为 “constructor”的特殊方法。如果类包含多个<code>constructor</code>的方法，则将抛出 一个<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError"><code>SyntaxError</code></a> 。</p>
+<p>一个构造函数可以使用 <code>super</code> 关键字来调用一个父类的构造函数。</p>
+<h3 id="原型方法"><a href="#原型方法" class="headerlink" title="原型方法"></a>原型方法</h3><p>参见<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Method_definitions">方法定义</a>。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 构造函数</span></span><br><span class="line">    <span class="keyword">constructor</span>(name, age) &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// getter</span></span><br><span class="line">    <span class="keyword">get</span> <span class="title">sign</span>() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.age &gt;= <span class="number">18</span> ? <span class="string">&#x27;adult&#x27;</span> : <span class="string">&#x27;child&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 普通方法</span></span><br><span class="line">    selfIntroduction() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">`hello, my name is <span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>, I&#x27;m <span class="subst">$&#123;<span class="built_in">this</span>.age&#125;</span> years old.`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> Person(<span class="string">&#x27;Jinx&#x27;</span>, <span class="number">22</span>);</span><br><span class="line"><span class="built_in">console</span>.log(p.sign); <span class="comment">// adult</span></span><br><span class="line"><span class="built_in">console</span>.log(p.selfIntroduction()); <span class="comment">// hello, my name is Jinx, I&#x27;m 22 years old.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h3><p><code>static</code> 关键字用来定义一个类的一个静态方法。调用静态方法不需要<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript#The_object_(class_instance)">实例化</a>该类，但不能通过一个类实例调用静态方法。静态方法通常用于为一个应用程序创建工具函数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 静态方法</span></span><br><span class="line">    <span class="keyword">static</span> run() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;running....&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// console.log(p.run()); // TypeError: p.run is not a function</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.run()) <span class="comment">// running...</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>静态方法不需要实例化就能调用，实例化之后反而不能调用是因为，静态方法是直接绑定在类（或者说函数）上面的，而普通方法都在原型链上。</p>
+</blockquote>
+<h3 id="共有字段和私有字段（实验阶段功能）"><a href="#共有字段和私有字段（实验阶段功能）" class="headerlink" title="共有字段和私有字段（实验阶段功能）"></a>共有字段和私有字段（实验阶段功能）</h3><blockquote>
+<p>公共和私有字段声明是JavaScript标准委员会<a href="https://tc39.es/">TC39</a>提出的<a href="https://github.com/tc39/proposal-class-fields">实验性功能（第3阶段）</a>。浏览器中的支持是有限的，但是可以通过<a href="https://babeljs.io/">Babel</a>等系统构建后使用此功能。</p>
+</blockquote>
+<p>上面的声明可以写成：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    name = <span class="string">&#x27;&#x27;</span>; <span class="comment">// 共有字段</span></span><br><span class="line">    #age = 0; // 私有字段</span><br><span class="line">    <span class="keyword">constructor</span>(name, age) &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>私有字段特殊在于，只能在类内部使用，其子类是不能访问这些私有字段的，具体如何实现可参考下一章节。</p>
+</blockquote>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>在类声明时使用关键字<code>extends</code>可以继承一个类。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name, age) &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name, age, classNumber) &#123;</span><br><span class="line">        <span class="built_in">super</span>(name, age);</span><br><span class="line">        <span class="built_in">this</span>.classNumber = classNumber;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> s = <span class="keyword">new</span> Student(<span class="string">&#x27;Jinx&#x27;</span>, <span class="number">17</span>, <span class="string">&#x27;20200910&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(s.classNumber);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>，如果子类中定义了构造函数，那么它必须先调用 <code>super()</code> 才能使用 <code>this</code> 。</p>
+<p>除了继承一般类，也可以继承传统的基于函数的“类”。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">    <span class="built_in">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype.say = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>, I am <span class="subst">$&#123;<span class="built_in">this</span>.age&#125;</span> years old.`</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name, age, classNumber) &#123;</span><br><span class="line">        <span class="built_in">super</span>(name, age);</span><br><span class="line">        <span class="built_in">this</span>.classNumber = classNumber;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    say()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.say() + <span class="string">`My classNumber is <span class="subst">$&#123;<span class="built_in">this</span>.classNumber&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> s = <span class="keyword">new</span> Student(<span class="string">&#x27;Jinx&#x27;</span>, <span class="number">17</span>, <span class="string">&#x27;20200910&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(s.say());</span><br></pre></td></tr></table></figure>
+
+<p>但类<strong>不能继承常规对象（不可构造的）</strong>。如果要继承常规对象，可以改用 <code>Reflect.setPrototypeOf()</code> 或者<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf"><code>Object.setPrototypeOf()</code></a>(可设置对象的原型（即内部的 <code>[[Prototype]]</code> 属性）为另一个对象或 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/null"><code>null</code></a>，如果操作成功返回 <code>true</code>，否则返回 <code>false</code>。)</p>
+<blockquote>
+<p><strong>警告</strong>：由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，更改对象的 <code>[[Prototype]]</code>在**<em>各个**</em>浏览器和 JavaScript 引擎上都是一个很慢的操作。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> Person = &#123;</span><br><span class="line">    name: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    age: <span class="number">0</span>,</span><br><span class="line">    say() &#123;</span><br><span class="line">        <span class="string">`I am <span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>, I am <span class="subst">$&#123;<span class="built_in">this</span>.age&#125;</span> years old.`</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name, age, classNumber) &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.classNumber = classNumber;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    say()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>, I am <span class="subst">$&#123;<span class="built_in">this</span>.age&#125;</span> years old.My classNumber is <span class="subst">$&#123;<span class="built_in">this</span>.classNumber&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">Reflect</span>.setPrototypeOf(Student.prototype, Person); <span class="comment">// 没有原型方法的对象，只能通过这种方式&quot;继承&quot;，不推荐使用</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> s = <span class="keyword">new</span> Student(<span class="string">&#x27;Jinx&#x27;</span>, <span class="number">17</span>, <span class="string">&#x27;20200910&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(s.say());</span><br></pre></td></tr></table></figure>
+
+<h3 id="派生类Species"><a href="#派生类Species" class="headerlink" title="派生类Species"></a>派生类Species</h3><p>你可能希望在派生数组类 <em><code>MyArray</code></em> 中返回 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Array"><code>Array</code></a>对象。这种 species 方式允许你覆盖默认的构造函数。</p>
+<p>例如，当使用像<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/map"><code>map()</code></a>返回<strong>默认构造函数</strong>的方法时，您希望这些方法返回一个父<code>Array</code>对象，而不是<code>MyArray</code>对象。<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species"><code>Symbol.species</code></a> 符号可以让你这样做：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyArray</span> <span class="keyword">extends</span> <span class="title">Array</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Overwrite species to the parent Array constructor</span></span><br><span class="line">    <span class="keyword">static</span> get [<span class="built_in">Symbol</span>.species]() &#123; <span class="keyword">return</span> <span class="built_in">Array</span>; &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="keyword">new</span> MyArray(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line">  <span class="keyword">var</span> mapped = a.map(<span class="function"><span class="params">x</span> =&gt;</span> x * x);</span><br><span class="line">  </span><br><span class="line">  <span class="built_in">console</span>.log(a <span class="keyword">instanceof</span> MyArray); <span class="comment">// true</span></span><br><span class="line">  <span class="built_in">console</span>.log(mapped <span class="keyword">instanceof</span> MyArray); <span class="comment">// false</span></span><br><span class="line">  <span class="built_in">console</span>.log(mapped <span class="keyword">instanceof</span> <span class="built_in">Array</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="多继承Mix-ins"><a href="#多继承Mix-ins" class="headerlink" title="多继承Mix-ins"></a>多继承Mix-ins</h3><p>请参考另一篇文章：<a href="...">Javascript中的多继承与混合类Mixin</a></p>
+<h2 id="利用ES5语法实现ES6的类Class"><a href="#利用ES5语法实现ES6的类Class" class="headerlink" title="利用ES5语法实现ES6的类Class"></a>利用ES5语法实现ES6的类Class</h2><p>为了更好地理解类的实现原理，我们尝试使用<code>ES5</code>的语法进行实现。</p>
+<h3 id="类声明的实现"><a href="#类声明的实现" class="headerlink" title="类声明的实现"></a>类声明的实现</h3><p>首先是实现<strong>类的定义</strong>，类的本质还是一个函数，所以定义类就是在定义一个函数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name, age)&#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// =====&gt; es5</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">    <span class="built_in">this</span>.age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有时候为了保证<code>Person</code>类能正常创建实例，我们可以加上这样的检测函数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 检查实例与类是否符合规范</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_classCallCheck</span>(<span class="params">instance, Constructor</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 无法创建改函数(类)的实例</span></span><br><span class="line">    <span class="keyword">if</span>(!_instanceOf(instance, Constructor))&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">&quot;Cannot call a class as a function&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 判断对象是否为某个类的实例</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_instanceOf</span>(<span class="params">instance, Constructor</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(Constructor &amp;&amp; <span class="built_in">Symbol</span> &amp;&amp; Constructor[<span class="built_in">Symbol</span>.hasInstance]) &#123;</span><br><span class="line">        <span class="keyword">return</span> !!Constructor[<span class="built_in">Symbol</span>.hasInstance](instance);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> instance <span class="keyword">instanceof</span> Constructor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    _classCallCheck(<span class="built_in">this</span>, Person);</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">    <span class="built_in">this</span>.age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li><code>Constructor[Symbol.hasInstance](obj)</code>用于判断某对象是否为某构造器的实例。</li>
+<li>在函数的定义中，函数名本身就相当于构造器本身，而<code>this</code>指向该类的实例，本质上就是一个对象。</li>
+</ul>
+</blockquote>
+<h3 id="原型方法的实现"><a href="#原型方法的实现" class="headerlink" title="原型方法的实现"></a>原型方法的实现</h3><p>原型方法顾名思义，就是绑定在原型链上的函数，比如新增一个原型方法<code>say</code>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    _classCallCheck(<span class="built_in">this</span>, Person);</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">    <span class="built_in">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.say = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">console</span>.log(<span class="string">`hello, My name is <span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>, I&#x27;m <span class="subst">$&#123;<span class="built_in">this</span>.age&#125;</span> years old.`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Person(<span class="string">&#x27;Jinx&#x27;</span>, <span class="number">23</span>).say(); <span class="comment">// hello, My name is Jinx, I&#x27;m 23 years old.</span></span><br></pre></td></tr></table></figure>
+
+<p>为了写得更严谨一些，我们可以使用<strong>代理对象</strong>（ES6可以用<code>Proxy</code>，这里是ES5版本，所以我们还是使用<code>Object.defineProperty</code>）来实现原型链的函数绑定：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 使用代理对象绑定属性</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_defineProperties</span>(<span class="params">obj, props</span>) </span>&#123;</span><br><span class="line">    props &amp;&amp; props.forEach(<span class="function"><span class="params">prop</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">Object</span>.defineProperty(obj, prop.key, &#123;</span><br><span class="line">            configurable: !!prop.configurable,</span><br><span class="line">            enumerable: !!prop.enumerable,</span><br><span class="line">            writable: <span class="literal">true</span>,</span><br><span class="line">            value: prop.value</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    _classCallCheck(<span class="built_in">this</span>, Person);</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">    <span class="built_in">this</span>.age = age;</span><br><span class="line">    <span class="comment">// 原型函数的绑定</span></span><br><span class="line">    _defineProperties(Person.prototype, [&#123;</span><br><span class="line">        key: <span class="string">&#x27;say&#x27;</span>,</span><br><span class="line">        value: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">&#x27;hello, My name is &#x27;</span>.concat(<span class="built_in">this</span>.name, <span class="string">&quot;, I&#x27;m &quot;</span>, <span class="built_in">this</span>.age, <span class="string">&#x27; years old.&#x27;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态方法的实现"><a href="#静态方法的实现" class="headerlink" title="静态方法的实现"></a>静态方法的实现</h3><p>静态方法与原型方法的不同之处就在于，静态方法是直接绑定在<code>构造器</code>上的，所以直接不用实例就能调用，比如我们把<code>say</code>方法改为今天方法，只需要修改代理对象的即可：（Person.prototype -&gt; Person）。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Person = (<span class="function"><span class="keyword">function</span> (<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        _classCallCheck(<span class="built_in">this</span>, Person);</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 静态函数</span></span><br><span class="line">    _defineProperties(Person, [&#123;</span><br><span class="line">        key: <span class="string">&#x27;say&#x27;</span>,</span><br><span class="line">        value: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">&#x27;hello, My name is &#x27;</span>.concat(<span class="built_in">this</span>.name, <span class="string">&quot;, I&#x27;m &quot;</span>, <span class="built_in">this</span>.age, <span class="string">&#x27; years old.&#x27;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;]);</span><br><span class="line">    <span class="keyword">return</span> Person;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>我们发现，这里使用了类表达式来申明，这是因为静态函数不需要创建实例就能使用，所以我们在申明函数时就需要绑定好静态方法与构造函数之间的关系。</p>
+</blockquote>
+<h3 id="字段的绑定"><a href="#字段的绑定" class="headerlink" title="字段的绑定"></a>字段的绑定</h3><blockquote>
+<p>属性也就是同方法的绑定没有太大区别，一般属性绑定在实例对象上，而静态属性直接绑定在构造函数上。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> Person = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 字段(属性)</span></span><br><span class="line">    Person.prototype.age = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 静态属性</span></span><br><span class="line">    Person.flag = <span class="string">&#x27;person class&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> Person;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> Person(<span class="string">&#x27;Jinx&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(p.name) <span class="comment">// &#x27;Jinx&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(p.age) <span class="comment">// 0</span></span><br><span class="line"><span class="built_in">console</span>.log(p.flag) <span class="comment">// undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.flag) <span class="comment">// person class</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="继承的实现"><a href="#继承的实现" class="headerlink" title="继承的实现"></a>继承的实现</h3><blockquote>
+<p>当谈到继承时，JavaScript 只有一种结构：对象。每个实例对象（ object ）都有一个私有属性（称之为 <strong>proto</strong> ）指向它的构造函数的原型对象（<strong>prototype</strong> ）。该原型对象也有一个自己的原型对象( <strong>proto</strong> ) ，层层向上直到一个对象的原型对象为 <code>null</code>。根据定义，<code>null</code> 没有原型，并作为这个<strong>原型链</strong>中的最后一个环节。</p>
+<p>几乎所有 JavaScript 中的对象都是位于原型链顶端的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object"><code>Object</code></a> 的实例。</p>
+</blockquote>
+<p>由于篇幅过长，会另外开启一篇文章进行梳理，可以参考这里<a href="">TODO</a>。</p>
+<p>此外，我们也可以使用下面的地址将<code>ES6</code>代码转化为<code>ES5</code>代码，方便我们对比各个版本之间的写法：</p>
+<ul>
+<li><a href="https://babeljs.io/repl/#?browsers=&build=&builtIns=false&spec=false&loose=false&code_lz=MYGwhgzhAEAKCmAnCB7AdtA3gKGtbAvkA&debug=false&forceAllTransforms=false&shippedProposals=false&circleciRepo=&evaluate=true&fileSize=false&timeTravel=false&sourceType=module&lineWrap=false&presets=es2015%2Creact%2Cstage-2&prettier=false&targets=&version=7.11.6&externalPlugins=">Babel - JS转换</a>。</li>
+<li><a href="https://google.github.io/traceur-compiler/demo/repl.html#">Traceur</a>。</li>
+</ul>
+<h2 id="集合Set对象"><a href="#集合Set对象" class="headerlink" title="集合Set对象"></a>集合Set对象</h2><blockquote>
+<p><code>Set</code>对象是值的集合，你可以按照插入的顺序迭代它的元素。 Set中的元素只会<strong>出现一次</strong>，即 Set 中的元素是唯一的。</p>
+</blockquote>
+<p>你可以把<code>Set</code>理解为没有重复元素的数组。语法如下：</p>
+<blockquote>
+<p><strong>new Set([iterable])</strong></p>
+<p>你可以传入一个可迭代对象<code>iterable</code>作为参数，这样，集合就能接手并不重复地把迭代对象中的元素加入到集合实例中。</p>
+</blockquote>
+<p>集合<code>Set</code>的<code>api</code>和数组类似，比如常用的一些<code>api</code>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例属性 size :表示集合长度(元素个数)</span></span><br><span class="line"><span class="built_in">console</span>.log(s.size); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// [添加]一个元素，返回实例本身，所以你可以链式调用</span></span><br><span class="line"><span class="built_in">console</span>.log(s.add(<span class="number">4</span>).add(<span class="number">5</span>)); <span class="comment">// Set &#123; 1, 2, 3, 4, 5 &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// [删除]一个元素，成功则返回true，否则返回false</span></span><br><span class="line"><span class="built_in">console</span>.log(s.delete(<span class="number">3</span>)) <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// [清空]所有元素,无返回值</span></span><br><span class="line"><span class="built_in">console</span>.log(s.clear()) <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// [has]判断元素是否存在集合中</span></span><br><span class="line"><span class="built_in">console</span>.log(s.has(<span class="number">0</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回一个新的【迭代器对象】，这个对象的元素是类似 [value, value] 形式的数组，即IterableIterator&lt;[number, number]&gt;</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> ent <span class="keyword">of</span> s.entries()) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(ent);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// [ 1, 1 ]</span></span><br><span class="line"><span class="comment">// [ 2, 2 ]</span></span><br><span class="line"><span class="comment">// [ 3, 3 ]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回一个新的【迭代器对象】,与entries不同在于，values | keys 方法只返回集合中元素的迭代对象（由于键和值一样，这两个方法也无区别）</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> ent <span class="keyword">of</span> s.values()) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(ent);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 【forEach】遍历集合</span></span><br><span class="line">s.forEach(<span class="function">(<span class="params">key, val, set</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key, <span class="string">&#x27;-&#x27;</span>, val);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 1 - 1</span></span><br><span class="line"><span class="comment">// 2 - 2</span></span><br><span class="line"><span class="comment">// 3 - 3</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：<code>for of</code>循环也是<code>ES6</code>提出的一种新循环语句，只要实现可迭代接口，就<strong>能遍历任意数据类型</strong>。详细请参考后文。</p>
+</blockquote>
+<h2 id="映射集合Map对象"><a href="#映射集合Map对象" class="headerlink" title="映射集合Map对象"></a>映射集合Map对象</h2><blockquote>
+<p><strong><code>Map</code></strong> 对象保存键值对，并且能够记住键的原始插入顺序。<strong>任何值</strong>(对象或者<a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Primitive">原始值</a>) 都可以作为一个键或一个值。</p>
+</blockquote>
+<p>说到键值对对象，我们很容易想到<code>js</code>最普遍的<code>Object</code>对象就是一种键值对对象，那为什么还需要<code>Map</code>呢？我们先看一个例子：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    <span class="literal">true</span>: <span class="string">&#x27;true&#x27;</span>,</span><br><span class="line">    <span class="number">1</span>: <span class="number">1</span>,</span><br><span class="line">    [<span class="literal">undefined</span>]: <span class="literal">null</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> keys = <span class="built_in">Object</span>.keys(obj);</span><br><span class="line"><span class="built_in">console</span>.log(keys); <span class="comment">// [ &#x27;1&#x27;, &#x27;name&#x27;, &#x27;true&#x27;, &#x27;undefined&#x27; ]</span></span><br></pre></td></tr></table></figure>
+
+<p>可以发现，<code>Object</code>这种映射只是<code>字符串 - 数据</code>的映射，不管我们传入什么值作为键，都会被转为字符串或者<code>Symbol</code>（ES6新增的一种数据类型，见后文）。</p>
+<p>但<code>Map</code>是真正的数据之间的映射，<code>Map</code>的之间的键可能是任意类型的对象（数据）,语法如下：</p>
+<blockquote>
+<p><strong>new Map([iterable])</strong></p>
+<p>Iterable 可以是一个<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Array"><code>数组</code></a>或者其他 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/iterable">iterable</a> 对象，其元素为键值对(两个元素的数组，例如: [[ 1, ‘one’ ],[ 2, ‘two’ ]])。 每个键值对都会添加到新的 Map。<code>null</code> 会被当做 <code>undefined。</code></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> say = <span class="number">11</span>;</span><br><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">    [<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;Jinx&#x27;</span>],</span><br><span class="line">    [<span class="string">&#x27;age&#x27;</span>, <span class="number">22</span>],</span><br><span class="line">    [say, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;say something&#x27;</span>;</span><br><span class="line">    &#125;],</span><br><span class="line">])</span><br><span class="line"><span class="built_in">console</span>.log(map); <span class="comment">// Map &#123; &#x27;name&#x27; =&gt; &#x27;Jinx&#x27;, &#x27;age&#x27; =&gt; 22, 11 =&gt; [Function] &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(map.get(say)()); <span class="comment">// say something</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一个Map对象在迭代时会根据对象中元素的插入顺序来进行 — 一个  <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of"><code>for...of</code></a> 循环在每次迭代后会返回一个形式为[key，value]的数组。</p>
+</blockquote>
+<p>一些基本的<code>api</code>，和<code>Set</code>很类似：</p>
+<ul>
+<li>clear()：清空集合。</li>
+<li>delete(key)：按照键删除该映射关系，成功则返回true。</li>
+<li>entries()：返回一个新的 <code>Iterator</code> 对象，它按插入顺序包含了Map对象中每个元素的 <strong><code>[key, value]</code></strong> <code>数组</code>。</li>
+<li>forEach()：按插入顺序，为 <code>Map</code>对象里的每一键值对调用一次callbackFn函数。</li>
+<li>get(key)：根据映射关系的键返回对应的值。</li>
+<li>set(key, value)：设置Map对象中键的值。返回该Map对象。</li>
+<li>has(key)：判断该键是否存在对应的映射关系，注意只要设置了映射关系，就算值为<code>undefined</code>也返回true。</li>
+<li>keys()：按插入顺序返回集合键的<code>Iterator</code>对象。</li>
+<li>values()：按插入顺序返回集合值的<code>Iterator</code>对象。</li>
+</ul>
+<p>总结一下<code>Map</code>和<code>Object</code>的<strong>区别</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="left">-</th>
+<th align="left">Map</th>
+<th>Object</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">意外的键</td>
+<td align="left"><code>Map</code> 默认情况不包含任何键。只包含显式插入的键。</td>
+<td>一个 <code>Object</code> 有一个原型, 原型链上的键名有可能和你自己在对象上的设置的键名产生冲突。<strong>注意:</strong> 虽然 ES5 开始可以用 <code>Object.create(null)</code> 来创建一个没有原型的对象，但是这种用法不太常见。</td>
+</tr>
+<tr>
+<td align="left">键的类型</td>
+<td align="left">一个 <code>Map</code>的键可以是<strong>任意值</strong>，包括函数、对象或任意基本类型。</td>
+<td>一个<code>Object</code> 的键必须是一个 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/String"><code>String</code></a> 或是<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol"><code>Symbol</code></a>。</td>
+</tr>
+<tr>
+<td align="left">键的顺序</td>
+<td align="left"><code>Map</code> 中的 key 是有序的。因此，当迭代的时候，一个 <code>Map</code> 对象以插入的顺序返回键值。</td>
+<td>一个 <code>Object</code> 的键是无序的注意：自ECMAScript 2015规范以来，对象<em>确实</em>保留了字符串和Symbol键的创建顺序； 因此，在只有字符串键的对象上进行迭代将按插入顺序产生键。</td>
+</tr>
+<tr>
+<td align="left">Size</td>
+<td align="left"><code>Map</code> 的键值对个数可以轻易地通过<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Map/size"><code>size</code></a> 属性获取</td>
+<td><code>Object</code> 的键值对个数只能手动计算</td>
+</tr>
+<tr>
+<td align="left">迭代</td>
+<td align="left"><code>Map</code> 是 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/iterable">iterable</a> 的，所以可以直接被迭代。</td>
+<td>迭代一个<code>Object</code>需要以某种方式获取它的键然后才能迭代。</td>
+</tr>
+<tr>
+<td align="left">性能</td>
+<td align="left">在频繁增删键值对的场景下表现更好。</td>
+<td>在频繁添加和删除键值对的场景下未作出优化。</td>
+</tr>
+</tbody></table>
+<h2 id="新数据类型Symbol"><a href="#新数据类型Symbol" class="headerlink" title="新数据类型Symbol"></a>新数据类型Symbol</h2><blockquote>
+<p>新增的一种<strong>原始数据类型</strong>，读作“<strong>符号</strong>”。该类型的性质在于这个类型的值可以用来创建<strong>匿名的对象属性</strong>。</p>
+<p><strong>symbol</strong> 数据类型具有非常明确的目的，并且因为其功能性单一的优点而突出；一个 <strong>symbol</strong> 实例可以被赋值到一个左值变量，还可以通过标识符检查类型，这就是它的全部特性。</p>
+<p>【目的】唯一性：在 JavaScript 运行时环境中，一个符号类型值可以通过调用函数 <code>Symbol()</code> 创建，这个函数动态地生成了一个匿名，<strong>唯一的值</strong>。</p>
+<p>【特点】匿名性：当一个 symbol 类型的值在属性赋值语句中被用作标识符，该属性（像这个 symbol 一样）是匿名的；并且是<strong>不可枚举</strong>的。它同样不会出现在 “<code>Object.getOwnPropertyNames()</code>” 的返回数组里。这个属性可以通过创建时的原始 symbol 值访问到，或者通过遍历 “<code>Object.getOwnPropertySymbols()</code>” 返回的数组。</p>
+</blockquote>
+<p><strong>Symbol</strong> 类具有一些静态属性，对于匿名命名来说，这带有一点讽刺意味。这类属性只有几个; 它们是所谓的“众所周知”的 symbol。 它们是在某些内置对象中找到的某些特定方法属性的 symbol。 暴露出这些 symbol 使得可以直接访问这些行为；这样的访问可能是有用的，例如在定义自定义类的时候。 普遍的 symbol 的例子有：“<code>Symbol.iterator</code>”用于类似数组的对象，“<code>Symbol.search</code>”用于字符串对象。</p>
+<p><code>Symbol()</code>函数及其创建的 symbol 值可能对设计自定义类的编程人员有用。 symbol 值提供了一种自定义类可以<strong>创建私有成员</strong>的方式（匿名，所以不能被继承下去），并维护一个仅适用于该类的 symbol 注册表。 在类定义中，动态创建的 symbol 值将保存到作用域变量中，该变量只能在类定义中私有地使用。 没有 token 字符串; 作用域变量起到 token 的等同作用。</p>
+<p>举个简单的例子，文章前文对比过<code>Object</code>和<code>Map</code>区别，其中一点就是<code>Object</code>常常会造成不确定的键导致<strong>数据覆盖</strong>。比如：</p>
+<p><code>main.js</code>向外暴露出一个<code>obj</code>对象，但其他模块是不知道该对象有哪些键的，如果使用到了相同的键就会发生不必要的意外，一般的做法是约定自己内部使用的键，加上特殊的标记，比如<code>b.js</code>的做法：加上特殊前缀：<code>b_</code>。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// --- main.js</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    age: <span class="number">23</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// --- a.js</span></span><br><span class="line">obj.name = <span class="string">&#x27;Tom&#x27;</span> <span class="comment">// 发生覆盖</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// --- b.js</span></span><br><span class="line">obj.b_name = <span class="string">&#x27;Yasuo&#x27;</span> <span class="comment">// 做一个约定，避免覆盖</span></span><br></pre></td></tr></table></figure>
+
+<p>但<code>symbol</code>的出现很好地解决了这一问题：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// --- main.js</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    age: <span class="number">23</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// --- a.js</span></span><br><span class="line"><span class="keyword">const</span> name = <span class="built_in">Symbol</span>();</span><br><span class="line">obj[name] = <span class="string">&#x27;Tom&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj[<span class="string">&#x27;name&#x27;</span>]); <span class="comment">// Jinx</span></span><br><span class="line"><span class="built_in">console</span>.log(obj[name]); <span class="comment">// Tom</span></span><br><span class="line"><span class="built_in">console</span>.log(obj[<span class="built_in">Symbol</span>()]); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="for-of循环语句"><a href="#for-of循环语句" class="headerlink" title="for...of循环语句"></a><code>for...of</code>循环语句</h2><p><code>for...of</code>语句是一种新的循环语句，更好地说法叫迭代器，能遍历可迭代对象的所有元素，理论上可以遍历所有类型的对象，只要<strong>实现了可迭代接口</strong>(详情见后文)。基本语法如下：</p>
+<blockquote>
+<p>for (variable of iterable) {<br>    //statements<br>}</p>
+<ul>
+<li>variable：在每次迭代中，将不同属性的值分配给变量。</li>
+<li>iterable：被迭代枚举其属性的对象。</li>
+</ul>
+</blockquote>
+<p>比如数组的迭代，我们常常使用<code>forEach</code>来进行操作，但该函数由于是回调函数操作，无法结束循环，所以我们可以换成<code>for...of</code>来遍历数组：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">11</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> val <span class="keyword">of</span> arr) &#123;</span><br><span class="line">    <span class="keyword">if</span>(val &gt; <span class="number">5</span>) <span class="keyword">break</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(val);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<p>此外，我们还可以迭代一些常见的数据对象：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;----迭代字符串----&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> str = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> c <span class="keyword">of</span> str) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(c) <span class="comment">// a b c</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> c <span class="keyword">in</span> str) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(c) <span class="comment">// 0 1 2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;----迭代Set----&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> set = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>]);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> s <span class="keyword">of</span> set)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(s); <span class="comment">// a b c</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> s <span class="keyword">in</span> set)&#123; <span class="comment">// 无法枚举，不报错，但不会执行</span></span><br><span class="line">    <span class="built_in">console</span>.log(s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;----迭代Map----&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">    [<span class="number">1</span>, <span class="string">&#x27;a&#x27;</span>],</span><br><span class="line">    [<span class="number">2</span>, <span class="string">&#x27;b&#x27;</span>],</span><br><span class="line">    [<span class="number">3</span>, <span class="string">&#x27;c&#x27;</span>],</span><br><span class="line">]);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> [k,v] <span class="keyword">of</span> map)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(k, <span class="string">&#x27;-&#x27;</span> , v); <span class="comment">// 1 - a 2 - b 3 - c</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> s <span class="keyword">in</span> map)&#123; <span class="comment">// 无法枚举，不报错，但不会执行</span></span><br><span class="line">    <span class="built_in">console</span>.log(s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;----迭代Dom集合----&#x27;</span>)</span><br><span class="line"><span class="comment">//注意：这只能在实现了NodeList.prototype[Symbol.iterator]的平台上运行</span></span><br><span class="line"><span class="keyword">let</span> articleParagraphs = <span class="built_in">document</span>.querySelectorAll(<span class="string">&quot;article &gt; p&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> paragraph <span class="keyword">of</span> articleParagraphs) &#123;</span><br><span class="line">    paragraph.classList.add(<span class="string">&quot;read&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于<code>for...of</code>的循环，可以由<code>break</code>, <code>throw continue </code>  或<code>return</code>终止。在这些情况下，迭代器关闭。</p>
+<p>我们可以发现，<code>for...of</code>可以迭代很多内置对象的实例，包括<code>for in</code>无法枚举的<code>Set</code>，<code>Map</code>这些对象，实际上：</p>
+<ul>
+<li><code>for in</code>语句以任意顺序迭代对象的<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Enumerability_and_ownership_of_properties">可枚举属性</a>。</li>
+<li><code>for...of</code> 语句遍历<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Iterators_and_Generators#Iterables">可迭代对象</a>定义要迭代的数据。</li>
+</ul>
+<p>所以，<code>for...in</code>能迭代的是具有可枚举属性的对象，然后再根据属性来获取对象的值，而<code>for...of</code>能迭代一切实现了可迭代接口的对象，我们能直接迭代数组这些内置对象，是因为这些对象的意见内置实现了可迭代接口。</p>
+<p>可能你已经发现了，我们常常使用到的<code>Object</code>对象反而无法进行迭代，如果我们需要我们的自定义对象能够迭代，还需要我们<strong>自行实现可迭代接口</strong>，请直接阅读下一章节。</p>
+<h2 id="可迭代接口"><a href="#可迭代接口" class="headerlink" title="可迭代接口"></a>可迭代接口</h2><blockquote>
+<p>可迭代接口或者说<strong>可迭代协议</strong>，允许 JavaScript 对象定义或定制它们的迭代行为，例如，在一个 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of"><code>for..of</code></a> 结构中，哪些值可以被遍历到。一些内置类型同时是<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols#%E5%86%85%E7%BD%AE%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1">内置可迭代对象</a>，并且有默认的迭代行为，比如 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Array"><code>Array</code></a> 或者 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Map"><code>Map</code></a>，而其他内置类型则不是（比如 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object"><code>Object</code></a>)）。</p>
+</blockquote>
+<p>要成为<strong>可迭代</strong>对象， 一个对象必须实现 <code>**@@iterator**</code> 方法。这意味着对象（或者它<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain">原型链</a>上的某个对象）必须有一个键为 <code>@@iterator</code> 的属性，可通过常量 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator"><code>Symbol.iterator</code></a> 访问该属性：</p>
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="left">值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>[Symbol.iterator]</code></td>
+<td align="left">返回一个符合<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols#%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%8D%8F%E8%AE%AE">迭代器协议</a>的对象的无参数函数。</td>
+</tr>
+</tbody></table>
+<p>注：此函数可以是<strong>普通函数</strong>，也可以是生成器函数，以便在调用时返回迭代器对象。 在此生成器函数的内部，可以使用<code>yield</code>提供每个条目。（生成器函数详情可参考下一章节）</p>
+<h3 id="迭代器协议"><a href="#迭代器协议" class="headerlink" title="迭代器协议"></a>迭代器协议</h3><p>只有实现了一个拥有以下语义（semantic）的 <code>next()</code> 方法，一个对象才能成为迭代器：</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>next</code></td>
+<td align="left">一个无参数函数，返回一个应当拥有以下两个属性的对象：<code>done</code>（boolean）如果迭代器可以产生序列中的下一个值，则为 <code>false</code>。（这等价于没有指定 <code>done</code> 这个属性。）如果迭代器已将序列迭代完毕，则为 <code>true</code>。这种情况下，<code>value</code> 是可选的，如果它依然存在，即为迭代结束之后的默认返回值。<code>value</code>迭代器返回的任何 JavaScript 值。done 为 true 时可省略。<code>next()</code> 方法必须返回一个对象，该对象应当有两个属性： <code>done</code> 和 <code>value</code>，如果返回了一个非对象值（比如 <code>false</code> 或 <code>undefined</code>），则会抛出一个 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypeError"><code>TypeError</code></a> 异常（<code>&quot;iterator.next() returned a non-object value&quot;</code>）。</td>
+</tr>
+</tbody></table>
+<p>总结来说就是，实现迭代器接口就是，需要实现一个<code>[Symbol.iterator]</code>函数，该函数必须实现了<code>next</code>函数，该<code>netx</code>函数必须返回具有<code>done</code>和<code>value</code>属性的对象。</p>
+<p>可能描述有点长，我们来简单实现一下就明了了，假设有这么一个对象需要我们使用<code>for...of</code>进行迭代，我们希望能使用迭代器返回对应的<code>name</code>和<code>age</code>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    names: [<span class="string">&#x27;Jinx&#x27;</span>, <span class="string">&#x27;Yasuo&#x27;</span>, <span class="string">&#x27;Cat&#x27;</span>],</span><br><span class="line">    ages: [<span class="number">22</span>, <span class="number">23</span>, <span class="number">4</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果直接使用迭代器是会报错的：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> o <span class="keyword">of</span> obj) &#123; <span class="comment">// TypeError: obj is not iterable</span></span><br><span class="line">    <span class="built_in">console</span>.log(o)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>第一步</strong>：实现迭代器函数<code>[Symbol.iterator]</code>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    names: [<span class="string">&#x27;Jinx&#x27;</span>, <span class="string">&#x27;Yasuo&#x27;</span>, <span class="string">&#x27;Cat&#x27;</span>],</span><br><span class="line">    ages: [<span class="number">22</span>, <span class="number">23</span>, <span class="number">4</span>],</span><br><span class="line">    [<span class="built_in">Symbol</span>.iterator]: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;....&#x27;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步</strong>：该函数需要实现一个<code>next</code>函数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    names: [<span class="string">&#x27;Jinx&#x27;</span>, <span class="string">&#x27;Yasuo&#x27;</span>, <span class="string">&#x27;Cat&#x27;</span>],</span><br><span class="line">    ages: [<span class="number">22</span>, <span class="number">23</span>, <span class="number">4</span>],</span><br><span class="line">    [<span class="built_in">Symbol</span>.iterator]: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            next: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">&#x27;next...&#x27;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步</strong>：<code>next</code>函数必须返回具有<code>done</code>和<code>value</code>属性的对象：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    names: [<span class="string">&#x27;Jinx&#x27;</span>, <span class="string">&#x27;Yasuo&#x27;</span>, <span class="string">&#x27;Cat&#x27;</span>],</span><br><span class="line">    ages: [<span class="number">22</span>, <span class="number">23</span>, <span class="number">4</span>],</span><br><span class="line">    [<span class="built_in">Symbol</span>.iterator]: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> self = <span class="built_in">this</span>;</span><br><span class="line">        <span class="keyword">const</span> len = <span class="built_in">Math</span>.min(self.names.length, self.ages.length);</span><br><span class="line">        <span class="keyword">let</span> index = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            next: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> &#123;</span><br><span class="line">                    done: index++ &gt;= len - <span class="number">1</span>, <span class="comment">// 结束标记</span></span><br><span class="line">                    value: [self.names[index], self.ages[index]], <span class="comment">// 每次迭代的返回值</span></span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，我们就能使用迭代语句进行遍历了：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> o <span class="keyword">of</span> obj) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(o);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// [ &#x27;Jinx&#x27;, 22 ]</span></span><br><span class="line"><span class="comment">// [ &#x27;Yasuo&#x27;, 23 ]</span></span><br><span class="line"><span class="comment">// [ &#x27;Cat&#x27;, 4 ]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="为何要实现可迭代接口"><a href="#为何要实现可迭代接口" class="headerlink" title="为何要实现可迭代接口"></a>为何要实现可迭代接口</h3><p>在上面的使用场景中，我们不需要实现迭代器接口也能实现对应的功能，但由于模块化的开发越来越普遍，可能这个自定义对象是别人给的，或者说是需要给别人的，也就是<strong>不同的人在维护</strong>，假设你没有实现可迭代接口，那么使用的人就需要自己遍历数据，但是对象数据是可能发生变更的，比如上面的<code>obj</code>又新增了一个<code>skills</code>字段需要遍历，那么每个使用到这个对象的人都需要修改自己的遍历器，这是比较麻烦的。</p>
+<p>但是实现了可迭代接口，每个使用到的人只需要使用相同的<code>for...of</code>这样的迭代语句就能拿到迭代器设计好的数据，也就是<strong>对外暴露统一的迭代方法</strong>，而无需让使用者担心数据变化带来困扰。</p>
+<blockquote>
+<p>可以发现，迭代语句<code>for...of</code>完全可以使用普通的<code>for</code>或者<code>while</code>等实现，但这相当于一种设计思想，<strong>实现统一的接口</strong>能为我们解决很多应用场景上的麻烦和带来使用上的便利。</p>
+</blockquote>
+<h2 id="生成器Generator"><a href="#生成器Generator" class="headerlink" title="生成器Generator"></a>生成器<code>Generator</code></h2><blockquote>
+<p><strong>生成器</strong>对象是由一个 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/function*">generator function</a> 返回的,并且它符合<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols#iterable">可迭代协议</a>和<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols#iterator">迭代器协议</a>。</p>
+</blockquote>
+<p>单词<code>generator</code>为“发电机”的意思，生成器也是这个道理，生成器函数能<strong>源源不断</strong>的提供数据，直到<code>return</code>结束。</p>
+<h3 id="定义一个生成器函数"><a href="#定义一个生成器函数" class="headerlink" title="定义一个生成器函数"></a>定义一个生成器函数</h3><p>生成器函数的语法十分简单，只需要把普通函数的声明关键字<code>function</code>变成<code>function*</code>或<code>function *</code>即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;this is a generator.&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(foo()) <span class="comment">// Object [Generator] &#123;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们打印发现，函数返回了一个生成器对象，并非<code>return</code>语句后的结果。上面我们说到，生成器对象实现了可迭代协议，所以我们需要使用<code>next</code>函数取出数据：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(foo().next()) <span class="comment">// &#123; value: 100, done: true &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="yield关键字"><a href="#yield关键字" class="headerlink" title="yield关键字"></a>yield关键字</h3><p>当然，如果只是这样的迭代器效果，就不能体现生成器的特点了，一般迭代器需要和<code>yield</code>关键字搭配使用。<code>yield</code>关键字使生成器函数<strong>执行暂停</strong>，<code>yield</code>关键字后面的表达式的值返回给生成器的调用者。它可以被认为是一个基于生成器的版本的<code>return</code>关键字。</p>
+<p>我们改造一下上面的函数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">yield</span> index++;</span><br><span class="line">    <span class="keyword">yield</span> index++;</span><br><span class="line">    <span class="keyword">yield</span> index++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> gnr_foo = foo();</span><br><span class="line"><span class="built_in">console</span>.log(gnr_foo.next()) <span class="comment">// &#123; value: 0, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(gnr_foo.next()) <span class="comment">// &#123; value: 1, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(gnr_foo.next()) <span class="comment">// &#123; value: 2, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(gnr_foo.next()) <span class="comment">// &#123; value: undefined, done: true &#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>虽然函数体没有写<code>retrun</code>语句，但和普通函数一样，有一个默认的<code>return undefined</code>。</p>
+</blockquote>
+<h3 id="生成器的应用"><a href="#生成器的应用" class="headerlink" title="生成器的应用"></a>生成器的应用</h3><p>生成器的特点就是能<strong>让函数分步执行（暂停执行）</strong>，我们可以利用这个特点实现一个<strong>发号器</strong>，比如你到银行排队区号：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 发号器</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">IdNumberGenerator</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> id = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">yield</span> id++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> idGenerator = IdNumberGenerator();</span><br><span class="line"><span class="built_in">console</span>.log(idGenerator.next().value) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(idGenerator.next().value) <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">console</span>.log(idGenerator.next().value) <span class="comment">// 3</span></span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure>
+
+<p>当使用者获取号码时就相当于调用一次生成器的<code>next</code>方法。</p>
+<p>此外，生成器还可以解决异步编程的回调函数嵌套过深的问题，这部分内容将会和<code>Promise</code>对象进行统一梳理，感兴趣的可以参考这里进行查看：<a href="">TODO</a>。</p>
+<h2 id="模块化Modules"><a href="#模块化Modules" class="headerlink" title="模块化Modules"></a>模块化Modules</h2><blockquote>
+<p>模块化Modules属于语言层面的模块化标准。</p>
+</blockquote>
+<p>早期的<code>javascript</code>作为页面脚本语言是很小的，作为了实现简单的交互效果，但随着<code>web</code>的发展，<code>js</code>代码逐渐变得复杂，代码之间的交互也变得频繁，相互调用的情况愈来愈多，模块化开发是大势所趋。</p>
+<p>由于篇幅过长，这里不再展开叙述，感兴趣的可以参考官网的<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Modules">模块化Modules</a>。</p>
+<h2 id="ES2016新特性"><a href="#ES2016新特性" class="headerlink" title="ES2016新特性"></a>ES2016新特性</h2><h3 id="Array-prototype-includes"><a href="#Array-prototype-includes" class="headerlink" title="Array.prototype.includes"></a>Array.prototype.includes</h3><p>该方法是新增的一个数组原型方法，用于判断数组是否包含某个元素，我们之前的做法是使用<code>indexOf</code>方法来获取元素对应的下标来判断元素是否存在，但这里还是有有一些区别：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="literal">NaN</span>, <span class="number">-0</span>, <span class="literal">false</span>, <span class="literal">null</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(arr.includes(<span class="literal">NaN</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(arr.indexOf(<span class="literal">NaN</span>)); <span class="comment">// -1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(arr.includes(<span class="number">0</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(arr.includes(<span class="number">-0</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(arr.indexOf(<span class="number">0</span>)); <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(arr.indexOf(<span class="number">-0</span>)); <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.is(<span class="number">0</span>, <span class="number">-0</span>)) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="指数运算符"><a href="#指数运算符" class="headerlink" title="指数运算符**"></a>指数运算符<code>**</code></h3><p>以前我们实现指数运算需要借助<code>Math.pow</code>函数，现在可以直接使用<code>**</code>运算符了：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">3</span>) == <span class="number">2</span> ** <span class="number">3</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ES2017新特性"><a href="#ES2017新特性" class="headerlink" title="ES2017新特性"></a>ES2017新特性</h2><p><code>ES2017</code>新增了<code>Object</code>对象的三个扩展方法，新增字符串的两个原型方法，以及一些小特性。</p>
+<h3 id="Object-values"><a href="#Object-values" class="headerlink" title="Object.values"></a>Object.values</h3><blockquote>
+<p><code>**Object.values()**</code>方法返回一个给定对象自身的所有可枚举属性值的数组，值的顺序与使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...in"><code>for...in</code></a>循环的顺序相同 ( 区别在于 for-in 循环枚举原型链中的属性 )。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    firstName: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    lastName: <span class="string">&#x27;Chiang&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.values(obj)) <span class="comment">// [ &#x27;Jinx&#x27;, &#x27;Chiang&#x27; ]</span></span><br></pre></td></tr></table></figure>
+
+<p>也就是对应<code>Object.keys</code>方法用来获取<code>key</code>一样。</p>
+<h3 id="Object-entries"><a href="#Object-entries" class="headerlink" title="Object.entries"></a>Object.entries</h3><p>同<code>Object.values</code>一样，如果想要同时获得键和值的迭代对象，就可以使用<code>entries</code>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    firstName: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    lastName: <span class="string">&#x27;Chiang&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.entries(obj)) <span class="comment">// [ [ &#x27;firstName&#x27;, &#x27;Jinx&#x27; ], [ &#x27;lastName&#x27;, &#x27;Chiang&#x27; ] ]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Object-getOwnPropertyDescriptors"><a href="#Object-getOwnPropertyDescriptors" class="headerlink" title="Object.getOwnPropertyDescriptors"></a>Object.getOwnPropertyDescriptors</h3><p>上文有说过<code>Object.assign</code>方法，可以用于复制多个对象并组合为一个新的对象，但只能<strong>浅复制</strong>，比如对象上的<code>geter</code>和<code>setter</code>就无法正常复制：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    firstName: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    lastName: <span class="string">&#x27;Chiang&#x27;</span>,</span><br><span class="line">    <span class="keyword">get</span> <span class="title">fullName</span>() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.firstName + <span class="string">&#x27; &#x27;</span> + <span class="built_in">this</span>.lastName;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj.fullName); <span class="comment">// Jinx Chiang</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj2 = <span class="built_in">Object</span>.assign(&#123;&#125;, obj);</span><br><span class="line">obj2.firstName = <span class="string">&#x27;Yasuo&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(obj2.fullName); <span class="comment">// Jinx Chiang</span></span><br><span class="line"></span><br><span class="line">obj.firstName = <span class="string">&#x27;Dongoog&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(obj.fullName); <span class="comment">// Dongoog Chiang</span></span><br><span class="line"><span class="built_in">console</span>.log(obj2.fullName); <span class="comment">// Jinx Chiang</span></span><br></pre></td></tr></table></figure>
+
+<p>这是因为<code>Object.assign</code>复制时只是把<code>fullName</code>当成普通的属性进行复制了，并没有复制为真正的<code>getter</code>。</p>
+<p>我们通过<code>Object.getOwnPropertyDescriptors</code>就可以拿到这些真正的描述信息，从而进行复制：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    firstName: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    lastName: <span class="string">&#x27;Chiang&#x27;</span>,</span><br><span class="line">    <span class="keyword">get</span> <span class="title">fullName</span>() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.firstName + <span class="string">&#x27; &#x27;</span> + <span class="built_in">this</span>.lastName;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> objProps = <span class="built_in">Object</span>.getOwnPropertyDescriptors(obj);</span><br><span class="line"><span class="built_in">console</span>.log(objProps);</span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//     firstName: &#123;</span></span><br><span class="line"><span class="comment">//         value: &#x27;Jinx&#x27;,</span></span><br><span class="line"><span class="comment">//         writable: true,</span></span><br><span class="line"><span class="comment">//         enumerable: true,</span></span><br><span class="line"><span class="comment">//         configurable: true</span></span><br><span class="line"><span class="comment">//     &#125;,</span></span><br><span class="line"><span class="comment">//     lastName: &#123;</span></span><br><span class="line"><span class="comment">//         value: &#x27;Chiang&#x27;,</span></span><br><span class="line"><span class="comment">//         writable: true,</span></span><br><span class="line"><span class="comment">//         enumerable: true,</span></span><br><span class="line"><span class="comment">//         configurable: true</span></span><br><span class="line"><span class="comment">//     &#125;,</span></span><br><span class="line"><span class="comment">//     fullName: &#123;</span></span><br><span class="line"><span class="comment">//         get: [Function: get fullName],</span></span><br><span class="line"><span class="comment">//         set: undefined,</span></span><br><span class="line"><span class="comment">//         enumerable: true,</span></span><br><span class="line"><span class="comment">//         configurable: true</span></span><br><span class="line"><span class="comment">//     &#125;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    firstName: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    lastName: <span class="string">&#x27;Chiang&#x27;</span>,</span><br><span class="line">    <span class="keyword">get</span> <span class="title">fullName</span>() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.firstName + <span class="string">&#x27; &#x27;</span> + <span class="built_in">this</span>.lastName;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> objProps = <span class="built_in">Object</span>.getOwnPropertyDescriptors(obj);</span><br><span class="line"><span class="keyword">const</span> obj2 = <span class="built_in">Object</span>.defineProperties(&#123;&#125;, objProps);</span><br><span class="line">obj2.firstName = <span class="string">&#x27;Yasuo&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(obj2.fullName); <span class="comment">// Yasuo Chiang</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：Object.defineProperties进行的也还是浅拷贝，要实现对象的深拷贝一般需要进行对象遍历再逐一赋值。</p>
+</blockquote>
+<h3 id="String-prototype-padStart-amp-String-prototype-padEnd"><a href="#String-prototype-padStart-amp-String-prototype-padEnd" class="headerlink" title="String.prototype.padStart &amp; String.prototype.padEnd"></a>String.prototype.padStart &amp; String.prototype.padEnd</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://zh.wikipedia.org/wiki/ECMAScript">ECMAScript-维基百科</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">解构赋值-MDN</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions">箭头函数-MDN</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy">Proxy-MDN</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes">Classes-MDN</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain">原型链与继承-MDN</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Symbol">symbol-MDN</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of">for…of-MDN</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols">可迭代协议-MDN</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+        <category>es6</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>es6</tag>
       </tags>
   </entry>
 </search>
