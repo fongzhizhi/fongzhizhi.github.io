@@ -1096,14 +1096,14 @@
       </tags>
   </entry>
   <entry>
-    <title>TypeScript语言概述</title>
+    <title>TypeScript使用大全</title>
     <url>/2020/09/23/TypeScript%E8%AF%AD%E8%A8%80%E6%A6%82%E8%BF%B0/</url>
     <content><![CDATA[<blockquote>
 <p><code>TypeScript</code>是<code>JavaScript</code>的超集。</p>
 </blockquote>
 <p>我们知道<code>Javascript</code>是弱类型语言，而<code>Typescript</code>的出现就是为了解决js类型系统的不足，由于<strong>ts始于js，归于js</strong>的特点，从js过渡到ts是很容易的，且ts的类型系统提高了js代码的质量，我们有必要学习这门优秀的语言。</p>
 <p>本文从js<strong>类型系统</strong>的问题出发，阐述ts构建的缘由和优势，<code>Folw</code>静态类型检测方案，以及<code>ts</code>基本的使用规则。</p>
-<p><img data-src="images/ts.png" alt="ts"></p>
+<p><img data-src="/images/ts.png"></p>
 <a id="more"></a>
 
 <h2 id="强类型和弱类型"><a href="#强类型和弱类型" class="headerlink" title="强类型和弱类型"></a>强类型和弱类型</h2><blockquote>
