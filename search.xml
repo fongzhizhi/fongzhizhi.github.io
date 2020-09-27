@@ -1307,4 +1307,252 @@
         <tag>TypeScript</tag>
       </tags>
   </entry>
+  <entry>
+    <title>函数式编程范式</title>
+    <url>/2020/09/27/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<p>函数式编程是很早就出现的一种编程范式，就像面向过程编程、面向对象编程一样，函数式编程作为一种编程范式，有自己的关注重点和编程理念。</p>
+<blockquote>
+<p><strong>函数式编程</strong>（英语：<strong>functional programming</strong>）或称<strong>函数程序设计</strong>、<strong>泛函编程</strong>，是一种<a href="https://zh.wikipedia.org/wiki/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F">编程范式</a>，它将<a href="https://zh.wikipedia.org/wiki/%E9%9B%BB%E8%85%A6%E9%81%8B%E7%AE%97">电脑运算</a>视为<a href="https://zh.wikipedia.org/wiki/%E5%87%BD%E6%95%B0">函数</a>运算，并且避免使用<a href="https://zh.wikipedia.org/w/index.php?title=%E7%A8%8B%E5%BC%8F%E7%8A%B6%E6%80%81&action=edit&redlink=1">程序状态</a>以及<a href="https://zh.wikipedia.org/wiki/%E4%B8%8D%E5%8F%AF%E8%AE%8A%E7%89%A9%E4%BB%B6">易变对象</a>。其中，<a href="https://zh.wikipedia.org/wiki/%CE%9B%E6%BC%94%E7%AE%97">λ演算</a>（lambda calculus）为该语言最重要的基础。而且，λ演算的函数可以接受函数当作输入（引数）和输出（传出值）。</p>
+</blockquote>
+<p><img data-src="/images/function.png" alt="function"></p>
+<p>本文将结合<code>js语言</code>梳理函数式编程的理念、函数的一些特点、函数式编程的基本概念以及函子的应用，如：高阶函数、闭包、纯函数、柯里化、函数组合、常用的一些函子等。</p>
+<a id="more"></a>
+
+<h2 id="编程范式"><a href="#编程范式" class="headerlink" title="编程范式"></a>编程范式</h2><p>编程范式也就是一种编程风格，编程范型提供了（同时决定了）<a href="https://zh.wikipedia.org/wiki/%E7%A8%8B%E5%BA%8F%E5%91%98">程序员</a>对<a href="https://zh.wikipedia.org/wiki/%E7%A8%8B%E5%BA%8F">程序</a>执行的看法。例如，在<a href="https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B">面向对象编程</a>中，程序员认为程序是<strong>一系列相互作用的对象</strong>，而在<a href="https://zh.wikipedia.org/wiki/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B">函数式编程</a>中一个程序会被看作是一个<strong>无状态的函数计算的序列</strong>。</p>
+<p>比如：<strong>面向过程编程</strong>的关注重点在于事件完成的方法、步骤，因为计算机的执行就是一条一条执行执行的，也很符合计算机的运算逻辑，但这种编程方式不适合我们用代码去“表达”和理解这个世界，而面向对象编程则以“<strong>万物皆为对象</strong>”为准则，某件事的实现只是某些对象的行为组合而已，比如我们要实现一个五子棋的游戏，从面向过程的逻辑来说，我们一般需要进过这些步骤：</p>
+<ol>
+<li>游戏开始</li>
+<li>玩家A落子</li>
+<li>判断游戏是否结束，是则执行步骤7</li>
+<li>未结束则玩家B落子</li>
+<li>判断游戏是否结束，是则执行步骤7</li>
+<li>未结束则回到步骤2</li>
+<li>游戏结束</li>
+</ol>
+<p>程序的执行逻辑确实是首位的，但我们可以从不同的角度的理解来实现，对于面向对象来说，玩家A和玩家B都属于同一类对象，我们可以称为玩家，玩家都有落子这一行为，本程序中还有游戏本身我们也看作一个对象，游戏有开始、结束的行为、记录棋谱的行为以及判断游戏是否结束的逻辑，当然你还可以把棋子看作一个对象，这取决于你希望封装这个对象来干嘛。我们封装一个对象除了能更好地<strong>理解程序逻辑</strong>之外，还能更好地使用继承和实现来<strong>复用代码</strong>。所以上面的五子棋游戏用面向对象的描述就是：游戏开始后，两个玩家轮流执行落子这一行为，每次落子都会触发游戏判断本轮游戏是否结束的行为，未结束则继续落子，直到游戏结束。</p>
+<p>而本文要讲的<strong>函数式编程</strong>重点在于把某个操作步骤抽象为一个<strong>只关心输入和输出的函数（映射）</strong>，而与程序本身无关，这有点像数学中函数的概念：<code>f(x)</code>，我们输入某个参数，一定会得到某个输出，且不管在什么环境下都不会发生变化，即<strong>与状态无关</strong>，这就是输入输出之间的映射关系。</p>
+<p>函数式编程可以让我们最大程度的<strong>复用代码</strong>，<strong>由于函数式编程注重无状态以及无副作用</strong>，在使用这种函是我们可以直接调用，而无需关心代码执行状态和代码之间数据的联系。</p>
+<p>如果说万物皆对象，那么万物也都有一些不变的公理和定理，面向对象编程具象了某个实例，而函数式编程抽象了对象中的某种客观规律，就比如从宏观角度来说，万物皆有万有引力定律一般，这些定律在一定条件下是固定不变的，我们就可以抽象为一个函数。</p>
+<p>不管是什么样的编程范式，都是不冲突的，都只是我们对程序的理解角度不同而已，我们应当各取所长，综合不同的场景使用，而不是追求和极致的使用某一种编程风格：</p>
+<ul>
+<li><strong>面向过程编程</strong>是解决问题的关键，可以让我们专注于<strong>算法</strong>的优化</li>
+<li><strong>面向对象编程</strong>让我们更好的梳理程序之间的<strong>逻辑关系</strong>，实现更好的扩展思路。</li>
+<li><strong>函数式编程</strong>的无状态特点是其最大的优点，理论上，可以在任意场景下使用，类似<code>Math.sin</code>这种函数，我们无需关心数据之间千丝万缕的联系，我们只想得到数据对应的映射关系，本质上也就<strong>提高了代码的复用性和降低了代码之间耦合性</strong>（可以说直接切断了耦合）。</li>
+</ul>
+<h2 id="函数式编程的特点"><a href="#函数式编程的特点" class="headerlink" title="函数式编程的特点"></a>函数式编程的特点</h2><h3 id="函数是一等公民"><a href="#函数是一等公民" class="headerlink" title="函数是一等公民"></a>函数是一等公民</h3><p>一等公民很好理解，就是作为程序设计语言世界的一员，拥有最多的权利（特权）。函数是一定公民的意思也就是函数在该程序语言中拥有一等的使用特权：别的成员有的特性，函数也有，别的成员没有的特性，函数也可能有。</p>
+<p>函数作为一等公民，一般有以下特点：</p>
+<ul>
+<li>函数可以作为编程存储在变量中</li>
+<li>函数可以作为参数传递</li>
+<li>函数可以作为返回值</li>
+</ul>
+<p>实际上，在<code>JavaScript</code>中，函数就是一个普通的对象，所以我们可以通过<code>new Function</code>的方式创建一个该函数对象的实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 函数作为变量存储</span></span><br><span class="line"><span class="keyword">const</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数作为参数传入</span></span><br><span class="line"><span class="keyword">const</span> re = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].map(sum);</span><br><span class="line"><span class="built_in">console</span>.log(re) <span class="comment">// [1,3,5]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数作为返回值</span></span><br><span class="line"><span class="keyword">const</span> Person = &#123;</span><br><span class="line">    name: <span class="string">&#x27;Jinx&#x27;</span>,</span><br><span class="line">    age: <span class="number">22</span>,</span><br><span class="line">    say: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">`My name is <span class="subst">$&#123;<span class="built_in">this</span>.name&#125;</span>, I am <span class="subst">$&#123;<span class="built_in">this</span>.age&#125;</span> years old.`</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(Person.say())</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>函数作为一等公民的函数又称为<a href="https://zh.wikipedia.org/wiki/%E5%A4%B4%E7%AD%89%E5%87%BD%E6%95%B0">头等函数</a>。</p>
+</blockquote>
+<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><p>在<a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E5%AD%A6">数学</a>和<a href="https://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6">计算机科学</a>中，<strong>高阶函数</strong>是至少满足下列一个条件的<a href="https://zh.wikipedia.org/wiki/%E5%87%BD%E6%95%B0">函数</a>：</p>
+<ul>
+<li>接受一个或多个函数作为输入</li>
+<li>输出一个函数</li>
+</ul>
+<p>一句话就是高阶函数允许接收至少一个函数作为参数或者返回一个函数作为输出。</p>
+<p>高阶函数可以让我们组合多个普通函数，也就是<strong>让函数更抽象</strong>，屏蔽了执行细节，我们只需关注输入和输出。</p>
+<p>现在我们来手动实现数组中的几个高阶函数来具体感受一下：<code>map</code>、<code>every</code>、<code>some</code>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">8</span>,<span class="number">9</span>];</span><br><span class="line"><span class="comment">// map的实现</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">map</span>(<span class="params">arr, fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> newArr = [];</span><br><span class="line">    arr.forEach(<span class="function"><span class="params">a</span> =&gt;</span> &#123;</span><br><span class="line">        newArr.push(fn(a));</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> newArr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> pow2Arr = map(arr, <span class="function"><span class="params">a</span> =&gt;</span> a ** <span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(pow2Arr)</span><br><span class="line"></span><br><span class="line"><span class="comment">// every的实现</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">every</span>(<span class="params">arr, fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> a <span class="keyword">of</span> arr)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!fn(a)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(every(arr, <span class="function"><span class="params">a</span> =&gt;</span> a % <span class="number">2</span> == <span class="number">0</span>))</span><br><span class="line"><span class="built_in">console</span>.log(every(arr, <span class="function"><span class="params">a</span> =&gt;</span> a &gt; <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">// some的实现</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">some</span>(<span class="params">arr, fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> a <span class="keyword">of</span> arr)&#123;</span><br><span class="line">        <span class="keyword">if</span>(fn(a)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(some(arr, <span class="function"><span class="params">a</span> =&gt;</span> a % <span class="number">2</span> == <span class="number">0</span>))</span><br><span class="line"><span class="built_in">console</span>.log(some(arr, <span class="function"><span class="params">a</span> =&gt;</span> a &gt; <span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="闭包（Closure）"><a href="#闭包（Closure）" class="headerlink" title="闭包（Closure）"></a>闭包（Closure）</h3><blockquote>
+<p>在<a href="https://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6">计算机科学</a>中，<strong>闭包</strong>（英语：Closure），又称<strong>词法闭包</strong>（Lexical Closure）或<strong>函数闭包</strong>（function closures），是在支持<a href="https://zh.wikipedia.org/wiki/%E5%A4%B4%E7%AD%89%E5%87%BD%E6%95%B0">头等函数</a>的编程语言中实现<a href="https://zh.wikipedia.org/wiki/%E4%BD%9C%E7%94%A8%E5%9F%9F#%E9%9D%99%E6%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E5%8A%A8%E6%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F">词法</a><a href="https://en.wikipedia.org/wiki/Name_binding">绑定</a>的一种技术。闭包在实现上是一个结构体，它存储了一个函数（通常是其入口地址）和一个关联的环境（相当于一个符号查找表）。</p>
+</blockquote>
+<p>闭包在定义上有很多的专业术语，描述也很抽象，我们需要在大量使用中感受闭包的概念。我们先理解一些基本的概念：</p>
+<ul>
+<li><p>头等函数：也就是上文所讲的“函数是一等公民”：函数作为变量存储，可以作为函数的参数或返回值来引用。</p>
+</li>
+<li><p>词法作用域：也称为<a href="https://zh.wikipedia.org/wiki/%E4%BD%9C%E7%94%A8%E5%9F%9F#%E9%9D%99%E6%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E5%8A%A8%E6%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F">静态作用域</a>，静态作用域在编译时就已经确定了该词法变量的作用域范围（也就是词法和实体引用的生效范围）。比如下面的代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> a = <span class="number">2</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">const</span> b = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数<code>foo</code>拥有两个变量<code>a</code>和<code>bar</code>，其中<code>bar</code>是一个函数，我们就说<code>a</code>和<code>bar</code>的作用域在<code>foo</code>函数内生效，也就是js中所说的函数作用域。而<code>bar</code>中也有自己的变量<code>b</code>，同样的，<code>b</code>变量只在<code>bar</code>函数作用域中生效，也就是<code>foo</code>无法访问变量<code>b</code>。</p>
+</li>
+<li><p>执行环境：执行环境就是调用该语句时所处的作用域。</p>
+</li>
+</ul>
+<p>我们再次来观察闭包的定义：闭包则实际上是一个<strong>函数的实例</strong>，也就是说它是存在于内存里的某个<strong>结构体</strong>，函数就是一种结构体，但是不是所有函数我们都称为闭包，它还需要满足最关键的一点：具有包含<strong>环境成分</strong>和<strong>控制成分</strong>的实体。（<a href="https://zh.wikipedia.org/wiki/%E5%BD%BC%E5%BE%97%C2%B7%E5%85%B0%E4%B8%81">彼得·兰丁</a>（Peter Landin）1964所定义）。</p>
+<p>用不严谨但是更具体的话来总结就是：闭包是对其周围状态（词法环境）和引用（执行环境）具有绑定关系的函数实例。</p>
+<p>我们以下面的代码为例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> a = <span class="number">2</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">const</span> b = <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bar;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> c = foo();</span><br><span class="line"><span class="keyword">const</span> d = c();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>变量<code>c</code>是函数<code>foo</code>的实例，<code>foo</code>返回了内部函数<code>bar</code>的引用，所以<code>c</code>指向函数<code>bar</code>。</li>
+<li><code>bar</code>的词法环境，也就是内部变量<code>a</code>和<code>b</code>的作用域分别是<code>foo</code>和本身<code>bar</code>。</li>
+<li>而函数<code>bar</code>在调用时执行环境变成了全局作用域，因为引用<code>c</code>的词法作用域是全局作用域。</li>
+<li>综上可知：<code>bar</code>函数的<strong>执行环境</strong>为全局作用域，<strong>词法环境</strong>包括<code>foo</code>函数作用域和<code>bar</code>函数本身的作用域。</li>
+<li>理论上，全局作用域是不能访问函数作用域的，但是<code>bar</code>的执行环境就是全局作用域，并且访问到了它的词法作用域，也就是函数作用域，这样，我们就说函数<code>bar</code>的执行环境和词法环境有了绑定关系，也就符合了闭包的定义，所以被引用的<code>bar</code>函数体就是一个闭包。</li>
+</ul>
+<p>即，闭包可以建立起执行环境和词法环境之间的绑定关系，也就让本不能访问函数作用域的全局作用域能进行访问。</p>
+<blockquote>
+<p>在Javascript中，如果一个对象不再被引用，那么这个对象就会被GC回收。如果两个对象互相引用，而不再被第3者所引用，那么这两个互相引用的对象也会被回收。所以上面的例子中<code>foo</code>执行后并不会被回收，就是因为有变量<code>c</code>引用了<code>bar</code>，而<code>bar</code>又引用了<code>foo</code>，当变量<code>c</code>被回收后，<code>foo</code>才会被回收。</p>
+<p>因此，如果不是某些特定任务需要使用闭包，在其它函数中创建函数是不明智的，因为<strong>闭包在处理速度和内存消耗方面对脚本性能具有负面影响</strong>。</p>
+</blockquote>
+<p>更多细节可参考：<a href="https://web.archive.org/web/20100825182303/http://www.felixwoo.com/archives/247">深入理解Javascript闭包(closure) - Felix Woo</a>、<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures">闭包 - MDN</a>。</p>
+<h2 id="函数式编程中的一些基本概念"><a href="#函数式编程中的一些基本概念" class="headerlink" title="函数式编程中的一些基本概念"></a>函数式编程中的一些基本概念</h2><h3 id="纯函数"><a href="#纯函数" class="headerlink" title="纯函数"></a>纯函数</h3><p>在提到函数式编程时，我们一再强调函数式编程关注的<strong>无状态和无副作用</strong>两个重点，而纯函数就是这样一种函数。</p>
+<p>在<a href="https://zh.wikipedia.org/wiki/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1">程序设计</a>中，若一个<a href="https://zh.wikipedia.org/wiki/%E5%AD%90%E7%A8%8B%E5%BA%8F#%E5%87%BD%E6%95%B8">函数</a>符合以下要求，则它可能被认为是<strong>纯函数</strong>：</p>
+<ul>
+<li><strong>相同的输入，一定会有相同的输出</strong>。函数的输出和输入值以外的其他隐藏信息或<a href="https://zh.wikipedia.org/w/index.php?title=%E7%A8%8B%E5%BC%8F%E7%8B%80%E6%85%8B&action=edit&redlink=1">状态</a>无关，也和由<a href="https://zh.wikipedia.org/wiki/I/O">I/O</a>设备产生的外部输出无关。</li>
+<li><strong>无副作用</strong>。该函数不能有语义上可观察的<a href="https://zh.wikipedia.org/wiki/%E5%87%BD%E6%95%B0%E5%89%AF%E4%BD%9C%E7%94%A8">函数副作用</a>，诸如“触发事件”，使输出设备输出，或更改输出值以外物件的内容等。</li>
+</ul>
+<p>第一条对应无状态特性，执行状态不会影响输出结果，即不管执行环境是什么，相同的输入总会有相同的输出，就相当于求和函数：输入<code>1,2</code>,输出一定是<code>3</code>。第二条无副作用一般指，整个函数的执行过程<strong>不会造成其他外部数据的变化</strong>，即不会改变外部执行环境。</p>
+<p>其实两个要求总结来说就两个关键词：外部执行环境和输入输出，外部执行环境不会影响输出值，计算输出值的过程同样不会改变外部执行环境，因而称为纯函数。</p>
+<p>比如说js中的数据原型函数：<code>slice</code>就是纯函数，但<code>splice</code>就是不纯的函数，因为<code>splice</code>在截取数组之后会改变原数组，也就是执行环境发生了变化，函数产生了副作用。</p>
+<h3 id="柯里化"><a href="#柯里化" class="headerlink" title="柯里化"></a>柯里化</h3><h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><p>柯里化一个以人名命名的<strong>函数技术</strong>，要了解背后的原理，我们先观察一段代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 求b的a次方</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">power</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> b ** a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(power(<span class="number">2</span>, <span class="number">3</span>)) <span class="comment">// 9</span></span><br><span class="line"><span class="built_in">console</span>.log(power(<span class="number">2</span>, <span class="number">4</span>)) <span class="comment">// 16</span></span><br><span class="line"><span class="built_in">console</span>.log(power(<span class="number">2</span>, <span class="number">5</span>)) <span class="comment">// 25</span></span><br></pre></td></tr></table></figure>
+
+<p><code>power</code>函数是计算<code>b的a次方</code>的一个函数，有时候我们会多次使用到<strong>求平方</strong>这样的函数，也就是参数<code>a</code>为<code>2</code>时的函数。这样我们可以把参数<code>a</code>固定为2，并返回一个函数，这个函数就变得更实用：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 求b的a次方</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">power</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> b ** a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">power2</span>(<span class="params">b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> a = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> power(a, b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(power2(<span class="number">3</span>)) <span class="comment">// 9</span></span><br><span class="line"><span class="built_in">console</span>.log(power2(<span class="number">4</span>)) <span class="comment">// 16</span></span><br><span class="line"><span class="built_in">console</span>.log(power2(<span class="number">5</span>)) <span class="comment">// 25</span></span><br></pre></td></tr></table></figure>
+
+<p>这样，我们就称<code>power</code>到<code>power2</code>的过程为柯里化。</p>
+<blockquote>
+<p>在<a href="https://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6">计算机科学</a>中，<strong>柯里化</strong>（英语：Currying），又译为<strong>卡瑞化</strong>或<strong>加里化</strong>，是把接受多个<a href="https://zh.wikipedia.org/wiki/%E5%8F%83%E6%95%B8_(%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88)">参数</a>的<a href="https://zh.wikipedia.org/wiki/%E5%87%BD%E6%95%B0">函数</a>变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术。这个技术由<a href="https://zh.wikipedia.org/wiki/%E5%85%8B%E9%87%8C%E6%96%AF%E6%89%98%E5%BC%97%C2%B7%E6%96%AF%E7%89%B9%E9%9B%B7%E5%A5%87">克里斯托弗·斯特雷奇</a>以逻辑学家<a href="https://zh.wikipedia.org/wiki/%E5%93%88%E6%96%AF%E5%87%B1%E7%88%BE%C2%B7%E5%8A%A0%E9%87%8C">哈斯凯尔·加里</a>命名的，尽管它是<a href="https://zh.wikipedia.org/w/index.php?title=Moses_Sch%C3%B6nfinkel&action=edit&redlink=1">Moses Schönfinkel</a>和<a href="https://zh.wikipedia.org/wiki/%E6%88%88%E7%89%B9%E6%B4%9B%E5%B8%83%C2%B7%E5%BC%97%E9%9B%B7%E6%A0%BC">戈特洛布·弗雷格</a>发明的。</p>
+<p>在直觉上，柯里化声称“如果你固定某些参数，你将得到接受余下参数的一个函数”。所以对于有两个变量的函数<img data-src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a2751277797e1414968ac33ad9d4a26cb9f8a601" alt="y^{x}">，如果固定了<img data-src="https://wikimedia.org/api/rest_v1/media/math/render/svg/099cab48854e883602b8f188d4972969d2cf567b" alt="y=2">，则得到有一个变量的函数<img data-src="https://wikimedia.org/api/rest_v1/media/math/render/svg/5514b506cd3af97484bca3e166965ac4cef27a02" alt="2^{x}">。</p>
+</blockquote>
+<p><strong>柯里化</strong>是一种<strong>处理函数中附有多个参数的方法</strong>，并在只允许单一参数的框架中使用这些函数。例如，一些分析技术只能用于具有单一参数的函数。现实中的函数往往有更多的参数。弗雷格表明，为单一参数情况提供解决方案已经足够了，因为可以将具有多个参数的函数转换为一个单参数的函数链。这种转变是现在被称为“柯里化”的过程。</p>
+<p>简言之，我们把处理<strong>多参数函数转换为更少参数函数的方法</strong>称为柯里化。</p>
+<p>上面的实例中，我们来封装一个更适用的柯里化函数，通过这个函数，我们就能得到<code>power2</code>、<code>power3</code>等等类型的单一参数函数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 柯里化后的power函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">curryPower</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> b ** a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> power2 = curryPower(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> power3 = curryPower(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(power2(<span class="number">3</span>)) <span class="comment">// 9</span></span><br><span class="line"><span class="built_in">console</span>.log(power3(<span class="number">3</span>)) <span class="comment">// 27</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="柯里化函数的实现"><a href="#柯里化函数的实现" class="headerlink" title="柯里化函数的实现"></a>柯里化函数的实现</h4><p>柯里化函数，也就是某个函数<code>fn</code>，当我们<strong>传入部分参数</strong>，返回值就是只具有<strong>剩余参数</strong>的<code>fn</code>子函数（注：这里的子函数只是一个称谓，比如我们可以说<code>2的b次方</code>是<code>a的b次方</code>的子类，也就是次方关系中的一种情况）。现在我们就来实现把普通函数变为柯里化函数的<strong>工具函数</strong>：</p>
+<ul>
+<li>语法：<code>curryFun = curry(func)</code></li>
+<li>参数：普通函数<code>func</code></li>
+<li>返回值：柯里化函数<code>curryFun</code></li>
+<li>功能：把普通函数<code>func</code>封装为柯里化函数<code>curryFun</code>，返回的<code>curryFun</code>可以接受至少一个参数，如果接受的参数已经满足<code>func</code>，直接返回<code>func()</code>的执行结果，如果还有剩余参数，则返回以剩余参数作为参数的<code>func</code>函数的子函数。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">curry</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...a</span>)</span>&#123; <span class="comment">// 传入的参数</span></span><br><span class="line">        <span class="keyword">const</span> len = func.length; <span class="comment">// 形参的数量</span></span><br><span class="line">        <span class="keyword">if</span>(a.length &gt;= len) <span class="keyword">return</span> func(...a); <span class="comment">// 情况一：参数满足func，直接返回计算结果</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...b</span>)</span>&#123;  <span class="comment">// 情况二：还有剩余参数:返回子类函数</span></span><br><span class="line">            <span class="keyword">return</span> func(...a.concat(b));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：在JavaScript工具库<a href="https://www.lodashjs.com/">lodash</a>中已经实现了类似的柯里化工具函数：<code>curry</code>。</p>
+</blockquote>
+<p>现在，我们来简单测试一下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 普通求和函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">a, b, c</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b + c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 柯里化的求和函数</span></span><br><span class="line"><span class="keyword">const</span> curry_sum = curry(sum);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(curry_sum(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)) <span class="comment">// 6</span></span><br><span class="line"><span class="built_in">console</span>.log(curry_sum(<span class="number">1</span>)(<span class="number">2</span>, <span class="number">3</span>)) <span class="comment">// 6</span></span><br><span class="line"><span class="built_in">console</span>.log(curry_sum(<span class="number">1</span>, <span class="number">2</span>)(<span class="number">3</span>)) <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>值得注意的是，当函数参数小于2以及<strong>参数不确定时</strong>是无法柯里化的。</p>
+</blockquote>
+<h3 id="函数组合"><a href="#函数组合" class="headerlink" title="函数组合"></a>函数组合</h3><p>我们使用纯函数和柯里化函数后很容易写出“<strong>洋葱代码</strong>”，类似<code>f(g(h(x)))</code>这种层次包裹的函数，这其实是不利于代码阅读的，这种层层包裹的函数就像是一条<strong>数据管道</strong>：<code>h(x)</code> → <code>g(y) → f(z)</code>。数据经过层层传递，最终才变成了最后的输出结果。这条由多个函数组合而成的<strong>管道</strong>，我们就可以统称为一个函数<code>w(x)</code>，那么<code>w(x)</code>就与<code>f(g(h(x)))</code>无异，但更能便于我们阅读和修改组合体，这种由多个函数依次处理并传递数据的形成的新函数就称为组合函数。</p>
+<p>现在我们来实现一个<strong>接收多个函数，返回一个组合函数</strong>的工具函数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 版本一</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">...funcs</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = funcs.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            arg = funcs[i](arg);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 版本二</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">...funcs</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> funcs.reverse().reduce(<span class="function">(<span class="params">data, fn</span>) =&gt;</span> fn(data), arg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>有几个值得关注的点：</p>
+<ul>
+<li>在洋葱函数中，执行顺序为从内而外，即<strong>从右往左</strong>依次执行，比如<code>f(g(h(x)))</code>，所以我们在实现组合函数时参数按照从左到右的<strong>书写顺序</strong>，但<strong>执行顺序</strong>却是从右往左</li>
+<li>组合函数中的每一个函数的参数都为<code>1</code>位，这点尤其需要注意，多参数的情况下我们需要柯里化为一个参数的函数。</li>
+<li><code>lodash</code>工具库中已实现了类似的组合函数，名为<code>flowRight</code>。</li>
+</ul>
+</blockquote>
+<p>简单的测试：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> _ = <span class="built_in">require</span>(<span class="string">&#x27;lodash&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接收多个函数，返回一个组合函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">...funcs</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = funcs.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            arg = funcs[i](arg);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">join</span>(<span class="params">arr</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> arr.join(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> f = compose(_.toUpper, join, _.reverse)</span><br><span class="line"><span class="built_in">console</span>.log(f([<span class="string">&#x27;world&#x27;</span>, <span class="string">&#x27;hello&#x27;</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>组合函数相当于几个有固定的执行顺序的函数组合，所以满足<strong>结合律</strong>的特性，比如<code>compose(a,b,c)</code>和<code>compose(a,compose(b,c))</code>是无差异的。组合函数虽然方便阅读，但也屏蔽了内部细节，在执行结果出错时，我们一般很难凭肉眼找到问题，我们就可以在组合函数中间<strong>插入调试函数</strong>，来展示或者检测是否符合预期，比如：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 调试函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showResult</span>(<span class="params">func, result</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(func.name, <span class="string">&#x27;的执行结果为：&#x27;</span>, result)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 柯里化的调试函数</span></span><br><span class="line"><span class="keyword">const</span> curry_show = _.curry(showResult);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> f = compose(_.toUpper, curry_show(_.join), join, curry_show(_.reverse), _.reverse)</span><br><span class="line"><span class="built_in">console</span>.log(f([<span class="string">&#x27;world&#x27;</span>, <span class="string">&#x27;hello&#x27;</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment">// reverse 的执行结果为： [ &#x27;hello&#x27;, &#x27;world&#x27; ]</span></span><br><span class="line"><span class="comment">// join 的执行结果为： hello world</span></span><br><span class="line"><span class="comment">// HELLO WORLD</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>函数组合的过程是一种<strong>无数据的合成运算</strong>，即我们不需要关心处理的数据的（输入和输出），只关心需要合成的函数以及执行顺序，这种编程风格我们又称为“<strong>pointfree</strong>”，即无值风格。</p>
+</blockquote>
+<h2 id="函子"><a href="#函子" class="headerlink" title="函子"></a>函子</h2><h3 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h3><p>还是那句话，函数式编程的关注点在于追求无状态和无副作用两个特性，但很多时候，数据来源或者输出都取决于用户IO操作，或者某些未知的异步操作等等。这种时候函数就很可能变得不纯，我们要做的只是尽可能的<strong>让数据变得可控</strong>，编程中的<code>函子设计理念</code>能让我们更好地<strong>让数据在有效范围得到控制</strong>。函子（<code>Functor</code>）是<a href="https://zh.wikipedia.org/wiki/%E7%AF%84%E7%96%87_(%E6%95%B8%E5%AD%B8)">范畴学</a>中的一个概念：</p>
+<blockquote>
+<p>在<a href="https://zh.wikipedia.org/wiki/%E7%AF%84%E7%96%87%E8%AB%96">范畴论</a>中，<strong>函子</strong>是范畴间的一类映射。</p>
+</blockquote>
+<p>说到映射，自然而然就想到了函数，实际上，函子就是<strong>一种特别的函数</strong>。函子的定义十分抽象，且有各种专业术语，这里我们通过代码上的使用来感受函子的设计理念即可，感兴趣的可自行参考<a href="https://zh.wikipedia.org/wiki/%E5%87%BD%E5%AD%90">函子 - wiki</a>。</p>
+<p>在代码设计中，函子通常表示为一个具有以下功能的<strong>容器</strong>：（这个容易你可以立即为对象，也可以理解为特殊的函数）</p>
+<ul>
+<li>包含一个不对外暴露的值<code>value</code>。</li>
+<li>实现一个<code>map</code>接口（契约），该接口接收一个自定义函数<code>Fn</code>用于处理<code>value</code>值，并返回一个<code>Fn</code>处理后的值作为<code>value</code>的新函子容器。即需要实现这样的<code>map</code> 接口：<ul>
+<li>语法：<code>map(fn)</code></li>
+<li>参数<code>fn</code>：用于处理函子容器的<code>value</code>值，得到<code>new_value</code>。</li>
+<li>返回值：一个以<code>new_value</code>作为容器值的新函子容器。</li>
+</ul>
+</li>
+</ul>
+<p>函子在范畴学中定义为一类映射，上面的<code>fn</code>就是相当于其中一个映射，当我们再次使用新函子进行<code>map</code>调用时，又会得到一个新的<code>fn</code>，这些<code>fn</code>组合起来就是所谓的一类映射：（有点类似上文说的函数组合，所以函子也是符合结合律的）</p>
+<h3 id="函子的实现"><a href="#函子的实现" class="headerlink" title="函子的实现"></a>函子的实现</h3><p>更具上面的定义，我们用一个类来实现函子（你可以使用普通Object，也可以使用函数来实现，都无差别）：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 一个简单的函子容器</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Container</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(value) &#123;</span><br><span class="line">        <span class="built_in">this</span>._value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">of</span>(value) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Container(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    map(fn) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Container(fn(<span class="built_in">this</span>._value));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：由于<code>value</code>是私有变量 ，不对外暴露（当然，js目前并不支持私有变量，你也可以使用<code>symbol</code>来实现一个私有属性），在使用时，我们常常为了优雅，不直接使用<code>new</code>来创建函子对象，而是提供一个<code>of</code>的静态变量进行创建。</p>
+</blockquote>
+<p>我们现在来测试一下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">join</span>(<span class="params">arr</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> arr.join(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> c = Container.of([<span class="string">&#x27;world&#x27;</span>, <span class="string">&#x27;hello&#x27;</span>])</span><br><span class="line">    .map(_.reverse)</span><br><span class="line">    .map(join)</span><br><span class="line">    .map(_.toUpper);</span><br><span class="line"><span class="built_in">console</span>.log(c) <span class="comment">// Container &#123; _value: &#x27;HELLO WORLD&#x27; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的测试代码其实就是上文我们测试<code>函数组合</code>一模一样的代码，可以发现，函子和函数组合都<strong>是链式执行函数的一种结构</strong>。不同在于，函子容器的链式调用可以让我们更方便组合调用函数直接的关系，以及可以<strong>修改函子容器，让其具有一些特定的功能</strong>，以此来更好地进行全局控制数据异常，避免调用过程中的数据副作用。</p>
+<p>比如上面的案例中，由于传入的数据可能并不可靠，就会导致数据变得不纯，比如传入的数组是空对象或者空参数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> c = Container.of(<span class="literal">undefined</span>)</span><br><span class="line">    .map(_.reverse)</span><br><span class="line">    .map(join)</span><br><span class="line">    .map(_.toUpper);</span><br></pre></td></tr></table></figure>
+
+<p>那么执行过程就会发生错误而变得不纯：<code>TypeError: Cannot read property &#39;join&#39; of undefined</code>。</p>
+<p>针对不同的应用场景，我们可以<strong>对普通的函子进行改造</strong>，也可以称为限定范畴，以此来控制一定范畴数据变得可控：比如常见的<code>MayBe函子</code>、<code>Monad函子</code>，下面会一一说明这些具有特定功能的函子。</p>
+<h3 id="MayBe函子"><a href="#MayBe函子" class="headerlink" title="MayBe函子"></a>MayBe函子</h3><p><code>MayBe</code>函子就是<strong>对空值数据的进行处理</strong>的一种函子。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MayBe</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(value) &#123;</span><br><span class="line">        <span class="built_in">this</span>._value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">of</span>(value) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MayBe(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    map(fn) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MayBe(<span class="built_in">this</span>.isNull ? <span class="literal">null</span> : fn(<span class="built_in">this</span>._value));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    isNull() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Object</span>.is(<span class="built_in">this</span>._value, <span class="literal">null</span>) || <span class="built_in">Object</span>.is(<span class="built_in">this</span>._value, <span class="literal">undefined</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以发现，我们对普通函子进行了简单的改造，新增了一个<code>isNull</code>方法，当数据判断为空值时，就直接返回<code>null</code>作为新容器的值，而无需执行函数调用，也就避免了错误的发生。</p>
+<h3 id="IO函子"><a href="#IO函子" class="headerlink" title="IO函子"></a>IO函子</h3><p>除了数据回导致函数变得不纯，某些异步操作异常也会让函数变得不纯，比如一些异步<code>IO</code>操作，这里所谓的<code>IO</code>函子就是把这一系列异步操作都组合到<code>_value</code>中，也就是把<code>_value</code>变成一个组合函数，这样，我们需要手动调用一下<code>_value</code>函数才会开始执行，也就相当于<strong>把可能不纯的函数延迟执行</strong>，让调用者手动调用时才触发，一定程度上让执行变得可控：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IO</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span> (fn) &#123;</span><br><span class="line">        <span class="built_in">this</span>._value = fn;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">of</span>(value) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> IO(<span class="function">() =&gt;</span> value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    map(fn) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> IO(_.flowRight(fn, <span class="built_in">this</span>._value));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>IO</code>函子其实就是函子和组合函数的结合使用案例，函子的<code>_value</code>为序列<code>map</code>参数的组合函数。</p>
+<p>由于<code>_value</code>是一个函数，为了获取返回值，我们提供一个<code>run</code>方法来获取执行结果。（<code>run</code>执行是调用者手动触发的，可以更好地控制异常发生的位置）。</p>
+</blockquote>
+<p>比如我们在<code>Node</code>环境下获取当前进程的绝对执行路径：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> c = IO.of(process).map(<span class="function"><span class="params">p</span> =&gt;</span> p.execPath)</span><br><span class="line"><span class="built_in">console</span>.log(c.run()) <span class="comment">// C:\Program Files\nodejs\node.exe</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Task函子"><a href="#Task函子" class="headerlink" title="Task函子"></a>Task函子</h3><p>一种专门处理异步函数的函子。在<a href="https://folktale.origamitower.com/docs/v2.0.0/">folktale</a>这个库中已经实现了<code>Task</code>函子，我们安装并体验一下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; task &#125; = <span class="built_in">require</span>(<span class="string">&#x27;folktale/concurrency/task&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 一个task函子化的readFile</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readFile</span>(<span class="params">filePath</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> task(<span class="function"><span class="params">resolver</span> =&gt;</span> &#123;</span><br><span class="line">        fs.readFile(filePath, <span class="string">&#x27;utf-8&#x27;</span>, <span class="function">(<span class="params">err, data</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(err) resolver.reject(err);</span><br><span class="line">            resolver.resolve(data);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line">readFile(<span class="string">&#x27;package.json&#x27;</span>)</span><br><span class="line">    .run()</span><br><span class="line">    .listen(&#123;</span><br><span class="line">        onRejected: <span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(err.Error);</span><br><span class="line">        &#125;,</span><br><span class="line">        onResolved: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(data);</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>task</code>函数有点类似<code>promise</code>对象，具体使用细节我们可以参考官方文档：<a href="https://folktale.origamitower.com/docs/v2.3.0/migrating/from-data.task/">task</a>。</p>
+</blockquote>
+<p>这样，我们就可以在<code>onResolved</code>中拿到异步函数的返回值，如果我们在这个函数中处理返回值，那就不是所谓的函数式编程了（我们应该使用函数来处理，而非直接对外暴露细节），也没有体现函子的使用特性。实际上，<code>task</code>函子化函数可以接收系列的<code>map</code>来处理异步函数接受到的数据，最后才传递给<code>listen</code>，就像这样：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 测试</span></span><br><span class="line">readFile(<span class="string">&#x27;package.json&#x27;</span>)</span><br><span class="line">    .map(<span class="built_in">JSON</span>.parse)</span><br><span class="line">    .map(<span class="function"><span class="params">data</span> =&gt;</span> data.version)</span><br><span class="line">    .run()</span><br><span class="line">    .listen(&#123;</span><br><span class="line">        onRejected: <span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(err.Error);</span><br><span class="line">        &#125;,</span><br><span class="line">        onResolved: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(data); <span class="comment">// 1.0.0</span></span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这样，最终接收到的数据就是<code>map</code>处理后的数据。</p>
+<h3 id="Pointed函子"><a href="#Pointed函子" class="headerlink" title="Pointed函子"></a>Pointed函子</h3><p>就是一个简单的概念：实现了<code>of</code>静态接口的函子，也就是我们上面一直在使用的方法。</p>
+<h3 id="Monad函子"><a href="#Monad函子" class="headerlink" title="Monad函子"></a>Monad函子</h3><p>我们先观察一个现象：我们定义了两个<code>reverse</code>和<code>upper</code>函数，这两个函数都是函子函数，</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 最简单的pointed函子</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Container</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(val) &#123;</span><br><span class="line">        <span class="built_in">this</span>._val = val;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">of</span>(val) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Container(val);</span><br><span class="line">    &#125;</span><br><span class="line">    map(fn) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Container(fn(<span class="built_in">this</span>._val));</span><br><span class="line">    &#125;</span><br><span class="line">    run() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>._val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> data = [<span class="string">&#x27;jinx&#x27;</span>, <span class="string">&#x27;yasuo&#x27;</span>]</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverse</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Container.of(arr).map(_.reverse);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">upper</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Container.of(str).map(_.toUpper);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> c = reverse(data).map(upper)</span><br><span class="line"><span class="built_in">console</span>.log(c.run().run())</span><br></pre></td></tr></table></figure>
+
+<p>现象就是，当我们使用函子作为<code>map</code>的参数时，就会发生<strong>函子嵌套</strong>现象，这时我们如果需要获取数据，就需要层层调用<code>run()</code>方法，这样的写法是极不友好的。</p>
+<p>类似洋葱函数的不友好一样，我们使用组合函数解决了函数层层包裹的问题，同样的，面对函子层层嵌套的问题，我们可以使用<code>Monad函子</code>进行函子扁平化处理。</p>
+<p>其实原理很简单，就是在<code>map</code>中传递函子时，我们手动调用一下<code>run</code>方法，以此来直接获取<code>value</code>作为传递值，为了和<code>map</code>做区分，我们可以使用新的函数名<code>flatMap</code>,<code>Monad</code>函子看起来就会像这样：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Container</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(val) &#123;</span><br><span class="line">        <span class="built_in">this</span>._val = val;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">of</span>(val) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Container(val);</span><br><span class="line">    &#125;</span><br><span class="line">    map(fn) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Container(fn(<span class="built_in">this</span>._val));</span><br><span class="line">    &#125;</span><br><span class="line">    flatMap(container) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Container(container(<span class="built_in">this</span>._val).run());</span><br><span class="line">    &#125;</span><br><span class="line">    run() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>._val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> c = reverse(data).flatMap(upper)</span><br><span class="line"><span class="built_in">console</span>.log(c.run()) <span class="comment">// 只用执行一次</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其实就是在<code>map</code>的<code>fn</code>后面自动执行了<code>run()</code>作为返回值。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>函数式编程作为一种编程范式，追求一种<strong>无状态和无副作用</strong>的函数编程。涉及到的概念主要分为：</p>
+<ul>
+<li>支持函数式编程的基本<strong>特点</strong>：<ul>
+<li>函数是一等公民</li>
+<li>支持高阶函数</li>
+<li>可闭包</li>
+</ul>
+</li>
+<li>函数式编程的<strong>理念</strong>：<ul>
+<li>纯函数</li>
+<li>柯里化</li>
+<li>管道与函数组合</li>
+</ul>
+</li>
+<li>函数式编程的更好的<strong>数据控制</strong>：使用各种类型的函子。</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://web.archive.org/web/20100825182303/http://www.felixwoo.com/archives/247">深入理解Javascript闭包(closure) - Felix Woo</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures">闭包 - MDN</a></li>
+<li><a href="https://www.zcfy.cc/article/functors-amp-categories-javascript-scene-medium-2698.html">函子和范畴</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>函数式编程</tag>
+      </tags>
+  </entry>
 </search>
