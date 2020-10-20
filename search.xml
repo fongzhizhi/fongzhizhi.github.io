@@ -1679,4 +1679,151 @@
         <tag>es6</tag>
       </tags>
   </entry>
+  <entry>
+    <title>前端脚手架工具构建</title>
+    <url>/2020/10/20/%E5%89%8D%E7%AB%AF%E8%84%9A%E6%89%8B%E6%9E%B6%E5%B7%A5%E5%85%B7%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<p>脚手架在建筑学中用于保障施工时能稳定进行的平台，建造者会在施工前根据不同的建筑物搭建不同的脚手架以供施工时的重复使用。</p>
+<p>前端工程中的脚手架也是一样的道理，很多前端项目都有一些基础文件或通用模块作为项目运行的基本结构和运行工具，前端脚手架能为我们快速开启一个前端工程而<strong>准备好基本的目录结构和基础文件</strong>。</p>
+<p>像常见的<code>Vue-cli</code>，<code>React-cli</code>就是专门针对各自框架使用的脚手架工具。本文就另一款通用的脚手架工具<code>yeoman</code>进行简单的使用说明。</p>
+<p><img data-src="/images/illustration-home-inverted.91b07808be.png"></p>
+<a id="more"></a>
+
+<h2 id="Yeoman的简单使用"><a href="#Yeoman的简单使用" class="headerlink" title="Yeoman的简单使用"></a>Yeoman的简单使用</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><a href="https://yeoman.io/">官网</a>定位的<code>yeoman</code>为用于现代WEB应用程序的WEB脚手架工具。<code>yeoman</code>在使用时需要选择不同的生成器模块<code>generator</code>进行不同项目的脚手架搭建，比如官网提供了可用于<a href="https://github.com/yeoman/generator-angular">Angular</a>，<a href="https://github.com/yeoman/generator-backbone">Backbone</a>，<a href="https://github.com/newtriks/generator-react-webpack">React</a>，<a href="https://github.com/yeoman/generator-polymer">Polymer</a>和超过<a href="https://yeoman.io/generators/">5600多个其他项目</a>的脚手架生成器模块。</p>
+<p>当然我们也可以利用官方提供的<code>api</code>定义自己的脚手架生成器。</p>
+<blockquote>
+<p>Yeoman与语言无关。它可以使用任何语言（Web，Java，Python，C＃等）生成项目。</p>
+<p>Yeoman本身不做任何决定。每个决定都是由<em>生成器</em>决定的，<em>生成器</em>基本上是Yeoman环境中的插件。有<a href="https://yeoman.io/generators/">很多公开可用的生成器</a>，它很容易<a href="https://yeoman.io/authoring/">创建新的</a><a href="https://yeoman.io/generators/">生成器</a>以匹配任何工作流程。约曼始终是满足您脚手架需求的正确选择。</p>
+</blockquote>
+<p>脚手架的搭建的一般过程为：</p>
+<ol>
+<li>明确你的项目需求：需要什么样的脚手架</li>
+<li>找到合适的generator</li>
+<li>全局安装需要的generator</li>
+<li>通过<code>yo</code>模块运行使用的generator</li>
+<li>填写generator安装时需要的信息</li>
+<li>生成项目基本结构</li>
+</ol>
+<h3 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h3><p>更具上面的脚手架搭建过程，我们一步一步来。</p>
+<ol>
+<li><p>全局安装<code>yeoman</code>模块包<code>yo</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm insatll yo -g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>全局安装需要的生成器模块：比如<code>node</code>环境通用的生成器<code>generator-node</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install generator-node -g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在需要创建脚手架的目录执行安装命令：(注：省略前缀<code>generator-</code>)</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yo node</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装的过程中生成器可能需要读取用户的一些基本信息：根据你的需求来填写即可</p>
+</li>
+<li><p>生成对应的项目目录结构：</p>
+<p><img data-src="/images/image-20201018220914278.png"></p>
+</li>
+</ol>
+<p>这样我们就可以在这个基础文件结构下快速开始我们的项目啦。</p>
+<p>更多细节可参考<a href="https://yeoman.io/learning/index.html">官方使用文档</a>。</p>
+<h3 id="sub-generator的使用"><a href="#sub-generator的使用" class="headerlink" title="sub-generator的使用"></a>sub-generator的使用</h3><p>有时候使用到的生成器无法满足我们的需求，这个时候还可以使用该生成器提供的<strong>子生成器</strong><code>sub-generator</code>进行特定的文件或模块补充。该生成器具体支持哪些子生成器需要查看官方说明，比如<code>generator-node</code>支持的子生成器有：</p>
+<ul>
+<li><code>node:boilerplate</code></li>
+<li><code>node:cli</code></li>
+<li><code>node:editorconfig</code></li>
+<li><code>node:eslint</code></li>
+<li><code>node:git</code></li>
+<li><code>node:readme</code></li>
+</ul>
+<p>比如我们需要把刚才的node项目编程cli项目，就可以安装<code>node:cli</code>子生成器来构建一些基本文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yo node:cli</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义generator"><a href="#自定义generator" class="headerlink" title="自定义generator"></a>自定义generator</h3><p>如果官方提供的生成器无法满足项目的需要，我们就可以自定义一个专门为自己项目服务的生成器对象。</p>
+<p>生成器的本质就是一个<code>node-module</code>。</p>
+<ol>
+<li><p>命名：首先，为你即将写的 generator 创建一个文件夹。这个文件夹必须命名为 <code>generator-name</code> (这里的 <code>name</code> 就是你 generator 的名字)。这是很重要的，作为 Yeoman 的依赖文件系统来查找可用的 generators。比如，我们创建一个名为<code>generator-sample</code>的生成器。</p>
+</li>
+<li><p>初始化：进入创建好的生成器文件目录，进行<code>npm</code>初始化</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+
+<p>你应该确保你设置了最新版本的 <code>yeoman-generator</code> 作为一个依赖。你可以去运行：<code>npm install --save yeoman-generator</code>。<code>package.json</code>文件的“file” 属性必须是由你的 generator 使用的文件排列和目录。根据需要加入其他的 <a href="https://docs.npmjs.com/files/package.json#files"><code>package.json</code> 属性</a>。</p>
+</li>
+<li><p>文件结构：在一个示例项目中，目录树可能看起来像这样：</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">├───package.json</span><br><span class="line">├───app/</span><br><span class="line">│   └───index.js</span><br><span class="line">└───router/</span><br><span class="line">    └───index.js</span><br></pre></td></tr></table></figure>
+
+<p>当你使用 <code>yo name</code> 为这个 <code>app</code> 的 generator时，这个默认的 generator 将会被使用。这必须包含在 <code>app/</code> 目录中。</p>
+<p>当你使用 <code>yo name:subcommand</code> 时 Sub-generators 将被使用，存储在文件夹中，名字完全像一个子命令。</p>
+<p>如果不喜欢把文件都放在根目录，也可以这样：</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">├───package.json</span><br><span class="line">└───generators/</span><br><span class="line">    ├───app/</span><br><span class="line">    │   └───index.js</span><br><span class="line">    └───router/</span><br><span class="line">        └───index.js</span><br></pre></td></tr></table></figure>
+
+<p>但<code>file</code>属性需要做对应调整：（目前版本<code>4.12.0</code>不写也能自动读取到）</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;files&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;generators/app&quot;</span>,</span><br><span class="line">    <span class="string">&quot;generators/router&quot;</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写生成器逻辑代码。当文件目录结构确定下来以后，你就可以编写生成器需要实现的功能代码，yeoman提供了一个基本的generator，完成了大部分基本的通用任务，你可在此基础上扩展自己的需求：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> generators = <span class="built_in">require</span>(<span class="string">&#x27;yeoman-generator&#x27;</span>); <span class="comment">// yeoman提供的生成器基类：能帮我们完成大部分基本工作</span></span><br><span class="line"><span class="built_in">module</span>.exports = generators.Base.extend(&#123;</span><br><span class="line">    method1: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;method1 just ran.&#x27;</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    method2: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;method2 just ran.&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>或者使用一个类进行继承：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> generators = <span class="built_in">require</span>(<span class="string">&#x27;yeoman-generator&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">generators</span> </span>&#123;</span><br><span class="line">    <span class="comment">// yeoman-generator 在生成文件阶段会自动调用，这里尝试写入一些东西</span></span><br><span class="line">    writing() &#123;</span><br><span class="line">        <span class="built_in">this</span>.fs.write(</span><br><span class="line">            <span class="built_in">this</span>.destinationPath(<span class="string">&#x27;readme.txt&#x27;</span>),</span><br><span class="line">            <span class="string">&#x27;this is a generator-sample demo&#x27;</span></span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行：当导出了一个基本的模块，其实最基本的一个生成器已经实现了，现在我们来运行（使用）我们自己定义的生成器模块：</p>
+<p>首先使用<code>npm link</code>将该模块链接到全局，以便能直接使用。</p>
+<p>然后在使用目录下执行：<code>yo sample</code>即可。如果，控制台打印了我们扩展的两个函数的信息，说明执行成功了。</p>
+</li>
+</ol>
+<p>更多使用细节请参考<a href="https://yowebapp.github.io/authoring/index.html">官方文档</a>。</p>
+<h3 id="自定义生成器：创建模板文件"><a href="#自定义生成器：创建模板文件" class="headerlink" title="自定义生成器：创建模板文件"></a>自定义生成器：创建模板文件</h3><p>有时候我们需要生成多个文件，或者需要根据一些变量来动态创建文件，这个时候就需要使用到模板文件，generator里的模板文件使用的是<code>ejs</code>的模板文件语法。模板文件默认放到<code>./templates</code>目录下。</p>
+<blockquote>
+<p>模板上下文默认被定义为<code>./templates/</code>。你可以使用<code>generator.sourceRoot(&#39;new/template/path&#39;)</code>去重写这个默认值。</p>
+</blockquote>
+<p>首先，我们随便创建一个模板文件，如readme.txt：</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">这是一个模板文件</span><br><span class="line">内部可以使用EJS模板标记语法：</span><br><span class="line">&lt;%= title %&gt;</span><br><span class="line">或者使用EJS语法：</span><br><span class="line">&lt;% if(success) &#123;</span><br><span class="line">成功输出！</span><br><span class="line">&#125; %&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就可以使用模板文件来动态创建文件了：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> generators = <span class="built_in">require</span>(<span class="string">&#x27;yeoman-generator&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">generators</span> </span>&#123;</span><br><span class="line">    writing() &#123;</span><br><span class="line">        <span class="comment">// 模板文件路径</span></span><br><span class="line">        <span class="keyword">const</span> temp = <span class="built_in">this</span>.templatePath(<span class="string">&#x27;readme.txt&#x27;</span>);</span><br><span class="line">        <span class="comment">// 输出路径</span></span><br><span class="line">        <span class="keyword">const</span> output = <span class="built_in">this</span>.destinationPath(<span class="string">&#x27;readme.txt&#x27;</span>);</span><br><span class="line">        <span class="comment">// 模板上下文数据</span></span><br><span class="line">        <span class="keyword">const</span> data = &#123;</span><br><span class="line">            title: <span class="string">&#x27;follow your heart.&#x27;</span>,</span><br><span class="line">            success: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 复制并渲染模板文件</span></span><br><span class="line">        <span class="built_in">this</span>.fs.copyTpl(temp, output, data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义生成器：与用户交互"><a href="#自定义生成器：与用户交互" class="headerlink" title="自定义生成器：与用户交互"></a>自定义生成器：与用户交互</h3><p>在上面的模板中，一般需要动态太如的都是来自用户输入的数据，所以有必要接受用户输入数据来动态创建文件。</p>
+<p>要提示用户输入并获取数据，我们需要实现<code>prompting</code>接口：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> generators = <span class="built_in">require</span>(<span class="string">&#x27;yeoman-generator&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">generators</span> </span>&#123;</span><br><span class="line">    prompting()&#123;</span><br><span class="line">        <span class="comment">// 定义用户输入数据的问题和默认值</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.prompt([&#123;</span><br><span class="line">            type: <span class="string">&#x27;input&#x27;</span>,</span><br><span class="line">            name: <span class="string">&#x27;name&#x27;</span>,</span><br><span class="line">            message : <span class="string">&#x27;Your project name&#x27;</span>,</span><br><span class="line">            <span class="keyword">default</span> : <span class="built_in">this</span>.appname <span class="comment">// Default to current folder name</span></span><br><span class="line">        &#125;]).then(<span class="function"><span class="params">answers</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.answers = answers; <span class="comment">// 用户输入数据的键值对</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    writing() &#123;</span><br><span class="line">        <span class="comment">// 模板文件路径</span></span><br><span class="line">        <span class="keyword">const</span> temp = <span class="built_in">this</span>.templatePath(<span class="string">&#x27;readme.txt&#x27;</span>);</span><br><span class="line">        <span class="comment">// 输出路径</span></span><br><span class="line">        <span class="keyword">const</span> output = <span class="built_in">this</span>.destinationPath(<span class="string">&#x27;readme.txt&#x27;</span>);</span><br><span class="line">        <span class="comment">// 模板上下文数据</span></span><br><span class="line">        <span class="keyword">const</span> answers = <span class="built_in">this</span>.answers; <span class="comment">// 使用用户输入数据</span></span><br><span class="line">        <span class="keyword">const</span> data = &#123;</span><br><span class="line">            title: answers[<span class="string">&#x27;name&#x27;</span>],</span><br><span class="line">            success: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 复制并渲染模板文件</span></span><br><span class="line">        <span class="built_in">this</span>.fs.copyTpl(temp, output, data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="发布自定义generator"><a href="#发布自定义generator" class="headerlink" title="发布自定义generator"></a>发布自定义generator</h3><p>为了方便后续更方便地使用我们创建好的generator，可以将生成器模块公开发布到npm上。这里的发布流程与普通的npm模块发布无异。</p>
+<ol>
+<li><p>创建本地git仓库,并将代码推送到github远程仓库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">忽略node_modules文件夹</span></span><br><span class="line">echo node_modules &gt; .gitignore</span><br><span class="line"><span class="meta">#</span><span class="bash">git初始化</span></span><br><span class="line">git init</span><br><span class="line"><span class="meta">#</span><span class="bash">提交本地记录</span></span><br><span class="line">git add.</span><br><span class="line">git commit -m &quot;generator init&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash">在github上创建仓库并完成绑定</span></span><br><span class="line">git remote add origin https://github.com/fongzhizhi/generator-sample.git</span><br><span class="line"><span class="meta">#</span><span class="bash">提交到master分支</span></span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将模块发布到npm</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">如果你的npm仓库绑定了淘宝镜像等仓库地址，需要在发布时指定官方仓库</span></span><br><span class="line">npm publish --registry=ttps://registry.npmjs.org/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">   </span><br><span class="line">3. 然后就能在npm官网搜索到你发布的模块了</span><br><span class="line"></span><br><span class="line">   &#96;&#96;&#96;shell</span><br><span class="line">   #这里为了测试，所以我们不是真正发布一个模块，测试成功后移除即可</span><br><span class="line">   npm unpublish</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="Plop的简单使用"><a href="#Plop的简单使用" class="headerlink" title="Plop的简单使用"></a>Plop的简单使用</h2><p>一款小而美的脚手架工具，<a href="https://github.com/plopjs/plop">github地址</a>。我们可以使用Plop通过模板文件为我们批量生成文件，就像yeoman那样。</p>
+<h2 id="脚手架的工作原理"><a href="#脚手架的工作原理" class="headerlink" title="脚手架的工作原理"></a>脚手架的工作原理</h2><p>脚手架本质上就是一个创建文件的node-cli应用，至于需要创建什么样的文件，就取决于我们的项目性质是什么，通过脚手架创建的基础文件就能快速开始我们的项目，而无需重复性地创建文件或导入一些通过模块。</p>
+<p>首先，我们新建一个文件夹，创建一个node模块：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir scaffloding-sample</span><br><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+
+<p>作为Node CLI应用，我们使用<code>cli.js</code>作为模块执行的入口文件：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Node CLI 应用入口文件必须要有这样的文件头</span></span><br><span class="line"><span class="comment">// 在Linux 或 macOS系统中还需要将此文件的读写权限修改为755 ： chmod 755 cli.js </span></span><br></pre></td></tr></table></figure>
+
+<p>然后，修改<code>package.json</code>文件的<code>bin</code>字段为<code>cli.js</code>。</p>
+<p>现在，我们就来编写<code>cli.js</code>逻辑了，一般来说，脚手架最基本的两个功能：</p>
+<ul>
+<li>用户交互：我们使用<code>inquirer</code>模块进行实现。</li>
+<li>生成模板文件：我们使用<code>ejs</code>模板引擎进行渲染。</li>
+</ul>
+<p>现在我们随便创建一些模板文件，比如<code>templates/index.html</code>，<code>templates/main.css</code>：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&#x27;utf-8&#x27;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&#x27;X-UA-Compatible&#x27;</span> <span class="attr">content</span>=<span class="string">&#x27;IE=edge&#x27;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">name</span> %&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&#x27;viewport&#x27;</span> <span class="attr">content</span>=<span class="string">&#x27;width=device-width, initial-scale=1&#x27;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&#x27;stylesheet&#x27;</span> <span class="attr">type</span>=<span class="string">&#x27;text/css&#x27;</span> <span class="attr">media</span>=<span class="string">&#x27;screen&#x27;</span> <span class="attr">href</span>=<span class="string">&#x27;./main.css&#x27;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">name</span> %&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#cecece</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里主要是为了测试，就不写太多东西。</p>
+<p>那么<code>cli.js</code>的逻辑就可以写成这样：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Node CLI 应用入口文件必须要有这样的文件头</span></span><br><span class="line"><span class="comment">// 在Linux 或 macOS系统中还需要将此文件的读写权限修改为755 ： chmod 755 cli.js </span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * [脚手架的一般功能]</span></span><br><span class="line"><span class="comment"> * 1.用户交互：根据使用者的信息来生成不同的文件配置 =&gt; inquire模块来实现</span></span><br><span class="line"><span class="comment"> * 2.使用模板引擎生成模板文件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> inuqire = <span class="built_in">require</span>(<span class="string">&#x27;inquirer&#x27;</span>); <span class="comment">// 用户交互模块</span></span><br><span class="line"><span class="keyword">const</span> ejs = <span class="built_in">require</span>(<span class="string">&#x27;ejs&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; connect &#125; = <span class="built_in">require</span>(<span class="string">&#x27;http2&#x27;</span>);</span><br><span class="line"></span><br><span class="line">inuqire.prompt([&#123;</span><br><span class="line">    type: <span class="string">&#x27;input&#x27;</span>,</span><br><span class="line">    name: <span class="string">&#x27;name&#x27;</span>,</span><br><span class="line">    message: <span class="string">&#x27;the project name:&#x27;</span>,</span><br><span class="line">    <span class="keyword">default</span>: <span class="string">&#x27;my-project&#x27;</span>,</span><br><span class="line">&#125;]).then(<span class="function"><span class="params">anwser</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 根据用户信息生成文件</span></span><br><span class="line">    <span class="comment">// 模板目录</span></span><br><span class="line">    <span class="keyword">const</span> tempDir = path.join(__dirname, <span class="string">&#x27;templates&#x27;</span>)</span><br><span class="line">    <span class="comment">// 目标目录</span></span><br><span class="line">    <span class="keyword">const</span> destDir = process.cwd();</span><br><span class="line">    <span class="comment">// 读取模板文件目录下的所有文件</span></span><br><span class="line">    fs.readdir(tempDir, <span class="function">(<span class="params">err, files</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</span><br><span class="line">        files.forEach(<span class="function"><span class="params">file</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="comment">// 使用模板引擎读取文件</span></span><br><span class="line">            ejs.renderFile(path.join(tempDir, file), anwser, <span class="function">(<span class="params">err, content</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span>(err) <span class="keyword">throw</span> err;</span><br><span class="line">                <span class="comment">// 写入文件</span></span><br><span class="line">                fs.writeFileSync(path.join(destDir, file), content);</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们使用<code>npm link</code>将模块链接到全局，就可以通过命令行使用这个cli模块了：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scaffloding-sample</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>JavaScript</category>
+        <category>前端工程化</category>
+      </categories>
+      <tags>
+        <tag>工程化</tag>
+        <tag>脚手架</tag>
+      </tags>
+  </entry>
 </search>
