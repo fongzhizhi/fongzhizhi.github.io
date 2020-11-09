@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fongzhizhi.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":"ture","mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一切重复性的工作都应该被自动化。  在前端工程化中，我们常常希望使用更有的模块进行项目开发，比如我们可能使用模板引擎进行页面渲染，使用sass来构建css，使用最新的ECMAScript语法或者ts进行业务逻辑开发。而以上的模块或者技能都只是一项选择，最终我们都需要转化为最基本的前端三件套：html + css + js。这其中的转换过程根据不同工具的使用而不同，但无疑都是重复性的工作，类似这些">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动化构建">
+<meta property="og:url" content="https://fongzhizhi.github.io/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:site_name" content="风之之的Blog">
+<meta property="og:description" content="一切重复性的工作都应该被自动化。  在前端工程化中，我们常常希望使用更有的模块进行项目开发，比如我们可能使用模板引擎进行页面渲染，使用sass来构建css，使用最新的ECMAScript语法或者ts进行业务逻辑开发。而以上的模块或者技能都只是一项选择，最终我们都需要转化为最基本的前端三件套：html + css + js。这其中的转换过程根据不同工具的使用而不同，但无疑都是重复性的工作，类似这些">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/风之之/Desktop/GitHub/MarkDown-Nodes/images/gulp.jpg">
+<meta property="article:published_time" content="2020-11-09T16:43:05.125Z">
+<meta property="article:modified_time" content="2020-11-09T16:42:16.462Z">
+<meta property="article:author" content="Dongoog">
+<meta property="article:tag" content="自动化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/风之之/Desktop/GitHub/MarkDown-Nodes/images/gulp.jpg">
+
+<link rel="canonical" href="https://fongzhizhi.github.io/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>自动化构建 | 风之之的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="风之之的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风之之的Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">好想在哪见过你~</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.gif">
+      <meta itemprop="name" content="Dongoog">
+      <meta itemprop="description" content="这个人很懒，什么也没说.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之之的Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          自动化构建
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-10 00:43:05 / 修改时间：00:42:16" itemprop="dateCreated datePublished" datetime="2020-11-10T00:43:05+08:00">2020-11-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">前端工程化</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/" class="post-meta-item leancloud_visitors" data-flag-title="自动化构建" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>32k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>29 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>一切重复性的工作都应该被自动化。</p>
+</blockquote>
+<p>在前端工程化中，我们常常希望使用更有的模块进行项目开发，比如我们可能使用模板引擎进行页面渲染，使用<code>sass</code>来构建<code>css</code>，使用最新的<code>ECMAScript</code>语法或者<code>ts</code>进行业务逻辑开发。而以上的模块或者技能都只是一项选择，最终我们都需要转化为最基本的前端三件套：<code>html</code> + <code>css</code> + <code>js</code>。这其中的转换过程根据不同工具的使用而不同，但无疑都是重复性的工作，类似这些开发过程中的重复的工作，都应该使用自动化的思想为我们解决，我们只需要关注代码的业务逻辑和最终的准换结果，而中间的处理过程，都应该交给自动化构建工具。</p>
+<p>除了基本的格式转换，自动化构建工具一般还具有压缩、合并、文件整理、启动服务、格式化代码等功能。</p>
+<p><img data-src="C:/Users/风之之/Desktop/GitHub/MarkDown-Nodes/images/gulp.jpg" alt="gulp"></p>
+<p>本文将会从三款前端自动构建工具<a target="_blank" rel="noopener" href="https://www.gruntjs.net/">grunt</a>、<a target="_blank" rel="noopener" href="https://www.gulpjs.com.cn/">gulp</a>、<a target="_blank" rel="noopener" href="http://fis.baidu.com/">fis</a>的使用中感受自动化构建的特点和优势。</p>
+<a id="more"></a>
+
+<h2 id="Grunt的使用"><a href="#Grunt的使用" class="headerlink" title="Grunt的使用"></a>Grunt的使用</h2><p><a target="_blank" rel="noopener" href="https://www.gruntjs.net/">grunt</a>是比较早的一款前端自动构建工具，插件也比较丰富，目前的使用人数仍然很多，但已被后起之秀<a target="_blank" rel="noopener" href="https://www.gulpjs.com.cn/">gulp</a>赶超，相比之下，<code>gulp</code>在使用上更简洁和高效，不过这些都因人而异，<code>grunt</code>同样是一款优秀的构建工具，我们有必要一探究竟。</p>
+<h3 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h3><p>首先我们初始化一个目录，并新建<code>package.json</code>文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir guruntDemo</span><br><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+
+<p>安装<code>grunt</code>模块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i grunt --dev</span><br></pre></td></tr></table></figure>
+
+<p><code>grunt</code>工具可以看作是<strong>任务流的操作逻辑</strong>，比如html模板解析、sass转为css等自动任务都看作是一项一项的任务，我们在<code>grunt</code>中注册这些任务，并支持自由组合，然后使用<code>npm run</code>就能启动这些自动任务。</p>
+<p>为了正常启动<code>grunt</code>任务，默认的入口配置文件为：<code>gruntfile.js</code>或<code>gruntfile.coffe</code>。（可以使用大写<code>Gruntfile.js</code>）。</p>
+<p><code>gruntfile</code>文件需要默认导出一个参数为<code>grunt</code>的函数，我们使用<code>grunt.registerTask</code>方法就可以进行任务的注册：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">grunt</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 参数说明：(任务名, [描述信息,] 任务列表|任务函数) </span></span><br><span class="line">    grunt.registerTask(<span class="string">&#x27;html&#x27;</span>, <span class="string">&#x27;解析html模板&#x27;</span>, <span class="function">() =&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;渲染html...&#x27;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行任务：（如果没有全局安装<code>grunt-cli</code>，我们需要手动修改<code>package.json</code>文件的<code>scripts</code>字段，让其支持<code>npm run</code>命令）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run grunt html</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就能看到注册的<code>html</code>任务的执行结果。</p>
+<p>使用<code>default</code>作为默认任务参数时，可以直接使用<code>npm run grunt</code>进行默认任务执行。</p>
+<p><code>registerTask</code>函数除了指定函数，一般我们都直接指定任务名即可，这个任务名就是我们已经注册的任务，或者是使用插件注册好的任务：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">grunt</span>) =&gt;</span> &#123;</span><br><span class="line">    grunt.registerTask(<span class="string">&#x27;html&#x27;</span>, <span class="function">() =&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;渲染html...&#x27;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    grunt.registerTask(<span class="string">&#x27;sass&#x27;</span>, <span class="function">() =&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;sass文件转化...&#x27;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    grunt.registerTask(<span class="string">&#x27;default&#x27;</span>, [<span class="string">&#x27;html&#x27;</span>, <span class="string">&#x27;sass&#x27;</span>]); <span class="comment">// 任务组合</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你创建了一个<strong>异步任务</strong>，那么你需要使用<code>this.async()</code>作为异步结束标识，否则任务将不会执行异步代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 异步任务的注册</span></span><br><span class="line">grunt.registerTask(<span class="string">&#x27;asyncTask&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> done = <span class="built_in">this</span>.async(); <span class="comment">// 强制任务进入异步模式，并获取“done”函数的句柄。</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;This is a Async Task.&#x27;</span>);</span><br><span class="line">        done(); <span class="comment">// 异步任务结束标记</span></span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="任务失败标记"><a href="#任务失败标记" class="headerlink" title="任务失败标记"></a>任务失败标记</h3><p>如果任务内部某些代码已经（或即将）崩溃，可能导致Grunt强行中止。我们可以<strong>手动标记该任务为失败任务</strong>，在任务队列中，这会终止后续任务队列的执行，如果遇到错误任务时需要强制执行需要加上<code>--force</code>命令。</p>
+<p>标记失败任务的方法很简单，我们只需要让任务函数返回<code>false</code>即可，或者使用失败标记<code>api</code>：<code>grunt.fail.warn</code>或者<code>grunt.fail.fatal</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">grunt</span>) =&gt;</span> &#123;</span><br><span class="line">    grunt.registerTask(<span class="string">&#x27;badTask&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;doing....&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// 返回false，标记任务失败</span></span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    grunt.registerTask(<span class="string">&#x27;badTask2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">&#x27;doing....&#x27;</span>)</span><br><span class="line">       grunt.fail.warn(<span class="string">&#x27;something wrong!&#x27;</span>) <span class="comment">// 标记任务失败</span></span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">&#x27;keep going use --force&#x27;</span>) <span class="comment">// 标记失败后，使用--force才能继续执行后续任务 </span></span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    grunt.registerTask(<span class="string">&#x27;badTask3&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">&#x27;doing....&#x27;</span>)</span><br><span class="line">       grunt.fail.fatal(<span class="string">&#x27;something wrong!&#x27;</span>) <span class="comment">// 标记任务失败</span></span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">&#x27;can not keep going use --force&#x27;</span>) <span class="comment">// 使用fatal标记失败后，即使使用--force也无法继续执行后续任务 </span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：使用<code>grunt.warn</code>和<code>grunt.fatal</code>是一样的效果。</p>
+<p>如果是异步函数，也是一样的用法，如果不使用官方api，在<code>done</code>的参数中传入<code>false</code>即可。</p>
+</blockquote>
+<h3 id="Grunt的配置config"><a href="#Grunt的配置config" class="headerlink" title="Grunt的配置config"></a>Grunt的配置config</h3><p><code>grunt.config</code>可以从 <code>Gruntfile</code> 中获取针对当前项目的<strong>配置数据</strong>。</p>
+<h4 id="初始化配置"><a href="#初始化配置" class="headerlink" title="初始化配置"></a>初始化配置</h4><p>使用<code>grunt.config.init</code>或<code>grunt.initConfig</code>进行配置初始化。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">grunt</span>) =&gt;</span> &#123;</span><br><span class="line">    grunt.initConfig(&#123;</span><br><span class="line">        html: &#123;</span><br><span class="line">            src: <span class="string">&#x27;src/html/*.html&#x27;</span>,</span><br><span class="line">            out: <span class="string">&#x27;dist/html&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    grunt.registerTask(<span class="string">&#x27;html&#x27;</span>, <span class="function">()=&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;渲染路径：&#x27;</span>, grunt.config(<span class="string">&#x27;html.src&#x27;</span>))</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;输出路径：&#x27;</span>, grunt.config(<span class="string">&#x27;html.out&#x27;</span>))</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置的获取和设置"><a href="#配置的获取和设置" class="headerlink" title="配置的获取和设置"></a>配置的获取和设置</h4><p>使用<code>grunt,config.get(prop)</code>可以获取配置的数据。</p>
+<p>使用<code>grunt,config.set(prop, value)</code>可以获取配置的数据。</p>
+<p>当然，你可以使用<code>grunt.config(prop [, value])</code>可以进行设置或者获取操作。</p>
+<p>值得注意的是，<code>prop</code>参数可以传入<code>html.src</code>这种以<code>.</code>分割的字符串，这样，需要数据的时候将会逐级查找。</p>
+<p>更多配置相关的<code>api</code>可参考<a target="_blank" rel="noopener" href="https://www.gruntjs.net/api/grunt.config#grunt.config">官方说明</a>。</p>
+<h3 id="多目标任务（复合任务）"><a href="#多目标任务（复合任务）" class="headerlink" title="多目标任务（复合任务）"></a>多目标任务（复合任务）</h3><p>这里的多目标任务和上面说到的任务队列有所区别。<strong>复合任务</strong>是指在不指定目标（target）时，将依次执行其所包含的所有已命名的子属性（sub-properties） (也就是 目标) 。大多数的contrib任务，包括 <a target="_blank" rel="noopener" href="https://github.com/gruntjs/grunt-contrib-jshint">jshint task</a>、<a target="_blank" rel="noopener" href="https://github.com/gruntjs/grunt-contrib-concat">concat task</a> 和 <a target="_blank" rel="noopener" href="https://github.com/gruntjs/grunt-contrib-uglify">uglify task</a> 都是复合任务。</p>
+<p>多目标任务需要配合配置<code>grunt.config</code>来使用，就比如我们上面定义的<code>html</code>任务：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">grunt</span>) =&gt;</span> &#123;</span><br><span class="line">    grunt.initConfig(&#123;</span><br><span class="line">        html: &#123;</span><br><span class="line">            src: <span class="string">&#x27;src/html/*.html&#x27;</span>,</span><br><span class="line">            out: <span class="string">&#x27;dist/html&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    grunt.registerMultiTask(<span class="string">&#x27;html&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        grunt.log.writeln(<span class="built_in">this</span>.target + <span class="string">&#x27;: &#x27;</span> + <span class="built_in">this</span>.data);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行<code>yarn grunt html</code>就可以看到下面的效果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> grunt html</span></span><br><span class="line">Running &quot;html:src&quot; (html) task</span><br><span class="line">src: src/html/*.html</span><br><span class="line"></span><br><span class="line">Running &quot;html:out&quot; (html) task</span><br><span class="line">out: dist/html</span><br><span class="line"></span><br><span class="line">Done.</span><br><span class="line">Done in 0.42s.</span><br></pre></td></tr></table></figure>
+
+<p>配置项<code>html</code>中的<code>src</code>和<code>out</code>就是多目标任务<code>html</code>的目标项，将会逐一执行注册的多目标任务函数。</p>
+<blockquote>
+<p>使用<code>this.target</code>可以获取到当前目前的键，使用<code>this.data</code>可以获取到当前目标对象配置项的值。</p>
+</blockquote>
+<p>值得注意的一点是，<code>options</code>是一个特别的配置键，一般用于存储一些通用选项，而不会当做目标指向，我们可以使用<code>this.options</code>拿到这些数据：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">grunt</span>) =&gt;</span> &#123;</span><br><span class="line">    grunt.initConfig(&#123;</span><br><span class="line">        html: &#123;</span><br><span class="line">            options: &#123;</span><br><span class="line">                foo: <span class="string">&#x27;foo&#x27;</span>,</span><br><span class="line">                bar: <span class="string">&#x27;bar&#x27;</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">            src: &#123;</span><br><span class="line">                options: &#123;</span><br><span class="line">                    foo: <span class="string">&#x27;src_foo&#x27;</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                file: <span class="string">&#x27;src/html/*.html&#x27;</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">            out: <span class="string">&#x27;dist/html&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    grunt.registerMultiTask(<span class="string">&#x27;html&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.options())</span><br><span class="line">        grunt.log.writeln(<span class="built_in">this</span>.target + <span class="string">&#x27;: &#x27;</span> + <span class="built_in">this</span>.data);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> grunt html</span></span><br><span class="line">Running &quot;html:src&quot; (html) task</span><br><span class="line">&#123; foo: &#x27;src_foo&#x27;, bar: &#x27;bar&#x27; &#125;</span><br><span class="line">src: [object Object]</span><br><span class="line"></span><br><span class="line">Running &quot;html:out&quot; (html) task</span><br><span class="line">&#123; foo: &#x27;foo&#x27;, bar: &#x27;bar&#x27; &#125;    </span><br><span class="line">out: dist/html</span><br><span class="line"></span><br><span class="line">Done.</span><br><span class="line">Done in 0.44s.</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件的使用"><a href="#插件的使用" class="headerlink" title="插件的使用"></a>插件的使用</h3><p>大多数使用我们都是使用插件执行自动化任务工作的，而很少手动使用<code>registerTask</code>注册任务。</p>
+<p>在<code>grunt</code>中使用插件，一般有三个步骤：</p>
+<ul>
+<li>首先是<strong>安装</strong>这个插件模块到本地</li>
+<li>在配置数据中更具插件说明<strong>配置</strong>相关配置项</li>
+<li>使用<code>loadNpmTasks</code>注册插件提供的任务。</li>
+</ul>
+<p>比如我们使用一款文件清理插件：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/grunt-contrib-clean">grunt-contrib-clean</a>：</p>
+<p>首先，安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i grunt-contrib-clean --dev</span><br></pre></td></tr></table></figure>
+
+<p>然后，配置相关插件配置项，并注册插件任务：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">grunt</span>) =&gt;</span> &#123;</span><br><span class="line">    grunt.initConfig(&#123;</span><br><span class="line">        clean: [<span class="string">&#x27;temp/**&#x27;</span>, <span class="string">&#x27;dist/html/**&#x27;</span>]</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    grunt.loadNpmTasks(<span class="string">&#x27;grunt-contrib-clean&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>点击这里访问插件官方提供的<a target="_blank" rel="noopener" href="https://www.gruntjs.net/plugins">插件列表</a>。</p>
+<h3 id="常用的一些插件"><a href="#常用的一些插件" class="headerlink" title="常用的一些插件"></a>常用的一些插件</h3><h4 id="load-grunt-tasks"><a href="#load-grunt-tasks" class="headerlink" title="load-grunt-tasks"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/load-grunt-tasks">load-grunt-tasks</a></h4><p>当使用的插件增多时，我们需要多次使用<code>grunt.loadNpmTasks</code>来注册插件任务，我们可以借助这个插件来<strong>自动注册配置项里的插件</strong>。</p>
+<p>安装完成后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loadGruntTasks =  <span class="built_in">require</span>(<span class="string">&#x27;load-grunt-tasks&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">grunt</span>) </span>&#123;</span><br><span class="line">    grunt.initConfig(&#123;</span><br><span class="line">        clean: &#123;</span><br><span class="line">            temp: <span class="string">&#x27;temp/&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    loadGruntTasks(grunt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="grunt-sass"><a href="#grunt-sass" class="headerlink" title="grunt-sass"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/grunt-sass">grunt-sass</a></h4><p><code>grunt-sass</code>需要<code>node-sass</code>的支持，所以安装时需要多安装一个模块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev node-sass grunt-sass</span><br></pre></td></tr></table></figure>
+
+<p>使用案例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loadGruntTasks =  <span class="built_in">require</span>(<span class="string">&#x27;load-grunt-tasks&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> sass = <span class="built_in">require</span>(<span class="string">&#x27;sass&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">grunt</span>) </span>&#123;</span><br><span class="line">    grunt.initConfig(&#123;</span><br><span class="line">        sass: &#123;</span><br><span class="line">            options: &#123;</span><br><span class="line">                implementation: sass,</span><br><span class="line">                sourceMap: <span class="literal">true</span></span><br><span class="line">            &#125;,</span><br><span class="line">            dist: &#123;</span><br><span class="line">                files: &#123;</span><br><span class="line">                    <span class="string">&#x27;dist/css/main.css&#x27;</span>: <span class="string">&#x27;src/sass/main.scss&#x27;</span>,</span><br><span class="line">                    <span class="string">&#x27;dist/css/footer.css&#x27;</span>: <span class="string">&#x27;src/sass/footer.scss&#x27;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    loadGruntTasks(grunt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="grunt-babel"><a href="#grunt-babel" class="headerlink" title="grunt-babel"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/grunt-babel">grunt-babel</a></h4><p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> yarn add --dev grunt-babel @babel/core @babel/preset-env</span></span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loadGruntTasks =  <span class="built_in">require</span>(<span class="string">&#x27;load-grunt-tasks&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">grunt</span>) </span>&#123;</span><br><span class="line">    grunt.initConfig(&#123;</span><br><span class="line">        babel: &#123;</span><br><span class="line">            options: &#123;</span><br><span class="line">              sourceMap: <span class="literal">true</span>,</span><br><span class="line">              presets: [<span class="string">&#x27;@babel/preset-env&#x27;</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            dist: &#123;</span><br><span class="line">              files: &#123;</span><br><span class="line">                <span class="string">&#x27;dist/js/main.js&#x27;</span>: <span class="string">&#x27;src/js/main.js&#x27;</span></span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    loadGruntTasks(grunt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="grunt-contrib-watch"><a href="#grunt-contrib-watch" class="headerlink" title="grunt-contrib-watch"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/grunt-contrib-watch">grunt-contrib-watch</a></h4><p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install grunt-contrib-watch --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loadGruntTasks =  <span class="built_in">require</span>(<span class="string">&#x27;load-grunt-tasks&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> sass = <span class="built_in">require</span>(<span class="string">&#x27;sass&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">grunt</span>) </span>&#123;</span><br><span class="line">    grunt.initConfig(&#123;</span><br><span class="line">        clean: [<span class="string">&#x27;dist&#x27;</span>],</span><br><span class="line">        sass: &#123;</span><br><span class="line">            options: &#123;</span><br><span class="line">                implementation: sass,</span><br><span class="line">                sourceMap: <span class="literal">true</span></span><br><span class="line">            &#125;,</span><br><span class="line">            dist: &#123;</span><br><span class="line">                files: &#123;</span><br><span class="line">                    <span class="string">&#x27;dist/css/main.css&#x27;</span>: <span class="string">&#x27;src/sass/main.scss&#x27;</span>,</span><br><span class="line">                    <span class="string">&#x27;dist/css/footer.css&#x27;</span>: <span class="string">&#x27;src/sass/footer.scss&#x27;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        babel: &#123;</span><br><span class="line">            options: &#123;</span><br><span class="line">                sourceMap: <span class="literal">true</span>,</span><br><span class="line">                presets: [<span class="string">&#x27;@babel/preset-env&#x27;</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            dist: &#123;</span><br><span class="line">                files: &#123;</span><br><span class="line">                    <span class="string">&#x27;dist/js/main.js&#x27;</span>: <span class="string">&#x27;src/js/main.js&#x27;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        watch: &#123;</span><br><span class="line">            css: &#123;</span><br><span class="line">                files: [<span class="string">&#x27;src/sass/**.scss&#x27;</span>],</span><br><span class="line">                tasks: [<span class="string">&#x27;clean&#x27;</span>, <span class="string">&#x27;sass&#x27;</span>],</span><br><span class="line">            &#125;,</span><br><span class="line">            scripts: &#123;</span><br><span class="line">                files: [<span class="string">&#x27;src/js/**.js&#x27;</span>],</span><br><span class="line">                tasks: [<span class="string">&#x27;clean&#x27;</span>, <span class="string">&#x27;babel&#x27;</span>],</span><br><span class="line">                options: &#123;</span><br><span class="line">                    spawn: <span class="literal">false</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">    loadGruntTasks(grunt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="grunt-contrib-connect"><a href="#grunt-contrib-connect" class="headerlink" title="grunt-contrib-connect"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/grunt-contrib-connect">grunt-contrib-connect</a></h4><p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install grunt-contrib-connect --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>结合<code>watch</code>的使用:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loadGruntTasks =  <span class="built_in">require</span>(<span class="string">&#x27;load-grunt-tasks&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> sass = <span class="built_in">require</span>(<span class="string">&#x27;sass&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">grunt</span>) </span>&#123;</span><br><span class="line">    grunt.initConfig(&#123;</span><br><span class="line">        clean: &#123;</span><br><span class="line">            css: <span class="string">&#x27;dist/css&#x27;</span>,</span><br><span class="line">            js: <span class="string">&#x27;dist/js&#x27;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        sass: &#123;</span><br><span class="line">            options: &#123;</span><br><span class="line">                implementation: sass,</span><br><span class="line">                sourceMap: <span class="literal">true</span></span><br><span class="line">            &#125;,</span><br><span class="line">            dist: &#123;</span><br><span class="line">                files: &#123;</span><br><span class="line">                    <span class="string">&#x27;dist/css/main.css&#x27;</span>: <span class="string">&#x27;src/sass/main.scss&#x27;</span>,</span><br><span class="line">                    <span class="string">&#x27;dist/css/footer.css&#x27;</span>: <span class="string">&#x27;src/sass/footer.scss&#x27;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        babel: &#123;</span><br><span class="line">            options: &#123;</span><br><span class="line">                sourceMap: <span class="literal">true</span>,</span><br><span class="line">                presets: [<span class="string">&#x27;@babel/preset-env&#x27;</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            dist: &#123;</span><br><span class="line">                files: &#123;</span><br><span class="line">                    <span class="string">&#x27;dist/js/main.js&#x27;</span>: <span class="string">&#x27;src/js/main.js&#x27;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        watch: &#123;</span><br><span class="line">            options: &#123;</span><br><span class="line">                livereload: <span class="literal">true</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">            css: &#123;</span><br><span class="line">                files: [<span class="string">&#x27;src/sass/**.scss&#x27;</span>],</span><br><span class="line">                tasks: [<span class="string">&#x27;clean:css&#x27;</span>, <span class="string">&#x27;sass&#x27;</span>],</span><br><span class="line">            &#125;,</span><br><span class="line">            scripts: &#123;</span><br><span class="line">                files: [<span class="string">&#x27;src/js/**.js&#x27;</span>],</span><br><span class="line">                tasks: [<span class="string">&#x27;clean:js&#x27;</span>, <span class="string">&#x27;babel&#x27;</span>],</span><br><span class="line">                options: &#123;</span><br><span class="line">                    spawn: <span class="literal">false</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">        connect: &#123;</span><br><span class="line">            server: &#123;</span><br><span class="line">                options: &#123;</span><br><span class="line">                    port: <span class="number">8000</span>,</span><br><span class="line">                    <span class="comment">// keepalive: true,</span></span><br><span class="line">                    open: <span class="literal">true</span>,</span><br><span class="line">                    base: <span class="string">&#x27;dist&#x27;</span>,</span><br><span class="line">                    index: <span class="string">&#x27;index.html&#x27;</span>,</span><br><span class="line">                    livereload: <span class="literal">true</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    loadGruntTasks(grunt);</span><br><span class="line">    grunt.registerTask(<span class="string">&#x27;default&#x27;</span>, [<span class="string">&#x27;connect&#x27;</span>, <span class="string">&#x27;watch&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Gulp的使用"><a href="#Gulp的使用" class="headerlink" title="Gulp的使用"></a>Gulp的使用</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.gulpjs.com.cn/">gulp</a> 将开发流程中让人痛苦或耗时的任务自动化，从而减少你所浪费的时间、创造更大价值。</p>
+</blockquote>
+<p>使用之下发现，<code>gulp</code>相较于<code>grunt</code>来说更灵活易用，grunt是通过注册一个一个的任务来完成自动化操作的，而gulp则是<strong>基于流（stream）操作</strong>来实现的。</p>
+<h3 id="快速入门-1"><a href="#快速入门-1" class="headerlink" title="快速入门"></a>快速入门</h3><p>首先安装的<code>gulp</code>模块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br><span class="line">npm install gulp --dev</span><br></pre></td></tr></table></figure>
+
+<p>创建gulp的入口文件：<code>gulpfile.js</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">aTask</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;this is a task...&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    aTask</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与<code>grunt</code>不同的是，我们只需要导出模块函数，这个函数就会被注册为一个任务，我们试着执行一下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn gulp aTask</span><br></pre></td></tr></table></figure>
+
+<p>可以看到打印结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">yarn run v1.22.5</span><br><span class="line"><span class="meta">$</span><span class="bash"> gulp aTask</span></span><br><span class="line">[08:26:21] Using gulpfile D:\Test\gulpDemo\gulpfile.js</span><br><span class="line">[08:26:21] Starting &#x27;aTask&#x27;...</span><br><span class="line">this is a task...</span><br><span class="line">[08:26:21] The following tasks did not complete: aTask</span><br><span class="line">[08:26:21] Did you forget to signal async completion? </span><br><span class="line">error Command failed with exit code 1.</span><br><span class="line">info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，任务正常执行了，但是有报错提示<code>Did you forget to signal async completion? </code>。这是因为，gulp中的任务都必须是异步的，因此，我们需要返回异步结束标记来标记任务正常结束，我们可以使用任务函数的参数<code>done</code>来处理，也可以直接返回<code>Promise.resolve</code>来实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">aTask</span>(<span class="params">done</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;this is a task...&#x27;</span>)</span><br><span class="line">    done()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">aTask2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;this is a task...&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    aTask,</span><br><span class="line">    sTask2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就能正常执行了。</p>
+<blockquote>
+<p>早期版本注册一个任务有点类似<code>grunt</code>，我们可以使用<code>require(&#39;gulp&#39;).task(taskName, taskFun)</code>来实现，但目前我们只需要直接当做普通函数导出模块即可自动完成注册。</p>
+</blockquote>
+<h3 id="组合任务和异步任务"><a href="#组合任务和异步任务" class="headerlink" title="组合任务和异步任务"></a>组合任务和异步任务</h3><p>在<code>grunt</code>中通过<code>grunt.registerTask</code>或<code>grunt.registerMultiTask </code>的api，使用<strong>任务列表的模式</strong>进行任务组合，但有一个问题就是异步函数会阻断往往会暂停任务列表的执行，而在<code>gulp</code>中就显得更加灵活。</p>
+<p>在<code>gulp</code>中，有两种任务组合的方式：队列（同步）执行任务（series）和异步执行任务（parallel）。</p>
+<p>队列执行就是，安装排列的任务顺序依次执行，上一个执行结束后再执行下一个任务。而异步执行任务就是，多个任务异步执行，不会相互阻塞。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;series, parallel&#125; = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">task1</span>(<span class="params">done</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;task1 runing...&#x27;</span>)</span><br><span class="line">    done()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">task2</span>(<span class="params">done</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;task2 runing...&#x27;</span>)</span><br><span class="line">    done()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">task1_async</span>(<span class="params">done</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;task1_async runing...&#x27;</span>)</span><br><span class="line">        done()</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> task_list = series(task1, task1_async, task2) <span class="comment">// 同步执行队列：就算存在异步模式也并不会阻断后续任务的执行</span></span><br><span class="line"><span class="keyword">const</span> async_task_list = parallel(task1, task1_async, task2) <span class="comment">// 异步执行队列，任务同时执行</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    task_list,</span><br><span class="line">    async_task_list</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们知道，gulp中的任务都被定义为异步任务，如过想要任务执行失败错误，可以使用：<code>done(new Error())</code>或者<code>return Promise.reject()</code>的形式。</p>
+<p>需要注意的是，一旦某个任务执行失败，不管是用<code>series</code>还是<code>parallel</code>来组合任务，都会导致任务队列终止运行。</p>
+<h3 id="核心工作原理：文件流模式（The-Streaming-Building-System）"><a href="#核心工作原理：文件流模式（The-Streaming-Building-System）" class="headerlink" title="核心工作原理：文件流模式（The Streaming Building System）"></a>核心工作原理：文件流模式（The Streaming Building System）</h3><p>正如<code>grunt</code>的使用过程一样，不管是我们需要编译模板文件，编译sass文件，还是别的什么文件，<strong>都是在对文件做处理</strong>，比如<code>*.scss</code>输出为<code>*.css</code>文件。</p>
+<p><code>gulp</code>的核心工作原理也是这个逻辑：文件流构建模式：**<code>输入流 → 转换流（加工）→ 输出流 </code>**。</p>
+<p>输入流就是读取文件内容，输出流就是写入文件，这些操作都可以使用<code>fs</code>模块实现，而转换流就是内容加工的过程，我们可以借助一个第三方模块：<code>stream</code>中的<code>Transform</code>类来实现。</p>
+<p>下面我们使用文件流模式来实现压缩<code>css</code>的过程：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> &#123;Transform&#125; = <span class="built_in">require</span>(<span class="string">&#x27;stream&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> minCss = <span class="function">(<span class="params">done</span>) =&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// 输入流：读取文件</span></span><br><span class="line">    <span class="keyword">const</span> read = fs.createReadStream(<span class="string">&#x27;main.css&#x27;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 转换流：文件加工、转换的过程</span></span><br><span class="line">    <span class="keyword">const</span> transform = <span class="keyword">new</span> Transform(&#123;</span><br><span class="line">        transform: <span class="function"><span class="keyword">function</span>(<span class="params">chunk, encoding, callback</span>)</span>&#123;</span><br><span class="line">            <span class="comment">// 转换流的核心处理逻辑</span></span><br><span class="line">            <span class="keyword">const</span> input = chunk.toString();</span><br><span class="line">            <span class="comment">// css的压缩逻辑</span></span><br><span class="line">            <span class="keyword">const</span> output = input</span><br><span class="line">                .replace(<span class="regexp">/\s+\&#123;/g</span>, <span class="string">&#x27;&#123;&#x27;</span>) <span class="comment">// &#123;前后的空白字符</span></span><br><span class="line">                .replace(<span class="regexp">/\&#123;\s+/g</span>, <span class="string">&#x27;&#123;&#x27;</span>)</span><br><span class="line">                .replace(<span class="regexp">/\s+\&#125;/g</span>, <span class="string">&#x27;&#125;&#x27;</span>) <span class="comment">// &#125;前后的空白字符</span></span><br><span class="line">                .replace(<span class="regexp">/\&#125;\s+/g</span>, <span class="string">&#x27;&#125;&#x27;</span>)</span><br><span class="line">                .replace(<span class="regexp">/;\&#125;/g</span>, <span class="string">&#x27;&#125;&#x27;</span>)</span><br><span class="line">                .replace(<span class="regexp">/\s+:/g</span>, <span class="string">&#x27;:&#x27;</span>) <span class="comment">// :前后的空白字符</span></span><br><span class="line">                .replace(<span class="regexp">/:\s+/g</span>, <span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">                .replace(<span class="regexp">/\/\*.+?\*\//g</span>, <span class="string">&#x27;&#x27;</span>); <span class="comment">// 注释</span></span><br><span class="line">            callback(<span class="literal">null</span>, output);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出流：写入文件</span></span><br><span class="line">    <span class="keyword">const</span> write = fs.createWriteStream(<span class="string">&#x27;main.min.css&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 使用管道pipe来控制文件流</span></span><br><span class="line">    read</span><br><span class="line">        .pipe(transform)</span><br><span class="line">        .pipe(write)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 异步执行结束标记</span></span><br><span class="line">    <span class="comment">// read.on(&#x27;end&#x27;, done);</span></span><br><span class="line">    <span class="keyword">return</span> read;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    minCss,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这也是<code>gulp</code>最核心的文件操作过程。</p>
+</blockquote>
+<p><code>gulp</code>中提供了文件流操作的api，这样我们就不需要通过<code>fs</code>模块来实现了，而<code>gulp</code>中提供的插件相当于转换流插件，这样，我们就能通过流模式就像简洁高效地开发啦。</p>
+<p><code>gulp</code>提供的读取流使用<code>src</code>对象，写入流使用<code>dest</code>对象，而转换流则是相应的插件来实现。</p>
+<p>比如上面我们实现css文件压缩任务，用gulp中的api和插件来实现则是这样的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; src, dest &#125; = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> cleanCss = <span class="built_in">require</span>(<span class="string">&#x27;gulp-clean-css&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> minCss = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;*.css&#x27;</span>) <span class="comment">// 读取css文件，可使用通配符</span></span><br><span class="line">        .pipe(cleanCss()) <span class="comment">// 转换流</span></span><br><span class="line">        .pipe(dest(<span class="string">&#x27;mincss&#x27;</span>)) <span class="comment">// 写入流，参数为目录</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    minCss</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后的案例基本都是这个不变的模式，区别在于插件的选择而已，所以使用起来十分方便。</p>
+<blockquote>
+<p>使用<code>grunt</code>的感觉就是在找插件，写配置文件，其实使用<code>gulp</code>的感觉也是如此，找到适合的插件，写配置，传入<code>pipe</code>管道中作为转换流调用，虽然在使用上都是在找插件的过程，但<code>gulp</code>采用的这种流模式更清晰，更高效，也更灵活，我们可以在管道流中自由使用自己想要加工的效果插件。</p>
+</blockquote>
+<h3 id="样式编译"><a href="#样式编译" class="headerlink" title="样式编译"></a>样式编译</h3><p>这里以<code>sass</code>文件为例，编译为<code>css</code>文件，我们需要使用<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-sass">gulp-sass</a>这个插件。</p>
+<p>在开始之前，我们需要准备好一些测试文件，比如在项目下创建这些样式文件：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└───src</span><br><span class="line">    ├───assets</span><br><span class="line">        ├───styles</span><br><span class="line">            └───_icons.scss</span><br><span class="line">            └───_variables.scss</span><br><span class="line">            └───main.scss</span><br></pre></td></tr></table></figure>
+
+<p>下面是最基本的使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;src, dest&#125; = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> transform_sass = <span class="built_in">require</span>(<span class="string">&#x27;gulp-sass&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> style = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/styles/*.scss&#x27;</span>)</span><br><span class="line">        .pipe(transform_sass())</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    style</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行编译命令后，我们发现，在<code>dist</code>目录下多了一个文件：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└───dist</span><br><span class="line">    └───main.css</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，<code>_icons.scss</code>和<code>_variables.scss</code>未编译，这是因为一般来说，我们都把<code>_</code>开头的样式文件作为其他样式文件的依赖，而不会单独存在，所以没必要编译出来，<code>sass</code>会自动过滤这些文件。</p>
+<p>有时候我们希望保留编译前的目录结构。这需要我们修改一些配置项来改变：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> style = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/styles/*.scss&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)<span class="comment">// 读取流指定base选项可以保留写入流的目录结构</span></span><br><span class="line">        .pipe(transform_sass(&#123; <span class="attr">outputStyle</span>: <span class="string">&#x27;expanded&#x27;</span> &#125;))</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="脚本编译"><a href="#脚本编译" class="headerlink" title="脚本编译"></a>脚本编译</h3><p>有时候我们希望使用最新的<code>js</code>语法，就需要使用<code>babel</code>进行编译。或者说我们是用<code>ts</code>等语言进行开发的，也需要进行编译。</p>
+<p>安装<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-babel">gulp-babel</a>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Babel 7</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install --save-dev gulp-babel @babel/core @babel/preset-env</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Babel 6</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install --save-dev gulp-babel@7 babel-core babel-preset-env</span></span><br></pre></td></tr></table></figure>
+
+<p>用法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> _babel = <span class="built_in">require</span>(<span class="string">&#x27;gulp-babel&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> script = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/scripts/*.js&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(_babel(&#123; <span class="attr">presets</span>: [<span class="string">&#x27;@babel/preset-env&#x27;</span>] &#125;))</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你使用了<code>ts</code>进行开发，你需要安装<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-typescript">gulp-typescript</a>模块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add gulp-typescript typescript --dev </span><br></pre></td></tr></table></figure>
+
+<p>用法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> _ts = <span class="built_in">require</span>(<span class="string">&#x27;gulp-typescript&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> script_ts = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/scripts/*.ts&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(_ts())</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="模板引擎编译"><a href="#模板引擎编译" class="headerlink" title="模板引擎编译"></a>模板引擎编译</h3><p>模板引擎有多种，需要更具你自己使用的模板语法来选择对应的语法。我们使用到的插件是<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-swig">gulp-swig</a>。</p>
+<p>安装：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add gulp-swig --dev</span><br></pre></td></tr></table></figure>
+
+<p>用法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> pageData = &#123;&#125;; <span class="comment">// 需要根据你编写的模板文件传入相应数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> page = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/**/*.html&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(_swig(&#123; <span class="attr">data</span>: pageDate &#125;))</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结合上面的样式编译和脚本编译，就可以组合为一个编译任务：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; parallel &#125; = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> compile = parallel(style, script, page)</span><br></pre></td></tr></table></figure>
+
+<h3 id="图片字体转换"><a href="#图片字体转换" class="headerlink" title="图片字体转换"></a>图片字体转换</h3><p>对于图片、字体等文件，一般来说不需要转译，只需要压缩等操作即可，我们使用<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-imagemin">gulp-imagemin</a>模块。</p>
+<p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add gulp-imagemin --dev</span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> _imagemin = <span class="built_in">require</span>(<span class="string">&#x27;gulp-imagemin&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> image = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/images/**&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(_imagemin())</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> font = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/fonts/**&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(_imagemin())</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他文件的处理"><a href="#其他文件的处理" class="headerlink" title="其他文件的处理"></a>其他文件的处理</h3><p>比如文件的拷贝、清除等。</p>
+<p>这里清除文件可以使用<code>gulp</code>提供的<code>gulp-clean</code>，由于清除文件不需要输出文件，这里也可以使用第三方模块，不走文件流模式，这里我们选择<code>del</code>这个模块。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> clean = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> _del([<span class="string">&#x27;dist&#x27;</span>])</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> extra = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;public/**&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;public&#x27;</span> &#125;)</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结合之前写好的编译任务，组合为最终的构建任务<code>build</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> compile = parallel(style, script, page, image, font) <span class="comment">// 编译任务</span></span><br><span class="line"><span class="keyword">const</span> build = series(clean, parallel(compile, extra)) <span class="comment">// 构建任务</span></span><br></pre></td></tr></table></figure>
+
+<p>到这里，自动构建的基本已经完成，如果有其他需要，可自行选择插件来自动完成你的任务。</p>
+<h3 id="自动加载插件"><a href="#自动加载插件" class="headerlink" title="自动加载插件"></a>自动加载插件</h3><p>随着我们使用的<code>gulp</code>插件越来越多，我们每次使用都需要手动导入插件，这样其实很麻烦，在<code>grunt</code>的使用中，我们使用<code>load-grunt-tasks</code>为我们自动注册配置里的任务项，同样的，<code>gulp</code>中也有一个自动加载插件的插件：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-load-plugins">gulp-load-plugins</a>。这是非官方插件，目前在gulp插件列表中无法搜索到，这个插件会自动加载你安装的<code>gulp</code>插件，这样我们拿到这个包含所有插件的对象，就能直接使用了。</p>
+<p>整合上文使用到的所有任务：（需要注意的是命名问题，比如<code>gulp-babel</code>可以使用<code>plugins.babel</code>获取，而<code>gulp-clean-css</code>这样的插件需要使用<code>plugins.cleanCss</code>来获取）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;src, dest, parallel, series&#125; = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> _sass = <span class="built_in">require</span>(<span class="string">&#x27;gulp-sass&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> loadPlugins = <span class="built_in">require</span>(<span class="string">&#x27;gulp-load-plugins&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> _del = <span class="built_in">require</span>(<span class="string">&#x27;del&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> plugins = loadPlugins(); <span class="comment">// 加载所有安装的gulp插件</span></span><br><span class="line"><span class="keyword">const</span> pageDate = &#123;&#125;; <span class="comment">// 模板引擎数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 样式编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> style = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/styles/*.scss&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)<span class="comment">// 读取流指定base选项可以保留写入流的目录结构</span></span><br><span class="line">        .pipe(_sass(&#123; <span class="attr">outputStyle</span>: <span class="string">&#x27;expanded&#x27;</span> &#125;))</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 脚本编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> script = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/scripts/*.js&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(plugins.babel(&#123; <span class="attr">presets</span>: [<span class="string">&#x27;@babel/preset-env&#x27;</span>] &#125;))</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> script_ts = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/scripts/*.ts&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(plugins.typescript(&#123;</span><br><span class="line">            noImplicitAny: <span class="literal">true</span>,</span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 模板引擎编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> page = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/**/*.html&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(plugins.swig(&#123; <span class="attr">data</span>: pageDate &#125;))</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 图片压缩</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> image = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/images/**&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(plugins.imagemin())</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> font = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/fonts/**&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;src&#x27;</span> &#125;)</span><br><span class="line">        .pipe(plugins.imagemin())</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 清除目录和文件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> clean = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> _del([<span class="string">&#x27;dist&#x27;</span>])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 额外的任务：复制一些必要的文件等</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> extra = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;public/**&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;public&#x27;</span> &#125;)</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> compile = parallel(style, script, page, image, font)</span><br><span class="line"><span class="keyword">const</span> build = series(clean, parallel(compile, extra))</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    clean,</span><br><span class="line">    compile,</span><br><span class="line">    build,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动服务器"><a href="#启动服务器" class="headerlink" title="启动服务器"></a>启动服务器</h3><p>node服务器插件有很多，这里我们可以使用<code>gulp</code>提供的<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-live-server">gulp-live-server</a>，也可以自由选择。因为不需要使用文件流模式。</p>
+<p>使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> server = <span class="function">(<span class="params">done</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> live_server = plugins.liveServer.static(<span class="string">&#x27;dist&#x27;</span>, <span class="number">8080</span>);</span><br><span class="line">    live_server.start();</span><br><span class="line">    done();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>比如也换成使用比较多的：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/browser-sync">browser-sync</a>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> server = <span class="function">(<span class="params">done</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> browserServer = browserSync.create();</span><br><span class="line">    browserServer.init(&#123;</span><br><span class="line">        notify: <span class="literal">false</span>,</span><br><span class="line">        files: <span class="string">&#x27;dist/**&#x27;</span>, <span class="comment">// 监听文件热更新</span></span><br><span class="line">        port: <span class="number">3000</span>,</span><br><span class="line">        server: &#123;</span><br><span class="line">            baseDir: <span class="string">&quot;dist&quot;</span>,</span><br><span class="line">            routes: &#123;</span><br><span class="line">                <span class="string">&quot;/node_modules&quot;</span>: <span class="string">&#x27;node_modules&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件变化监听"><a href="#文件变化监听" class="headerlink" title="文件变化监听"></a>文件变化监听</h3><p><code>gulp</code>模块提供了文件监听的函数<code>watch</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 服务器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> server = <span class="function">(<span class="params">done</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> bs = browserSync.create();</span><br><span class="line">    watch(<span class="string">&#x27;src/assets/styles/*.scss&#x27;</span>, style);</span><br><span class="line">    watch(<span class="string">&#x27;src/assets/scripts/*.js&#x27;</span>, script);</span><br><span class="line">    watch(<span class="string">&#x27;src/**/*.html&#x27;</span>, page);</span><br><span class="line">    <span class="comment">// 静态资源一般无需重新编译，只需要重启服务器即可</span></span><br><span class="line">    watch([</span><br><span class="line">        <span class="string">&#x27;src/assets/images/**&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;src/assets/fonts/**&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;public/**&#x27;</span></span><br><span class="line">    ], bs.reload);</span><br><span class="line"></span><br><span class="line">    bs.init(&#123;</span><br><span class="line">        notify: <span class="literal">false</span>,</span><br><span class="line">        files: <span class="string">&#x27;dist/**&#x27;</span>, <span class="comment">// 监听文件</span></span><br><span class="line">        open: <span class="literal">false</span>,</span><br><span class="line">        port: <span class="number">3000</span>,</span><br><span class="line">        server: &#123;</span><br><span class="line">            baseDir: [<span class="string">&#x27;dist&#x27;</span>, <span class="string">&#x27;src&#x27;</span>, <span class="string">&#x27;public&#x27;</span>], <span class="comment">// 会依次查找请求资源</span></span><br><span class="line">            routes: &#123;</span><br><span class="line">                <span class="string">&quot;/node_modules&quot;</span>: <span class="string">&#x27;node_modules&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这样，我们启动服务器时就能开启监听，实时编译。</p>
+<p>这里有个细节问题，其实监听需要编译文件就可以了，服务器无需再监听<code>dist</code>文件，我们可以利用<code>bs.reload</code>重启服务器的方法来改进，类似这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">watch(<span class="string">&#x27;src/assets/styles/*.scss&#x27;</span>, series(style, bs.reload));</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件引用的处理"><a href="#文件引用的处理" class="headerlink" title="文件引用的处理"></a>文件引用的处理</h3><p>在html代码中，可能引用了一些<code>node_modules</code>目录下的css或者js，类似这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=<span class="string">&quot;stylesheet&quot;</span> href=<span class="string">&quot;/node_modules/bootstrap/dist/css/bootstrap.css&quot;</span>&gt;</span><br><span class="line">    </span><br><span class="line">&lt;script src=<span class="string">&quot;/node_modules/jquery/dist/jquery.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=<span class="string">&quot;/node_modules/popper.js/dist/umd/popper.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=<span class="string">&quot;/node_modules/bootstrap/dist/js/bootstrap.js&quot;</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>当我们启动服务器时，如果没有配置路由，是无法访问到这个目录下的文件的。</p>
+<p>但是，当我们打包上线的时候，<code>node_modules</code>是不存在的，这样同样无法访问到这些文件，一些办法是我们手动整理这些需要的引用文件，放到要打包的目录下，这样的效率是比较低的，实际上，我们可以使用<code>gulp</code>提供的一个插件来自动处理：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-useref">gulp-useref</a>。</p>
+<p>通过一定规则的html注释，这个插件能将注释包裹的文件引用下的资源自动打包到指定的目录下，这样，就避免了引文文件不存在而找不到文件的问题。</p>
+<p>html写法：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- build:css assets/styles/vendor.css --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/node_modules/bootstrap/dist/css/bootstrap.css&quot;</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- endbuild --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- build:css assets/styles/main.css --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;assets/styles/main.css&quot;</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- endbuild --&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- build:js assets/scripts/vendor.js --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/node_modules/jquery/dist/jquery.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/node_modules/popper.js/dist/umd/popper.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/node_modules/bootstrap/dist/js/bootstrap.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- endbuild --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- build:js assets/scripts/main.js --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/scripts/main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- endbuild --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>用法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> useref = <span class="function">() =&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;dist/*html&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;dist&#x27;</span> &#125;)</span><br><span class="line">        .pipe(plugins.useref(&#123; <span class="attr">searchPath</span>: [<span class="string">&#x27;dist&#x27;</span>, <span class="string">&#x27;.&#x27;</span>] &#125;)) <span class="comment">// 设置文件查找目录</span></span><br><span class="line">        .pipe(dest(<span class="string">&#x27;release&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：上面的示例中我们把最终的文件放到了<code>release</code>目录下，这样因为如果文件读取流和写入流在同一个文件很可能导致写入失败，而且重写<code>html</code>文件之后，之前的特殊标记都消失了，需要重新编译才能使用<code>useref</code>。</p>
+</blockquote>
+<p>但是，使用<code>release</code>文件之后，其他很多页面静态编译资源都已经存在了<code>dist</code>目录，所以，当我们使用了<code>useref</code>，就需要使用两个目录进行文件整理：<code>dist目录</code>：一般为最终打包上线的目录，<code>temp</code>目录：缓存目录，开发阶段调试的目录。</p>
+<p>首先，useref构建之后的文件是需要上线的，一般我们需要进行压缩代码的操作，但是引文文件包含：css、js还有html，不同的文件类型需要不同的压缩插件，所以我们需要借助<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-if">gulp-if</a>进行流判断操作：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> useref = <span class="function">() =&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;dist/*html&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;dist&#x27;</span> &#125;)</span><br><span class="line">        .pipe(plugins.useref(&#123; <span class="attr">searchPath</span>: [<span class="string">&#x27;dist&#x27;</span>, <span class="string">&#x27;.&#x27;</span>] &#125;))</span><br><span class="line">        .pipe(plugins.if(<span class="regexp">/\.js$/</span>, plugins.uglify())) <span class="comment">// js压缩</span></span><br><span class="line">        .pipe(plugins.if(<span class="regexp">/\.css$/</span>, plugins.cleanCss())) <span class="comment">// css压缩</span></span><br><span class="line">        .pipe(plugins.if(<span class="regexp">/\.html$/</span>, plugins.htmlmin(&#123; <span class="comment">// html压缩</span></span><br><span class="line">            collapseWhitespace: <span class="literal">true</span>,</span><br><span class="line">            minifyCss: <span class="literal">true</span>,</span><br><span class="line">            minifyJs: <span class="literal">true</span>,</span><br><span class="line">        &#125;)))</span><br><span class="line">        .pipe(dest(<span class="string">&#x27;release&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是整个文件的目录重新整理：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;src, dest, parallel, series, watch&#125; = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> _sass = <span class="built_in">require</span>(<span class="string">&#x27;gulp-sass&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> loadPlugins = <span class="built_in">require</span>(<span class="string">&#x27;gulp-load-plugins&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> _del = <span class="built_in">require</span>(<span class="string">&#x27;del&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> browserSync = <span class="built_in">require</span>(<span class="string">&#x27;browser-sync&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> plugins = loadPlugins(); <span class="comment">// 加载所有安装的gulp插件</span></span><br><span class="line"><span class="keyword">const</span> pageDate = &#123;&#125;; <span class="comment">// 模板引擎数据</span></span><br><span class="line"><span class="keyword">const</span> srcPath = <span class="string">&#x27;src&#x27;</span>; <span class="comment">// 源文件目录</span></span><br><span class="line"><span class="keyword">const</span> tempPath = <span class="string">&#x27;temp&#x27;</span>; <span class="comment">// 缓存目录，一般用于本地测试时使用</span></span><br><span class="line"><span class="keyword">const</span> distPath = <span class="string">&#x27;dist&#x27;</span>; <span class="comment">// 打包发布目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 清除目录和文件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> clean = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> _del([tempPath, distPath])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 样式编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> style = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/styles/*.scss&#x27;</span>, &#123; <span class="attr">base</span>: srcPath &#125;)<span class="comment">// 读取流指定base选项可以保留写入流的目录结构</span></span><br><span class="line">        .pipe(_sass(&#123; <span class="attr">outputStyle</span>: <span class="string">&#x27;expanded&#x27;</span> &#125;))</span><br><span class="line">        .pipe(dest(tempPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 脚本编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> script = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/scripts/*.js&#x27;</span>, &#123; <span class="attr">base</span>: srcPath &#125;)</span><br><span class="line">        .pipe(plugins.babel(&#123; <span class="attr">presets</span>: [<span class="string">&#x27;@babel/preset-env&#x27;</span>] &#125;))</span><br><span class="line">        .pipe(dest(tempPath))</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> script_ts = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/scripts/*.ts&#x27;</span>, &#123; <span class="attr">base</span>: srcPath &#125;)</span><br><span class="line">        .pipe(plugins.typescript(&#123;</span><br><span class="line">            noImplicitAny: <span class="literal">true</span>,</span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(dest(tempPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 模板引擎编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> page = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/**/*.html&#x27;</span>, &#123; <span class="attr">base</span>: srcPath &#125;)</span><br><span class="line">        .pipe(plugins.swig(&#123; <span class="attr">data</span>: pageDate, <span class="attr">cache</span>: <span class="literal">false</span> &#125;))</span><br><span class="line">        .pipe(dest(tempPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 图片压缩</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> image = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/images/**&#x27;</span>, &#123; <span class="attr">base</span>: srcPath &#125;)</span><br><span class="line">        .pipe(plugins.imagemin())</span><br><span class="line">        .pipe(dest(distPath))</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> font = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;src/assets/fonts/**&#x27;</span>, &#123; <span class="attr">base</span>: srcPath &#125;)</span><br><span class="line">        .pipe(plugins.imagemin())</span><br><span class="line">        .pipe(dest(distPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 额外的任务：复制一些必要的文件等</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> extra = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;public/**&#x27;</span>, &#123; <span class="attr">base</span>: <span class="string">&#x27;public&#x27;</span> &#125;)</span><br><span class="line">        .pipe(dest(distPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 服务器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> server = <span class="function">(<span class="params">done</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> bs = browserSync.create();</span><br><span class="line">    watch(<span class="string">&#x27;src/assets/styles/*.scss&#x27;</span>, series(style, bs.reload));</span><br><span class="line">    watch(<span class="string">&#x27;src/assets/scripts/*.js&#x27;</span>, series(script, bs.reload));</span><br><span class="line">    watch(<span class="string">&#x27;src/**/*.html&#x27;</span>, series(page, bs.reload));</span><br><span class="line">    <span class="comment">// 静态资源一般无需重新编译，只需要重启服务器即可</span></span><br><span class="line">    watch([</span><br><span class="line">        <span class="string">&#x27;src/assets/images/**&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;src/assets/fonts/**&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;public/**&#x27;</span></span><br><span class="line">    ], bs.reload);</span><br><span class="line"></span><br><span class="line">    bs.init(&#123;</span><br><span class="line">        notify: <span class="literal">false</span>,</span><br><span class="line">        <span class="comment">// files: &#x27;dist/**&#x27;, // 监听文件</span></span><br><span class="line">        open: <span class="literal">false</span>,</span><br><span class="line">        port: <span class="number">3000</span>,</span><br><span class="line">        server: &#123;</span><br><span class="line">            baseDir: [tempPath, srcPath, <span class="string">&#x27;public&#x27;</span>], <span class="comment">// 会依次查找请求资源</span></span><br><span class="line">            routes: &#123;</span><br><span class="line">                <span class="string">&quot;/node_modules&quot;</span>: <span class="string">&#x27;node_modules&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * useref:文件引用处理</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> useref = <span class="function">() =&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> src(<span class="string">&#x27;temp/*html&#x27;</span>, &#123; <span class="attr">base</span>: tempPath &#125;)</span><br><span class="line">        .pipe(plugins.useref(&#123; <span class="attr">searchPath</span>: [tempPath, <span class="string">&#x27;.&#x27;</span>] &#125;))</span><br><span class="line">        .pipe(plugins.if(<span class="regexp">/\.js$/</span>, plugins.uglify())) <span class="comment">// js压缩</span></span><br><span class="line">        .pipe(plugins.if(<span class="regexp">/\.css$/</span>, plugins.cleanCss())) <span class="comment">// css压缩</span></span><br><span class="line">        .pipe(plugins.if(<span class="regexp">/\.html$/</span>, plugins.htmlmin(&#123; <span class="comment">// html压缩</span></span><br><span class="line">            collapseWhitespace: <span class="literal">true</span>,</span><br><span class="line">            minifyCss: <span class="literal">true</span>,</span><br><span class="line">            minifyJs: <span class="literal">true</span>,</span><br><span class="line">        &#125;)))</span><br><span class="line">        .pipe(dest(distPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 任务组合</span></span><br><span class="line"><span class="keyword">const</span> compile = parallel(style, script, page)</span><br><span class="line"><span class="keyword">const</span> develop = series(clean, compile, server)</span><br><span class="line"><span class="keyword">const</span> build = series(clean, parallel(compile, image, font, extra), useref)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    clean,</span><br><span class="line">    develop,</span><br><span class="line">    build,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了方便测试，我们一般还需要在<code>package.json</code>的添加<code>scripts</code>信息:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;scripts&quot;: &#123;</span><br><span class="line">  &quot;clean&quot;: &quot;gulp clean&quot;,</span><br><span class="line">  &quot;develop&quot;: &quot;gulp develop&quot;,</span><br><span class="line">  &quot;build&quot;: &quot;gulp build&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果需要上传到git，需要忽略自动构建文件夹：<code>dist</code>和<code>temp</code>。</p>
+<h2 id="封装自动构建工作流脚手架"><a href="#封装自动构建工作流脚手架" class="headerlink" title="封装自动构建工作流脚手架"></a>封装自动构建工作流脚手架</h2><p>上面的自动化是比较常用的，我们可以封装为自己的脚手架，便于下次直接使用，我们可以创建一个基于<code>yeoman</code>之类的脚手架，也可以直接把整个文件放到<code>git</code>远程仓库。脚手架的好处是支持cli用户个性化设置，本质上也只是文件的复制工作，为了这个模块更通用，我们需要把<code>gulpfile.js</code>文件进行路径、配置的提取，便于使用者修改配置。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;src, dest, parallel, series, watch&#125; = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> _del = <span class="built_in">require</span>(<span class="string">&#x27;del&#x27;</span>)    <span class="comment">// 文件移除模块</span></span><br><span class="line"><span class="keyword">const</span> &#123; join &#125; = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> loadPlugins = <span class="built_in">require</span>(<span class="string">&#x27;gulp-load-plugins&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> browserSync = <span class="built_in">require</span>(<span class="string">&#x27;browser-sync&#x27;</span>) <span class="comment">// 服务器模块</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> plugins = loadPlugins(); <span class="comment">// 加载所有本地已安装的gulp插件</span></span><br><span class="line"><span class="comment">// 文件配置项(用户自定义)</span></span><br><span class="line"><span class="keyword">const</span> default_userConfig = &#123;</span><br><span class="line">    build: &#123; <span class="comment">// 构建项目的路径配置</span></span><br><span class="line">        srcPath: <span class="string">&#x27;src&#x27;</span>,</span><br><span class="line">        tempPath: <span class="string">&#x27;temp&#x27;</span>,</span><br><span class="line">        distPath: <span class="string">&#x27;dist&#x27;</span>,</span><br><span class="line">        publicPath: <span class="string">&#x27;public&#x27;</span>,</span><br><span class="line">        srcPaths: &#123;</span><br><span class="line">            styles: <span class="string">&#x27;assets/styles/*.scss&#x27;</span>,</span><br><span class="line">            scripts: <span class="string">&#x27;assets/scripts/*.js&#x27;</span>,</span><br><span class="line">            script_ts: <span class="string">&#x27;assets/scripts/*.ts&#x27;</span>,</span><br><span class="line">            pages: <span class="string">&#x27;*.html&#x27;</span>,</span><br><span class="line">            images: <span class="string">&#x27;assets/images/**&#x27;</span>,</span><br><span class="line">            fonts: <span class="string">&#x27;assets/fonts/**&#x27;</span>,</span><br><span class="line">            public: <span class="string">&#x27;**&#x27;</span>, <span class="comment">// cwd: publicPath</span></span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    pageDate: &#123;&#125;, <span class="comment">// 模板引擎数据</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> userConfig = <span class="built_in">Object</span>.assign(&#123;&#125;, default_userConfig, <span class="built_in">require</span>(<span class="string">&#x27;./userConfig&#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pathBuild = userConfig.build;</span><br><span class="line"><span class="keyword">const</span> srcPaths = pathBuild.srcPaths;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 样式编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> style = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(srcPaths.styles, &#123; <span class="attr">base</span>: pathBuild.srcPath, <span class="attr">cwd</span>:  pathBuild.srcPath&#125;)</span><br><span class="line">        .pipe(plugins.sass(&#123; <span class="attr">outputStyle</span>: <span class="string">&#x27;expanded&#x27;</span> &#125;))</span><br><span class="line">        .pipe(dest(pathBuild.tempPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 脚本编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> script = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(srcPaths.scripts, &#123; <span class="attr">base</span>: pathBuild.srcPath, <span class="attr">cwd</span>:  pathBuild.srcPath&#125;)</span><br><span class="line">        .pipe(plugins.babel(&#123; <span class="attr">presets</span>: [<span class="string">&#x27;@babel/preset-env&#x27;</span>] &#125;))</span><br><span class="line">        .pipe(dest(pathBuild.tempPath))</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> script_ts = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(srcPaths.script_ts, &#123; <span class="attr">base</span>: pathBuild.srcPath, <span class="attr">cwd</span>:  pathBuild.srcPath&#125;)</span><br><span class="line">        .pipe(plugins.typescript( &#123; <span class="attr">noImplicitAny</span>: <span class="literal">true</span> &#125;))</span><br><span class="line">        .pipe(dest(pathBuild.tempPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 模板引擎编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> page = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(srcPaths.pages, &#123; <span class="attr">base</span>: pathBuild.srcPath, <span class="attr">cwd</span>:  pathBuild.srcPath&#125;)</span><br><span class="line">        .pipe(plugins.swig(&#123; <span class="attr">data</span>: userConfig.pageDate, <span class="attr">cache</span>: <span class="literal">false</span> &#125;))</span><br><span class="line">        .pipe(dest(pathBuild.tempPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 图片压缩</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> image = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(srcPaths.images, &#123; <span class="attr">base</span>: pathBuild.srcPath, <span class="attr">cwd</span>:  pathBuild.srcPath&#125;)</span><br><span class="line">        .pipe(plugins.imagemin())</span><br><span class="line">        .pipe(dest(pathBuild.distPath))</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> font = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(srcPaths.fonts, &#123; <span class="attr">base</span>: pathBuild.srcPath, <span class="attr">cwd</span>:  pathBuild.srcPath&#125;)</span><br><span class="line">        .pipe(plugins.imagemin())</span><br><span class="line">        .pipe(dest(pathBuild.distPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 额外的任务：复制一些必要的文件等</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> extra = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src(srcPaths.public, &#123; <span class="attr">base</span>: pathBuild.publicPath, <span class="attr">cwd</span>:  pathBuild.publicPath&#125;)</span><br><span class="line">        .pipe(dest(pathBuild.distPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 服务器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> server = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> bs = browserSync.create();</span><br><span class="line">    <span class="keyword">const</span> opts = &#123; <span class="attr">cwd</span>: pathBuild.srcPath &#125;;</span><br><span class="line">    <span class="comment">// 编译文件监控</span></span><br><span class="line">    watch(srcPaths.styles, opts, series(style, bs.reload));</span><br><span class="line">    watch(srcPaths.scripts, opts, series(script, bs.reload));</span><br><span class="line">    watch(srcPaths.script_ts, opts, series(script_ts, bs.reload));</span><br><span class="line">    watch(srcPaths.pages, opts, series(page, bs.reload));</span><br><span class="line">    <span class="comment">// 静态资源一般无需重新编译，只需要重启服务器即可</span></span><br><span class="line">    watch([</span><br><span class="line">        srcPaths.pages,</span><br><span class="line">        srcPaths.fonts,</span><br><span class="line">        srcPaths.public,</span><br><span class="line">    ], opts , bs.reload);</span><br><span class="line"></span><br><span class="line">    bs.init(&#123;</span><br><span class="line">        notify: <span class="literal">false</span>,</span><br><span class="line">        open: <span class="literal">true</span>,</span><br><span class="line">        port: <span class="number">3000</span>,</span><br><span class="line">        server: &#123;</span><br><span class="line">            baseDir: [pathBuild.tempPath, pathBuild.srcPath, pathBuild.publicPath], <span class="comment">// 依次查找请求资源路径</span></span><br><span class="line">            routes: &#123; <span class="comment">// 路由</span></span><br><span class="line">                <span class="string">&quot;/node_modules&quot;</span>: <span class="string">&#x27;node_modules&#x27;</span>,</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 清除目录和文件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> clean = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> _del([pathBuild.tempPath, pathBuild.distPath])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * useref:文件引用处理</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> useref = <span class="function">() =&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> src(join(pathBuild.tempPath, srcPaths.pages), &#123; <span class="attr">base</span>: pathBuild.tempPath&#125;)</span><br><span class="line">        .pipe(plugins.useref(&#123; <span class="attr">searchPath</span>: [pathBuild.tempPath, <span class="string">&#x27;.&#x27;</span>] &#125;))</span><br><span class="line">        .pipe(plugins.if(<span class="regexp">/\.js$/</span>, plugins.uglify())) <span class="comment">// js压缩</span></span><br><span class="line">        .pipe(plugins.if(<span class="regexp">/\.css$/</span>, plugins.cleanCss())) <span class="comment">// css压缩</span></span><br><span class="line">        .pipe(plugins.if(<span class="regexp">/\.html$/</span>, plugins.htmlmin(&#123; <span class="comment">// html压缩</span></span><br><span class="line">            collapseWhitespace: <span class="literal">true</span>,</span><br><span class="line">            minifyCss: <span class="literal">true</span>,</span><br><span class="line">            minifyJs: <span class="literal">true</span>,</span><br><span class="line">        &#125;)))</span><br><span class="line">        .pipe(dest(pathBuild.distPath))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 任务组合</span></span><br><span class="line"><span class="keyword">const</span> compile = parallel(style, script, script_ts, page)</span><br><span class="line"><span class="keyword">const</span> develop = series(clean, compile, server)</span><br><span class="line"><span class="keyword">const</span> build = series(clean, parallel(compile, image, font, extra), useref)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    clean,</span><br><span class="line">    dev: develop,</span><br><span class="line">    build,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件中引用的<code>userConfig</code>就是为了用户能更好地自定义文件目录，我们可以通过使用脚手架时初始化文件目录，以及这个配置文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    build: &#123; <span class="comment">// 构建项目的路径配置</span></span><br><span class="line">        srcPath: <span class="string">&#x27;src&#x27;</span>,</span><br><span class="line">        tempPath: <span class="string">&#x27;.temp&#x27;</span>,</span><br><span class="line">        distPath: <span class="string">&#x27;dist&#x27;</span>,</span><br><span class="line">        publicPath: <span class="string">&#x27;public&#x27;</span>,</span><br><span class="line">        srcPaths: &#123;</span><br><span class="line">            styles: <span class="string">&#x27;assets/styles/*.scss&#x27;</span>,</span><br><span class="line">            scripts: <span class="string">&#x27;assets/scripts/*.js&#x27;</span>,</span><br><span class="line">            script_ts: <span class="string">&#x27;assets/scripts/*.ts&#x27;</span>,</span><br><span class="line">            pages: <span class="string">&#x27;*.html&#x27;</span>,</span><br><span class="line">            images: <span class="string">&#x27;assets/images/**&#x27;</span>,</span><br><span class="line">            fonts: <span class="string">&#x27;assets/fonts/**&#x27;</span>,</span><br><span class="line">            public: <span class="string">&#x27;**&#x27;</span>, <span class="comment">// cwd: publicPath</span></span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    pageDate: &#123;&#125;, <span class="comment">// 模板引擎数据</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果你使用的是<code>yeoman</code>搭建的脚手架，可以参考下面的处理逻辑：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> generators = <span class="built_in">require</span>(<span class="string">&#x27;yeoman-generator&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">generators</span> </span>&#123;</span><br><span class="line">    <span class="comment">// cli用户自定义配置(待优化)</span></span><br><span class="line">    prompting()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.prompt([&#123;</span><br><span class="line">            type: <span class="string">&#x27;input&#x27;</span>,</span><br><span class="line">            name: <span class="string">&#x27;name&#x27;</span>,</span><br><span class="line">            message : <span class="string">&#x27;Your project name&#x27;</span>,</span><br><span class="line">            <span class="keyword">default</span> : <span class="built_in">this</span>.appname</span><br><span class="line">        &#125;]).then(<span class="function"><span class="params">answers</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.answers = answers;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 生成文件</span></span><br><span class="line">    writing() &#123;</span><br><span class="line">         <span class="comment">// 模板路径</span></span><br><span class="line">        <span class="keyword">const</span> tempDir = path.join(__dirname, <span class="string">&#x27;templates&#x27;</span>);</span><br><span class="line">         <span class="comment">// 输出路径</span></span><br><span class="line">        <span class="keyword">const</span> destDir = process.cwd();</span><br><span class="line">        <span class="comment">// 模板上下文数据</span></span><br><span class="line">        <span class="keyword">const</span> ejsData = &#123;</span><br><span class="line">            title: <span class="built_in">this</span>.answers[<span class="string">&#x27;name&#x27;</span>],</span><br><span class="line">            success: <span class="literal">true</span></span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 模板文件写入</span></span><br><span class="line">        fs.readdir(tempDir, <span class="function">(<span class="params">err, files</span>) =&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(err) <span class="keyword">throw</span> err;</span><br><span class="line">            files.forEach(<span class="function"><span class="params">temp</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">const</span> input = path.join(tempDir, temp);</span><br><span class="line">                <span class="keyword">const</span> output = path.join(destDir, temp);</span><br><span class="line">                <span class="built_in">this</span>.fs.copyTpl(input, output, ejsData);</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Fis的使用"><a href="#Fis的使用" class="headerlink" title="Fis的使用"></a>Fis的使用</h2><p>百度团队开发的一款自动化构建工具，有兴趣的可参考：<a target="_blank" rel="noopener" href="http://fis.baidu.com/">http://fis.baidu.com/</a>。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>谢谢你请我吃糖!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Dongoog 微信">
+        <p>微信</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Dongoog 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Dongoog
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fongzhizhi.github.io/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/" title="自动化构建">https://fongzhizhi.github.io/2020/11/10/自动化构建/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/" rel="tag"><i class="fa fa-tag"></i> 自动化</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/20/%E5%89%8D%E7%AB%AF%E8%84%9A%E6%89%8B%E6%9E%B6%E5%B7%A5%E5%85%B7%E6%9E%84%E5%BB%BA/" rel="prev" title="前端脚手架工具构建">
+      <i class="fa fa-chevron-left"></i> 前端脚手架工具构建
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Grunt%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">Grunt的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-number">1.1.</span> <span class="nav-text">快速入门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%A4%B1%E8%B4%A5%E6%A0%87%E8%AE%B0"><span class="nav-number">1.2.</span> <span class="nav-text">任务失败标记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Grunt%E7%9A%84%E9%85%8D%E7%BD%AEconfig"><span class="nav-number">1.3.</span> <span class="nav-text">Grunt的配置config</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.1.</span> <span class="nav-text">初始化配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%9A%84%E8%8E%B7%E5%8F%96%E5%92%8C%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.3.2.</span> <span class="nav-text">配置的获取和设置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%9B%AE%E6%A0%87%E4%BB%BB%E5%8A%A1%EF%BC%88%E5%A4%8D%E5%90%88%E4%BB%BB%E5%8A%A1%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">多目标任务（复合任务）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">插件的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8F%92%E4%BB%B6"><span class="nav-number">1.6.</span> <span class="nav-text">常用的一些插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#load-grunt-tasks"><span class="nav-number">1.6.1.</span> <span class="nav-text">load-grunt-tasks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grunt-sass"><span class="nav-number">1.6.2.</span> <span class="nav-text">grunt-sass</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grunt-babel"><span class="nav-number">1.6.3.</span> <span class="nav-text">grunt-babel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grunt-contrib-watch"><span class="nav-number">1.6.4.</span> <span class="nav-text">grunt-contrib-watch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grunt-contrib-connect"><span class="nav-number">1.6.5.</span> <span class="nav-text">grunt-contrib-connect</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gulp%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">Gulp的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8-1"><span class="nav-number">2.1.</span> <span class="nav-text">快速入门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.2.</span> <span class="nav-text">组合任务和异步任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%9A%E6%96%87%E4%BB%B6%E6%B5%81%E6%A8%A1%E5%BC%8F%EF%BC%88The-Streaming-Building-System%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">核心工作原理：文件流模式（The Streaming Building System）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B7%E5%BC%8F%E7%BC%96%E8%AF%91"><span class="nav-number">2.4.</span> <span class="nav-text">样式编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E7%BC%96%E8%AF%91"><span class="nav-number">2.5.</span> <span class="nav-text">脚本编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E7%BC%96%E8%AF%91"><span class="nav-number">2.6.</span> <span class="nav-text">模板引擎编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E5%AD%97%E4%BD%93%E8%BD%AC%E6%8D%A2"><span class="nav-number">2.7.</span> <span class="nav-text">图片字体转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%96%87%E4%BB%B6%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">2.8.</span> <span class="nav-text">其他文件的处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%BD%BD%E6%8F%92%E4%BB%B6"><span class="nav-number">2.9.</span> <span class="nav-text">自动加载插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.10.</span> <span class="nav-text">启动服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8F%98%E5%8C%96%E7%9B%91%E5%90%AC"><span class="nav-number">2.11.</span> <span class="nav-text">文件变化监听</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%BC%95%E7%94%A8%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">2.12.</span> <span class="nav-text">文件引用的处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%84%9A%E6%89%8B%E6%9E%B6"><span class="nav-number">3.</span> <span class="nav-text">封装自动构建工作流脚手架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fis%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">Fis的使用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dongoog"
+      src="/images/avatar1.gif">
+  <p class="site-author-name" itemprop="name">Dongoog</p>
+  <div class="site-description" itemprop="description">这个人很懒，什么也没说.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fongzhizhi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fongzhizhi" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020/8 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dongoog</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'IMuRMK0DnpPsKX9v0voX4DEp-gzGzoHsz',
+      appKey     : '09kOINEna5kxsB8EFJjXjTGa',
+      placeholder: "来都来了...",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+  
+  
+  
+  
+    <script async src="/js/cursor/fireworks.js"></script>
+  
+
+
+
+
+    <script src="/js/cursor/activate-power-mode.min.js"></script>
+    <script>
+      POWERMODE.colorful = true;
+      POWERMODE.shake = false;
+      document.body.addEventListener('input', POWERMODE);
+    </script>
+
+  
+
+</body>
+</html>

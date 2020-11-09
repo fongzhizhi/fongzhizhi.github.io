@@ -200,6 +200,124 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.gif">
+      <meta itemprop="name" content="Dongoog">
+      <meta itemprop="description" content="这个人很懒，什么也没说.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之之的Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/" class="post-title-link" itemprop="url">自动化构建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-10 00:43:05 / 修改时间：00:42:16" itemprop="dateCreated datePublished" datetime="2020-11-10T00:43:05+08:00">2020-11-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">前端工程化</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/" class="post-meta-item leancloud_visitors" data-flag-title="自动化构建" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>32k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>29 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>一切重复性的工作都应该被自动化。</p>
+</blockquote>
+<p>在前端工程化中，我们常常希望使用更有的模块进行项目开发，比如我们可能使用模板引擎进行页面渲染，使用<code>sass</code>来构建<code>css</code>，使用最新的<code>ECMAScript</code>语法或者<code>ts</code>进行业务逻辑开发。而以上的模块或者技能都只是一项选择，最终我们都需要转化为最基本的前端三件套：<code>html</code> + <code>css</code> + <code>js</code>。这其中的转换过程根据不同工具的使用而不同，但无疑都是重复性的工作，类似这些开发过程中的重复的工作，都应该使用自动化的思想为我们解决，我们只需要关注代码的业务逻辑和最终的准换结果，而中间的处理过程，都应该交给自动化构建工具。</p>
+<p>除了基本的格式转换，自动化构建工具一般还具有压缩、合并、文件整理、启动服务、格式化代码等功能。</p>
+<p><img data-src="C:/Users/风之之/Desktop/GitHub/MarkDown-Nodes/images/gulp.jpg" alt="gulp"></p>
+<p>本文将会从三款前端自动构建工具<a target="_blank" rel="noopener" href="https://www.gruntjs.net/">grunt</a>、<a target="_blank" rel="noopener" href="https://www.gulpjs.com.cn/">gulp</a>、<a target="_blank" rel="noopener" href="http://fis.baidu.com/">fis</a>的使用中感受自动化构建的特点和优势。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/10/20/%E5%89%8D%E7%AB%AF%E8%84%9A%E6%89%8B%E6%9E%B6%E5%B7%A5%E5%85%B7%E6%9E%84%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -223,10 +341,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-20 20:47:21 / 修改时间：20:47:06" itemprop="dateCreated datePublished" datetime="2020-10-20T20:47:21+08:00">2020-10-20</time>
+              <time title="创建时间：2020-10-20 20:47:21" itemprop="dateCreated datePublished" datetime="2020-10-20T20:47:21+08:00">2020-10-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-08 00:31:30" itemprop="dateModified" datetime="2020-11-08T00:31:30+08:00">2020-11-08</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -267,13 +391,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>7.1k</span>
+              <span>7.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>6 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -1284,7 +1408,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1297,7 +1421,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

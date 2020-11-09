@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://fongzhizhi.github.io/images/illustration-home-inverted.91b07808be.png">
 <meta property="og:image" content="https://fongzhizhi.github.io/images/image-20201018220914278.png">
 <meta property="article:published_time" content="2020-10-20T12:47:21.950Z">
-<meta property="article:modified_time" content="2020-10-20T12:47:06.751Z">
+<meta property="article:modified_time" content="2020-11-07T16:31:30.274Z">
 <meta property="article:author" content="Dongoog">
 <meta property="article:tag" content="工程化">
 <meta property="article:tag" content="脚手架">
@@ -225,10 +225,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-20 20:47:21 / 修改时间：20:47:06" itemprop="dateCreated datePublished" datetime="2020-10-20T20:47:21+08:00">2020-10-20</time>
+              <time title="创建时间：2020-10-20 20:47:21" itemprop="dateCreated datePublished" datetime="2020-10-20T20:47:21+08:00">2020-10-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-08 00:31:30" itemprop="dateModified" datetime="2020-11-08T00:31:30+08:00">2020-11-08</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -276,13 +282,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>7.1k</span>
+              <span>7.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>6 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -384,7 +390,7 @@
 <p>模板上下文默认被定义为<code>./templates/</code>。你可以使用<code>generator.sourceRoot(&#39;new/template/path&#39;)</code>去重写这个默认值。</p>
 </blockquote>
 <p>首先，我们随便创建一个模板文件，如readme.txt：</p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">这是一个模板文件</span><br><span class="line">内部可以使用EJS模板标记语法：</span><br><span class="line">&lt;%= title %&gt;</span><br><span class="line">或者使用EJS语法：</span><br><span class="line">&lt;% if(success) &#123;</span><br><span class="line">成功输出！</span><br><span class="line">&#125; %&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">这是一个模板文件</span><br><span class="line">内部可以使用EJS模板标记语法：</span><br><span class="line">&lt;%= title %&gt;</span><br><span class="line">或者使用EJS语法：</span><br><span class="line">&lt;% if(success) &#123; %&gt;</span><br><span class="line">成功输出！</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
 
 <p>然后我们就可以使用模板文件来动态创建文件了：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> generators = <span class="built_in">require</span>(<span class="string">&#x27;yeoman-generator&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">generators</span> </span>&#123;</span><br><span class="line">    writing() &#123;</span><br><span class="line">        <span class="comment">// 模板文件路径</span></span><br><span class="line">        <span class="keyword">const</span> temp = <span class="built_in">this</span>.templatePath(<span class="string">&#x27;readme.txt&#x27;</span>);</span><br><span class="line">        <span class="comment">// 输出路径</span></span><br><span class="line">        <span class="keyword">const</span> output = <span class="built_in">this</span>.destinationPath(<span class="string">&#x27;readme.txt&#x27;</span>);</span><br><span class="line">        <span class="comment">// 模板上下文数据</span></span><br><span class="line">        <span class="keyword">const</span> data = &#123;</span><br><span class="line">            title: <span class="string">&#x27;follow your heart.&#x27;</span>,</span><br><span class="line">            success: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 复制并渲染模板文件</span></span><br><span class="line">        <span class="built_in">this</span>.fs.copyTpl(temp, output, data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -488,7 +494,10 @@
     <a href="/2020/10/15/JavaScript%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="prev" title="JavaScript性能优化">
       <i class="fa fa-chevron-left"></i> JavaScript性能优化
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/" rel="next" title="自动化构建">
+      自动化构建 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -564,7 +573,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -577,7 +586,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
