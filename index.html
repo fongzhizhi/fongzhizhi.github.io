@@ -200,6 +200,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/11/14/%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.gif">
+      <meta itemprop="name" content="Dongoog">
+      <meta itemprop="description" content="这个人很懒，什么也没说.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之之的Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/14/%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">前端模块化开发概述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-14 22:57:50 / 修改时间：21:46:27" itemprop="dateCreated datePublished" datetime="2020-11-14T22:57:50+08:00">2020-11-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A8%A1%E5%9D%97%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">模块化</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/11/14/%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91%E6%A6%82%E8%BF%B0/" class="post-meta-item leancloud_visitors" data-flag-title="前端模块化开发概述" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/14/%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91%E6%A6%82%E8%BF%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/14/%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91%E6%A6%82%E8%BF%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>8.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>随着前端功能的日趋复杂，模块化开发变得尤为重要，在大型项目中，模块化的开发方式不仅能有效复用代码，还能针对性的修改模块代码而不影响项目的稳定运行，还能借助同样功能的第三方模块，提高开发效率。</p>
+<p>模块化开发作为一种主流开发思想，开发项目就像搭积木一样，每一个模块就是一个个独立的积木而已。但是在代码中会相对复杂一些，模块之间的相互引用导致了模块并非完全独立于其他模块的。</p>
+<p>本文主要就前端模块化开发的演变过程，重点说明<code>js</code>的模块化规范：浏览器端使用的<code>ES Modules</code>和Node环境使用的<code>CommonJS</code>规范。以及阐述如何通过基于模块化开发构建web应用。</p>
+<p><img data-src="./images/modules.png"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/14/%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91%E6%A6%82%E8%BF%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/11/10/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -225,7 +336,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-11-10 00:43:05 / 修改时间：00:42:16" itemprop="dateCreated datePublished" datetime="2020-11-10T00:43:05+08:00">2020-11-10</time>
+              <time title="创建时间：2020-11-10 00:43:05 / 修改时间：01:28:35" itemprop="dateCreated datePublished" datetime="2020-11-10T00:43:05+08:00">2020-11-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,7 +401,7 @@
 </blockquote>
 <p>在前端工程化中，我们常常希望使用更有的模块进行项目开发，比如我们可能使用模板引擎进行页面渲染，使用<code>sass</code>来构建<code>css</code>，使用最新的<code>ECMAScript</code>语法或者<code>ts</code>进行业务逻辑开发。而以上的模块或者技能都只是一项选择，最终我们都需要转化为最基本的前端三件套：<code>html</code> + <code>css</code> + <code>js</code>。这其中的转换过程根据不同工具的使用而不同，但无疑都是重复性的工作，类似这些开发过程中的重复的工作，都应该使用自动化的思想为我们解决，我们只需要关注代码的业务逻辑和最终的准换结果，而中间的处理过程，都应该交给自动化构建工具。</p>
 <p>除了基本的格式转换，自动化构建工具一般还具有压缩、合并、文件整理、启动服务、格式化代码等功能。</p>
-<p><img data-src="C:/Users/风之之/Desktop/GitHub/MarkDown-Nodes/images/gulp.jpg" alt="gulp"></p>
+<p><img data-src="/images/gulp.jpg"></p>
 <p>本文将会从三款前端自动构建工具<a target="_blank" rel="noopener" href="https://www.gruntjs.net/">grunt</a>、<a target="_blank" rel="noopener" href="https://www.gulpjs.com.cn/">gulp</a>、<a target="_blank" rel="noopener" href="http://fis.baidu.com/">fis</a>的使用中感受自动化构建的特点和优势。</p>
           <!--noindex-->
             <div class="post-button">
@@ -1227,121 +1338,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/08/23/git%E6%8C%87%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar1.gif">
-      <meta itemprop="name" content="Dongoog">
-      <meta itemprop="description" content="这个人很懒，什么也没说.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="风之之的Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/23/git%E6%8C%87%E4%BB%A4/" class="post-title-link" itemprop="url">git常用指令总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-08-23 16:31:48 / 修改时间：16:47:12" itemprop="dateCreated datePublished" datetime="2020-08-23T16:31:48+08:00">2020-08-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/guide/" itemprop="url" rel="index"><span itemprop="name">guide</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/guide/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/08/23/git%E6%8C%87%E4%BB%A4/" class="post-meta-item leancloud_visitors" data-flag-title="git常用指令总结" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/08/23/git%E6%8C%87%E4%BB%A4/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/23/git%E6%8C%87%E4%BB%A4/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>810</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img data-src="/images/git.png" alt="git"></p>
-<p>在这里记录一些常用的<code>git</code>指令，以及使用时碰到的一些问题及相应的解决办法。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/23/git%E6%8C%87%E4%BB%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1408,20 +1409,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

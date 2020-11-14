@@ -891,7 +891,7 @@
 </blockquote>
 <p>在前端工程化中，我们常常希望使用更有的模块进行项目开发，比如我们可能使用模板引擎进行页面渲染，使用<code>sass</code>来构建<code>css</code>，使用最新的<code>ECMAScript</code>语法或者<code>ts</code>进行业务逻辑开发。而以上的模块或者技能都只是一项选择，最终我们都需要转化为最基本的前端三件套：<code>html</code> + <code>css</code> + <code>js</code>。这其中的转换过程根据不同工具的使用而不同，但无疑都是重复性的工作，类似这些开发过程中的重复的工作，都应该使用自动化的思想为我们解决，我们只需要关注代码的业务逻辑和最终的准换结果，而中间的处理过程，都应该交给自动化构建工具。</p>
 <p>除了基本的格式转换，自动化构建工具一般还具有压缩、合并、文件整理、启动服务、格式化代码等功能。</p>
-<p><img data-src="C:/Users/风之之/Desktop/GitHub/MarkDown-Nodes/images/gulp.jpg" alt="gulp"></p>
+<p><img data-src="/images/gulp.jpg"></p>
 <p>本文将会从三款前端自动构建工具<a href="https://www.gruntjs.net/">grunt</a>、<a href="https://www.gulpjs.com.cn/">gulp</a>、<a href="http://fis.baidu.com/">fis</a>的使用中感受自动化构建的特点和优势。</p>
 <a id="more"></a>
 
@@ -2099,6 +2099,152 @@
       <tags>
         <tag>JavaScript</tag>
         <tag>es6</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端模块化开发概述</title>
+    <url>/2020/11/14/%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<p>随着前端功能的日趋复杂，模块化开发变得尤为重要，在大型项目中，模块化的开发方式不仅能有效复用代码，还能针对性的修改模块代码而不影响项目的稳定运行，还能借助同样功能的第三方模块，提高开发效率。</p>
+<p>模块化开发作为一种主流开发思想，开发项目就像搭积木一样，每一个模块就是一个个独立的积木而已。但是在代码中会相对复杂一些，模块之间的相互引用导致了模块并非完全独立于其他模块的。</p>
+<p>本文主要就前端模块化开发的演变过程，重点说明<code>js</code>的模块化规范：浏览器端使用的<code>ES Modules</code>和Node环境使用的<code>CommonJS</code>规范。以及阐述如何通过基于模块化开发构建web应用。</p>
+<p><img data-src="./images/modules.png"></p>
+<a id="more"></a>
+
+<h2 id="前端模块化开发的演变过程"><a href="#前端模块化开发的演变过程" class="headerlink" title="前端模块化开发的演变过程"></a>前端模块化开发的演变过程</h2><p>早期的模块化开发没有一个合理的规范，最开始的模块化就是把整个<code>js</code>文件拆分成若干个文件，可以理解为“<strong>文件划分</strong>”阶段。</p>
+<p>比如某个项目下的<code>a.js</code>，<code>b.js</code>等等，在使用的时候简单的按照执行顺序引入：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;a.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;b.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样的方式除了按照功能划分了代码，并不是真正意义上的模块，代码之间仍然存在命名冲突，模块变量可以随意更改等问题。</p>
+<p>总的来说，只是简单的做了文件划分的存在明显的缺陷：</p>
+<ul>
+<li>模块之间相互污染全局作用域</li>
+<li>命名冲突</li>
+<li>模块之间的引用关系无法管理</li>
+</ul>
+<p>除了方便根据文件名找到对应功能的代码，貌似没有别的好处。</p>
+<p>为了尽量解决作用域污染和重名问题，我们使用命名空间来对变量进行空间限定，比如模块<code>a.js</code>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> moduleA = &#123;</span><br><span class="line">    prop: &#123;&#125;,</span><br><span class="line">    name: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    method1: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;method1 runing...&#x27;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    method2: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;method2 runing...&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，我们在使用模块<code>a</code>的使用就不用担心内部成员被污染的情况，但是，模块内部的成员任然会被外部直接访问和修改到，没有做到私有化。</p>
+<p>下一阶段可以称为<strong>立即执行阶段</strong>，即使用<code>IIFE</code>对模块代码进行闭包处理，这样，我们只需要导出我们希望导出的内容，而外部就不能再访问未暴露的变量，比如：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">$</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">&#x27;modeule a&#x27;</span>;</span><br><span class="line">    <span class="keyword">var</span> props = &#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">method1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">&#x27;method1 runing...&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">method2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">&#x27;method2 runing...&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 通过绑定到全局作用局来导出模块</span></span><br><span class="line">    <span class="built_in">window</span>.moduleA = &#123;</span><br><span class="line">        props,</span><br><span class="line">        method1,</span><br><span class="line">        method2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)(jQuery)</span><br></pre></td></tr></table></figure>
+
+<p>立即执行函数能解决变量私有化的问题，大部分情况下已经解决了模块化开发的需求，但是这种写法也是多种多样的，对于别人的代码和模块，引用和修改起来还是十分不便，这样就需要一种规范化出现，让开发者们都遵循和使用这些规范进行开发，也就能解决上述问题。</p>
+<p>模块化规范最主要的就是解决：模块引用和模块导出的问题。</p>
+<p>其中，<a href="https://javascript.ruanyifeng.com/nodejs/module.html">commonJS规范</a>是出现较早的规范，目前也是被<code>Node</code>所使用的模块化规范。</p>
+<p>CommonJS规范有以下约定：</p>
+<ul>
+<li>一个文件就是一个模块</li>
+<li>每个模块都有单独的作用域</li>
+<li>通过<code>module.exports</code>导出成员</li>
+<li>通过<code>require</code>函数载入其他模块导出的成员</li>
+</ul>
+<p>CommonJS规范的模块加载是同步执行的，也就是模块加载完成后再执行代码，对于Node来说，主要应用于服务器开发，代码存储在本地，同步加载也比较快，所以执行起来没什么效率问题，但在浏览器端就不行了，如果执行一段代码需要不断地从服务器加载同步模块，会导致浏览器执行效率低下，因此，浏览器采用AMD这种异步加载模块的规范来实现模块化开发。<a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD</a>是”Asynchronous Module Definition”的缩写，意思就是”异步模块定义”。它采用异步方式加载模块，模块的加载不影响它后面语句的运行。所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完成之后，这个回调函数才会运行。</p>
+<p>AMD模块也是用<code>require</code>函数导入模块，但需要使用回调函数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义一个模块</span></span><br><span class="line">define(<span class="string">&#x27;module1&#x27;</span>, [<span class="string">&#x27;jquery&#x27;</span>, <span class="string">&#x27;./modules2&#x27;</span>], <span class="function"><span class="keyword">function</span>(<span class="params">$, modules2</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        start: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            $(<span class="string">&#x27;#start&#x27;</span>).animate(&#123; <span class="attr">margin</span>: <span class="string">&#x27;280px&#x27;</span> &#125;);</span><br><span class="line">            modules2();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载模块，并在回调函数中使用模块</span></span><br><span class="line"><span class="built_in">require</span>([module1 jquery], <span class="function"><span class="keyword">function</span>(<span class="params">module1, $</span>)</span>&#123;</span><br><span class="line">    module1.start();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>目前，主要有两个Javascript库实现了AMD规范：<a href="http://requirejs.org/">require.js</a>，<a href="https://github.com/cujojs/curl">curl.js</a>和<a href="https://github.com/seajs/seajs">seajs</a>。但使用起来还是很复杂，且模块较多时，模块js文件加载请求变得频繁，所以，AMD规范也只是浏览器端模块规范化的一步。</p>
+<p>目前最佳的模块化规范就是：浏览器端的<code>ES Modules</code>和Node端的<code>CommonJS</code>规范，这两个规范都是内置的规范，不存在执行环境问题，需要注意的是<code>ES Modules</code>是<code>es6</code>才推出的模块化规范，所以早期的大部分浏览器都不支持<code>ES Modules</code>规范，这就需要我们注意在使用<code>ES Moduels</code>规范开发时的兼容问题。</p>
+<h2 id="浏览器端的模块化规范：ES-Modules"><a href="#浏览器端的模块化规范：ES-Modules" class="headerlink" title="浏览器端的模块化规范：ES Modules"></a>浏览器端的模块化规范：ES Modules</h2><p>上文提到的CAD规范只是为了能实现浏览器端的模块化开发而做的“妥协”方法，执行效率上仍然是个问题。最终，在ES6，我们等到了原生模块化的支持 ： ES Modules — 浏览器能够最优化加载模块，使它比使用库更有效率：使用库通常需要做额外的客户端处理。</p>
+<h3 id="导出模块成员"><a href="#导出模块成员" class="headerlink" title="导出模块成员"></a>导出模块成员</h3><p>使用<code>export</code>关键字在最外层对变量进行导出即可。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">&#x27;jinx&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">...nums</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> total = <span class="number">0</span>;</span><br><span class="line">  nums.forEach(<span class="function"><span class="params">n</span> =&gt;</span> total += n);</span><br><span class="line">  <span class="keyword">return</span> total;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>export</code>只能写在最外层，而不能写到执行语句中。</p>
+</blockquote>
+<p>还有一种简单的方法是在最后统一导出成员：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> &#123;name, add&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为避免重名问题，我们还可以把</p>
+<h3 id="导入模块和成员"><a href="#导入模块和成员" class="headerlink" title="导入模块和成员"></a>导入模块和成员</h3><p>你想在模块外面使用一些功能，那你就需要导入他们才能使用。最简单的就像下面这样的：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; name, draw, reportArea, reportPerimeter &#125; <span class="keyword">from</span> <span class="string">&#x27;/js-examples/modules/basic-modules/modules/square.js&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>import</code> 语句，然后你被花括号包围的用逗号分隔的你想导入的功能列表，然后是关键字from，然后是模块文件的路径。模块文件的路径是相对于站点根目录的相对路径，对于我们的<code>basic-modules</code> 应该是<code> /js-examples/modules/basic-modules</code>。当然，我们写的路径有一点不同—我们使用点语法意味 “当前路径”，跟随着包含我们想要找的文件的路径。这比每次都要写下整个相对路径要好得多，因为它更短，使得URL 可移植。</p>
+<p>值得注意的是，模块导出的值并不是复制了一份，而是<strong>导出了引用</strong>而已，虽然外部引用无法修改内部模块的成员变量，但模块内部导出成员发生变化后，导出的成员也会随之改变。</p>
+<p>以下是一些注意事项：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不能省略扩展名</span></span><br><span class="line"><span class="comment">// import &#123; name &#125; from &#x27;./module&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; name &#125; <span class="keyword">from</span> <span class="string">&#x27;./modules.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不能自动识别目录下的index.js</span></span><br><span class="line"><span class="comment">// import &#123; name &#125; from &#x27;./modules&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; name &#125; <span class="keyword">from</span> <span class="string">&#x27;./modules/index.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用相对路径时不能省略./，否则会被识别为第三方模块</span></span><br><span class="line"><span class="comment">// import &#123; name &#125; from &#x27;modules.js&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; name &#125; <span class="keyword">from</span> <span class="string">&#x27;./modules.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载模块但不提取数据</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./modules.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 导出成员比较多时，可以将模块成员全部导出</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> mod <span class="keyword">from</span> <span class="string">&#x27;./modules.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 动态导入模块：不能在导入语句中编写变量和嵌套在语句中</span></span><br><span class="line"><span class="keyword">import</span>(<span class="string">&#x27;./modeles.js&#x27;</span>).then(<span class="function"><span class="params">mod</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(mod.name)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 导入一般成员和默认成员</span></span><br><span class="line"><span class="keyword">import</span> &#123; name, age, <span class="keyword">default</span> <span class="keyword">as</span> del &#125; <span class="keyword">from</span> <span class="string">&#x27;.modules.js&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="浏览器环境使用"><a href="#浏览器环境使用" class="headerlink" title="浏览器环境使用"></a>浏览器环境使用</h3><p>在已经支持了<code>es modules</code>规范的浏览器，我们可以直接使用<code>modules</code>类型的<code>&lt;script&gt;</code>进行模块文件导入：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&#x27;utf-8&#x27;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&#x27;X-UA-Compatible&#x27;</span> <span class="attr">content</span>=<span class="string">&#x27;IE=edge&#x27;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&#x27;viewport&#x27;</span> <span class="attr">content</span>=<span class="string">&#x27;width=device-width, initial-scale=1&#x27;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">src</span>=<span class="string">&quot;./modules.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在支持的浏览器上打开这个html文件是可以正常执行模块中的代码的，但不支持<code>es modules</code>的浏览器会忽略这种模块文件。</p>
+<p>为了在不支持的浏览器中也能使用模块语法，我们可以<strong>借助第三方编译工具</strong>，比如<code>polyfill</code>，模块代码会被转换为低版本的js代码，并返回给浏览器执行。</p>
+<p>比如我们使用<a href="https://github.com/ModuleLoader/browser-es-module-loader">browser-es-module-loader</a>这个模块来兼容低版本浏览器，安装：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm install browser-es-<span class="built_in">module</span>-loader</span><br></pre></td></tr></table></figure>
+
+<p>在浏览器端，我们可以通过<code>unpkg.com</code>拼接模块名就可以获取到最新的js文件：比如这个模块就拼接为<a href="https://unpkg.com/browser-es-module-loader">https://unpkg.com/browser-es-module-loader</a>。我们引入html文件中：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&#x27;utf-8&#x27;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&#x27;X-UA-Compatible&#x27;</span> <span class="attr">content</span>=<span class="string">&#x27;IE=edge&#x27;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&#x27;viewport&#x27;</span> <span class="attr">content</span>=<span class="string">&#x27;width=device-width, initial-scale=1&#x27;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/promise-polyfill@8.2.0/dist/polyfill.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/browse/browser-es-module-loader@0.4.1/dist/babel-browser-build.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/browse/browser-es-module-loader@0.4.1/dist/browser-es-module-loader.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">import</span> &#123; name &#125; <span class="keyword">from</span> <span class="string">&#x27;./modules.js&#x27;</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(name) </span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果存在资源请求限制，最好是把js文件下载到本地再引用。</p>
+</blockquote>
+<blockquote>
+<p>注意，如果你的浏览器还不支持<code>Promise</code>还需要再安装一个编译Promise的模块，因为上面编译模块代码的第三方模块内部使用的是Promise语法进行回调。这里我们使用了<code>promise-polyfii</code>模块。</p>
+</blockquote>
+<p>另外一个问题，我们发现在支持<code>es modules</code>规范的浏览器，调用了两次模块代码，这是因为<code>&lt;script type=&quot;module&quot;&gt;</code>执行了一次，而<code>es-module-loader</code>又执行了一次，我们知道，这个模块是为了在不支持模块规范的浏览器中使用的，支持的就不需要使用了，所以我们使用一个<code>nomodule</code>的属性来标识：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">nomodule</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/promise-polyfill@8.2.0/dist/polyfill.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">nomodule</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/browse/browser-es-module-loader@0.4.1/dist/babel-browser-build.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">nomodule</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/browse/browser-es-module-loader@0.4.1/dist/browser-es-module-loader.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>但这样的写法在生成环境是极不推荐的，生产环境的代码应该是编译后的代码，而且我们可以借助babel这样的工具自动完成，不需要那么麻烦。</p>
+<h3 id="在Node环境中使用es-modules"><a href="#在Node环境中使用es-modules" class="headerlink" title="在Node环境中使用es modules"></a>在Node环境中使用<code>es modules</code></h3><blockquote>
+<p>保证node版本大于8.5。</p>
+</blockquote>
+<p>在node中执行es modules的语法，需要做两个准备：</p>
+<ul>
+<li>将<code>.js</code>扩展名为<code>.mjs</code></li>
+<li>使用node启动模块时带上<code>--experimental-modules</code>命令，目前来说，这仍是实验中的特性，所以不要在生成环境中使用。</li>
+</ul>
+<p>更改文件扩展名之后，我们就可以在node中使用es modules语法了：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">&#x27;fs&#x27;</span></span><br><span class="line"></span><br><span class="line">fs.writeFileSync(<span class="string">&#x27;./foo.txt&#x27;</span>, <span class="string">&#x27;es module writing&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>执行:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">node --experimental-modules index.mjs</span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 可以使用&#123;&#125;导出内置模块的成员</span></span><br><span class="line"><span class="keyword">import</span> &#123; writeFileSync &#125; <span class="keyword">from</span> <span class="string">&#x27;fs&#x27;</span></span><br><span class="line"><span class="comment">// 但第三方模块不行，因为第三方模块都是默认导出，这个&#123;&#125;并不是解构的语法，</span></span><br><span class="line"><span class="comment">// 而内置模块能导出仅仅是做了兼容，将模块内部每个成员都进行了导出</span></span><br><span class="line"><span class="comment">// import &#123; camelCase &#125; from lodash</span></span><br><span class="line">writeFileSync(<span class="string">&#x27;./foo.txt&#x27;</span>, <span class="string">&#x27;es module writing2&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>此外，Node的内置成员也不能再访问：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 模块加载函数</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">require</span>)</span><br><span class="line"><span class="comment">// 模块对象</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">module</span>)</span><br><span class="line"><span class="comment">// 导出对象别名</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">exports</span>)</span><br><span class="line"><span class="comment">// 当前文件绝对路径</span></span><br><span class="line"><span class="built_in">console</span>.log(__filename)</span><br><span class="line"><span class="comment">// 当前文件夹所在目录</span></span><br><span class="line"><span class="built_in">console</span>.log(__dirname)</span><br></pre></td></tr></table></figure>
+
+<p>但这些信息都可以从<code>import</code>函数的成员中转换得到：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; fileURLToPath &#125; <span class="keyword">from</span> <span class="string">&#x27;url&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; dirname &#125; <span class="keyword">from</span> <span class="string">&#x27;path&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> url = <span class="keyword">import</span>.meta.url;</span><br><span class="line"><span class="keyword">const</span> __filename = fileURLToPath(url)</span><br><span class="line"><span class="built_in">console</span>.log(__filename)</span><br><span class="line"><span class="keyword">const</span> __dirname = dirname(__filename)</span><br><span class="line"><span class="built_in">console</span>.log(__dirname)</span><br></pre></td></tr></table></figure>
+
+<p>最新版本的支持：</p>
+<p>切换node版本到12.10以上，</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nvm use 12.10.0</span><br></pre></td></tr></table></figure>
+
+<p>每次都加上<code>--experimental-modules</code>比较麻烦，我们在package.js中增加一个<code>type</code>字段：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    type: &quot;module&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，node默认执行环境就是<code>es modules</code>语法，而且文件扩展名不再需要使用<code>.mjs</code>，但是，如果你需要使用<code>CommonJS</code>语法，需要将扩展名修改为<code>.cjs</code>。</p>
+<h2 id="使用babel兼容js版本问题"><a href="#使用babel兼容js版本问题" class="headerlink" title="使用babel兼容js版本问题"></a>使用babel兼容js版本问题</h2><p>为了兼容浏览器使用<code>es modules</code>规范，我们一般使用<code>babel</code>进行js版本编译，这样，我们就可以放心使用最新特性的js代码，也就包括了这些模块化开发机制。</p>
+<p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install @babel/node @balel/core @babel/preset-env --dev</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>babel-node</code>命令运行js即可：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yarn babel-node ./index.js --presets=@babel/preset-env</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>为了能正常将模板代码编译为正常的js版本，需要使用<code>--presets=@babel/preset-env</code>指令，这是因为<code>babel</code>是插件化开发的，如果我们未设置插件，某些功能，比如模块代码编译，就无法正常工作。而<code>@babel/preset-env</code>相当于一个插件集模块，其中就包含了模块解析的插件。</p>
+</blockquote>
+<p>为了更方便的调用，我们可以使用<code>babel</code>的配置文件<code>.babelrc</code>来设置<code>presets</code>项：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;presets&quot;</span>: [<span class="string">&quot;@babel/preset-env&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，这里引用<code>@babel/preset-env</code>插件集只是为了编译模块代码，我们还可以手动指定插件，比如编译模块代码的插件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install @babel/plugin-transform-modules-commonjs --dev</span><br></pre></td></tr></table></figure>
+
+<p>然后配置文件使用<code>plugins</code>项导入：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;plugins&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;@babel/plugin-transform-modules-commonjs&quot;</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://javascript.ruanyifeng.com/nodejs/module.html">commonJS规范</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Modules">Modules - MDN</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>模块化</category>
+      </categories>
+      <tags>
+        <tag>模块化</tag>
       </tags>
   </entry>
 </search>
