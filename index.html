@@ -200,6 +200,232 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/12/14/%E6%A8%A1%E5%9D%97%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7webpack%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.gif">
+      <meta itemprop="name" content="Dongoog">
+      <meta itemprop="description" content="这个人很懒，什么也没说.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之之的Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/14/%E6%A8%A1%E5%9D%97%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7webpack%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">模块打包工具webpack的使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-14 23:30:00 / 修改时间：23:35:47" itemprop="dateCreated datePublished" datetime="2020-12-14T23:30:00+08:00">2020-12-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/webpack/" itemprop="url" rel="index"><span itemprop="name">webpack</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/12/14/%E6%A8%A1%E5%9D%97%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7webpack%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-meta-item leancloud_visitors" data-flag-title="模块打包工具webpack的使用" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/12/14/%E6%A8%A1%E5%9D%97%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7webpack%E7%9A%84%E4%BD%BF%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/14/%E6%A8%A1%E5%9D%97%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7webpack%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>21k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>19 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>模块化开发的趋势越来越明显，特别是在大型前端项目中，模块化的开发让我们更好地组织和更灵活地使用代码，在Node端使用的是CommonJS规范的模块化，在浏览器端则是使用ES Modules模块规范。由于ES Modules是ES6才提出的，目前仅有少数版本的浏览器实现了模块化，如果我们使用模块化进行开发，就需要考虑浏览器兼容问题。另外，模块化的代码虽然在开发阶段对开发友好，但过多的模块并不利于浏览器的频繁加载调用。因此，<strong>为了解决模块化开发中的兼容和代码组织问题，我们一般使用模块打包工具来为我们实现模块代码打包为生产代码</strong>。</p>
+<p>目前主流的模块打包工具有：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.webpackjs.com/">webpack</a>：打包所有的样式表资源。</li>
+<li><a target="_blank" rel="noopener" href="https://parceljs.org/">parcel</a>：极速零配置Web应用打包工具</li>
+<li><a target="_blank" rel="noopener" href="http://rollupjs.org/guide/zh/">rollup</a>。</li>
+</ul>
+<p>本文主要就<code>webpack</code>的使用进行展开说明。</p>
+<p>实际上，模块打包工具除了解决上面所说的模块规范兼容问题，还能优化组织其他资源的使用，**不仅限于<code>js</code>**，就webpack而言，理论上，我们应当把所有的资源文件都当成独立的模块去加载，去使用，而不仅仅是处理js模块代码。</p>
+<p><img data-src="/images/webpack.png"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/14/%E6%A8%A1%E5%9D%97%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7webpack%E7%9A%84%E4%BD%BF%E7%94%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/12/10/%E3%80%8A%E5%B0%8F%E7%8B%97%E9%92%B1%E9%92%B1%E3%80%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.gif">
+      <meta itemprop="name" content="Dongoog">
+      <meta itemprop="description" content="这个人很懒，什么也没说.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之之的Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/10/%E3%80%8A%E5%B0%8F%E7%8B%97%E9%92%B1%E9%92%B1%E3%80%8B/" class="post-title-link" itemprop="url">《小狗钱钱》- 读书笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-10 00:01:40 / 修改时间：00:01:09" itemprop="dateCreated datePublished" datetime="2020-12-10T00:01:40+08:00">2020-12-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6/" itemprop="url" rel="index"><span itemprop="name">读书</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/12/10/%E3%80%8A%E5%B0%8F%E7%8B%97%E9%92%B1%E9%92%B1%E3%80%8B/" class="post-meta-item leancloud_visitors" data-flag-title="《小狗钱钱》- 读书笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/12/10/%E3%80%8A%E5%B0%8F%E7%8B%97%E9%92%B1%E9%92%B1%E3%80%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/10/%E3%80%8A%E5%B0%8F%E7%8B%97%E9%92%B1%E9%92%B1%E3%80%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/1095634/">《小狗钱钱》</a>是被大众推荐的一本入门理财书，说起来，这本书浅显到小孩都能看懂，但其中的道理却是很多成年人所不知道的，其中对对金钱的正确认知和使用习惯也是很多人所不擅长的，而书中的很多很好地习惯可以让你养成最基本的理财观念。</p>
+<p><img data-src="https://img9.doubanio.com/view/subject/l/public/s1081291.jpg" alt="小狗钱钱-douban"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/10/%E3%80%8A%E5%B0%8F%E7%8B%97%E9%92%B1%E9%92%B1%E3%80%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/11/14/%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91%E6%A6%82%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1107,237 +1333,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/08/30/Hexo%20Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%9B%B4%E6%94%B9%E5%8F%8A%E4%BC%98%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar1.gif">
-      <meta itemprop="name" content="Dongoog">
-      <meta itemprop="description" content="这个人很懒，什么也没说.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="风之之的Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/30/Hexo%20Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%9B%B4%E6%94%B9%E5%8F%8A%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">Hexo Next主题配置更改及优化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-08-30 19:22:01 / 修改时间：20:38:50" itemprop="dateCreated datePublished" datetime="2020-08-30T19:22:01+08:00">2020-08-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/guide/" itemprop="url" rel="index"><span itemprop="name">guide</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/guide/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/08/30/Hexo%20Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%9B%B4%E6%94%B9%E5%8F%8A%E4%BC%98%E5%8C%96/" class="post-meta-item leancloud_visitors" data-flag-title="Hexo Next主题配置更改及优化" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/08/30/Hexo%20Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%9B%B4%E6%94%B9%E5%8F%8A%E4%BC%98%E5%8C%96/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/30/Hexo%20Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%9B%B4%E6%94%B9%E5%8F%8A%E4%BC%98%E5%8C%96/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>8.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>8 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img data-src="https://user-images.githubusercontent.com/16272760/63487983-da41b080-c4df-11e9-951c-64883a8a5e9b.png"></p>
-<p><a target="_blank" rel="noopener" href="https://theme-next.iissnan.com/"><strong>Next</strong></a>主题是使用人数较多的一款主题，在于其精简易用，提供了不同的主题风格和样式配置。由于<a target="_blank" rel="noopener" href="https://theme-next.iissnan.com/theme-settings.html">Next官方文档</a>并未收录所有配置修改说明，所以本文重点总结一些常用的配置修改方法以及增加一些扩展效果。</p>
-<p>欢迎留言补充说明。（由于版本更迭，有的方法可能不再适用，当前版本<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next"><code>V7.8.0</code></a>）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/30/Hexo%20Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%9B%B4%E6%94%B9%E5%8F%8A%E4%BC%98%E5%8C%96/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/08/24/LeetCode%E7%AE%97%E6%B3%95%E9%A2%98%E4%B9%8B%E6%97%A5%E6%9C%9F%E9%97%B4%E9%9A%94%E5%A4%A9%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar1.gif">
-      <meta itemprop="name" content="Dongoog">
-      <meta itemprop="description" content="这个人很懒，什么也没说.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="风之之的Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/24/LeetCode%E7%AE%97%E6%B3%95%E9%A2%98%E4%B9%8B%E6%97%A5%E6%9C%9F%E9%97%B4%E9%9A%94%E5%A4%A9%E6%95%B0/" class="post-title-link" itemprop="url">LeetCode算法题之日期间隔天数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-08-24 23:55:43 / 修改时间：23:59:45" itemprop="dateCreated datePublished" datetime="2020-08-24T23:55:43+08:00">2020-08-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">编程题</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/08/24/LeetCode%E7%AE%97%E6%B3%95%E9%A2%98%E4%B9%8B%E6%97%A5%E6%9C%9F%E9%97%B4%E9%9A%94%E5%A4%A9%E6%95%B0/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCode算法题之日期间隔天数" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/08/24/LeetCode%E7%AE%97%E6%B3%95%E9%A2%98%E4%B9%8B%E6%97%A5%E6%9C%9F%E9%97%B4%E9%9A%94%E5%A4%A9%E6%95%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/24/LeetCode%E7%AE%97%E6%B3%95%E9%A2%98%E4%B9%8B%E6%97%A5%E6%9C%9F%E9%97%B4%E9%9A%94%E5%A4%A9%E6%95%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>2.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一道来自<a target="_blank" rel="noopener" href="https://leetcode-cn.com/">LeetCode</a>的算法题。</p>
-<blockquote>
-<p><strong>难度</strong>：简单</p>
-<p><strong>来源</strong>：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-days-between-two-dates/">https://leetcode-cn.com/problems/number-of-days-between-two-dates/</a></p>
-<p><strong>题目</strong>：请你编写一个程序来计算两个日期之间隔了多少天。日期以字符串形式给出，格式为 <code>YYYY-MM-DD</code>。（注：给定的日期是 <code>1971</code> 年到 <code>2100</code> 年之间的有效日期）</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/24/LeetCode%E7%AE%97%E6%B3%95%E9%A2%98%E4%B9%8B%E6%97%A5%E6%9C%9F%E9%97%B4%E9%9A%94%E5%A4%A9%E6%95%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1409,20 +1404,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
