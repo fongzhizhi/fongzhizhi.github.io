@@ -2667,4 +2667,81 @@
         <tag>模块打包</tag>
       </tags>
   </entry>
+  <entry>
+    <title>纯粹的es moudle打包器Rollup</title>
+    <url>/2020/12/16/%E7%BA%AF%E7%B2%B9%E7%9A%84es%20moudle%E6%89%93%E5%8C%85%E5%99%A8Rollup/</url>
+    <content><![CDATA[<p>Rollup是一款小巧的<code>ES Module</code>打包模块，相对于webpack来说，更纯粹，更易用。</p>
+<p><img data-src="/images/rollup.png"></p>
+<a id="more"></a>
+
+<h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><p>安装基本模块：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install rollup --save-d</span><br></pre></td></tr></table></figure>
+
+<p>rollup有六种打包模式，常用的三种为：</p>
+<p>在浏览器中使用则使用<code>iife</code>模式打包，代码会以立即执行函数的方式进行打包：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rollup ./src/entry.js --file ./dist/bundle.iife.js --format iife</span><br></pre></td></tr></table></figure>
+
+<p>而在Node中使用，我们就使用<code>commonjs</code>模块打包方式：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rollup ./src/entry.js --file ./dist/bundle.cjs.js --format cjs</span><br></pre></td></tr></table></figure>
+
+<p>如果你希望在浏览器和Node中使用，就是用兼容模式，使用<code>UMD</code>模式打包：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rollup ./src/entry.js --file ./dist/bundle.umd.js --format umd</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>单文件的打包很简单，我们选择一个入口文件，再导出一个输出文件即可。</p>
+</blockquote>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>为了使用起来<strong>更便捷</strong>,我们推荐使用配置文件的方式进行模块打包，这样，我们还能使用一些高级特性（比如打包多个输出和使用插件）,新建一个<code>rollup.config.js</code>文件，通常放置到项目根目录。</p>
+<p>仔细查阅这个<a href="https://www.rollupjs.com/guide/big-list-of-options">包办大量选项的清单</a>，你可以根据你自己的需要把它配置到你的配置文件中:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// rollup.config.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="comment">// 核心选项</span></span><br><span class="line">  input,     <span class="comment">// 必须</span></span><br><span class="line">  external,</span><br><span class="line">  plugins,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 额外选项</span></span><br><span class="line">  onwarn,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// danger zone</span></span><br><span class="line">  acorn,</span><br><span class="line">  context,</span><br><span class="line">  moduleContext,</span><br><span class="line">  legacy</span><br><span class="line"></span><br><span class="line">  output: &#123;  <span class="comment">// 必须 (如果要输出多个，可以是一个数组)</span></span><br><span class="line">    <span class="comment">// 核心选项</span></span><br><span class="line">    file,    <span class="comment">// 必须</span></span><br><span class="line">    format,  <span class="comment">// 必须</span></span><br><span class="line">    name,</span><br><span class="line">    globals,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 额外选项</span></span><br><span class="line">    paths,</span><br><span class="line">    banner,</span><br><span class="line">    footer,</span><br><span class="line">    intro,</span><br><span class="line">    outro,</span><br><span class="line">    sourcemap,</span><br><span class="line">    sourcemapFile,</span><br><span class="line">    interop,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 高危选项</span></span><br><span class="line">    <span class="built_in">exports</span>,</span><br><span class="line">    amd,</span><br><span class="line">    indent</span><br><span class="line">    strict</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>两个必须的选择选项：输入<code>inpout</code>和输出<code>output</code>。</p>
+</blockquote>
+<p>如果你想使用Rollup的配置文件，记得在命令行里加上<code>--config</code>或者<code>-c</code>。</p>
+<h3 id="核心配置"><a href="#核心配置" class="headerlink" title="核心配置"></a>核心配置</h3><p><code>rollup.config.js</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> resolve = <span class="built_in">require</span>(<span class="string">&#x27;rollup-plugin-node-resolve&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    <span class="comment">// 输入</span></span><br><span class="line">    input: <span class="string">&#x27;./src/main.js&#x27;</span>,</span><br><span class="line">    <span class="comment">// 输出</span></span><br><span class="line">    output: &#123;</span><br><span class="line">        file: <span class="string">&#x27;./dist/bundel.js&#x27;</span>,</span><br><span class="line">        format: <span class="string">&#x27;iife&#x27;</span>, <span class="comment">// amd | cjs | esm | iife | umd | system</span></span><br><span class="line">        name: <span class="string">&#x27;myModule&#x27;</span>,</span><br><span class="line">        globals: &#123;</span><br><span class="line">            jquery: <span class="string">&#x27;$&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 插件</span></span><br><span class="line">    plugins: [resolve()],</span><br><span class="line">    <span class="comment">// 外链</span></span><br><span class="line">    external: [</span><br><span class="line">        <span class="string">&#x27;jquery&#x27;</span>,</span><br><span class="line">        path.resolve(<span class="string">&#x27;./src/some-external.js&#x27;</span>),</span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h4><ul>
+<li>字符串，打包模块的入口文件路径。</li>
+<li>数组字符串，多个打包入口时使用。</li>
+<li>Object，类似webpack那样，也是多入口的打包模式使用。</li>
+</ul>
+<h4 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h4><ul>
+<li><code>file</code>：输出文件路径</li>
+<li><code>dir</code>：如果是多入口打包，则指定输出目录即可。</li>
+<li><code>format</code>：打包的模式，目前有amd | cjs | esm | iife | umd | system可选值。</li>
+<li><code>name</code>：代表你的 <code>iife</code>/<code>umd</code> 包，同一页上的其他脚本可以访问它。</li>
+<li><code>globals</code>：<code>Object</code> 形式的 <code>id: name</code> 键值对，用于<code>umd</code>/<code>iife</code>包。一般用于告诉Rollup某个引入的模块是某个指定的全局变量，比如导入<code>juqery</code>时，会默认使用<code>$</code>进行替换，而不会加载jquery源码（事实上，rollup本身不支持打包导入的第三方模块）。</li>
+</ul>
+<h4 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h4><p>类似<code>webpack</code>的插件那样，比如<code>rollup</code>本身不支持导入<code>npm</code>模块（第三方模块），例如<code>jquery</code>，如果你希望打包的bundle中包含这些<code>npm</code>模块，就需要借助一个插件：<code>rollup-plugin-node-resolve</code>。</p>
+<p>类似的，<code>Rollup</code>也不支持导入<code>CommonJs</code>模块，即node中使用的模块语法，同样，我们使用<code>rollup-plugin-commonjs</code>这个插件就可以了。</p>
+<h4 id="外链"><a href="#外链" class="headerlink" title="外链"></a>外链</h4><p>标记某些模块是全局模块，一般搭配<code>globals</code>搭配使用。</p>
+<h3 id="高级配置"><a href="#高级配置" class="headerlink" title="高级配置"></a>高级配置</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> resolve = <span class="built_in">require</span>(<span class="string">&#x27;rollup-plugin-node-resolve&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    <span class="comment">// 输入</span></span><br><span class="line">    input: <span class="string">&#x27;./src/main.js&#x27;</span>,</span><br><span class="line">    <span class="comment">// 输出</span></span><br><span class="line">    output: &#123;</span><br><span class="line">        file: <span class="string">&#x27;./dist/bundel.js&#x27;</span>,</span><br><span class="line">        format: <span class="string">&#x27;iife&#x27;</span>, <span class="comment">// amd | cjs | esm | iife | umd | system</span></span><br><span class="line">        paths: &#123;</span><br><span class="line">            d3: <span class="string">&#x27;https://d3js.org/d3.v4.min&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 插件</span></span><br><span class="line">    plugins: [resolve()],</span><br><span class="line">    <span class="comment">// 外链</span></span><br><span class="line">    external: [</span><br><span class="line">        <span class="string">&#x27;jquery&#x27;</span>,</span><br><span class="line">        path.resolve(<span class="string">&#x27;./src/some-external.js&#x27;</span>),</span><br><span class="line">    ],</span><br><span class="line">    onwarn: <span class="function">(<span class="params">waring</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> code = <span class="string">`【<span class="subst">$&#123;waring.code&#125;</span>】`</span>;</span><br><span class="line">        <span class="keyword">const</span> loc = waring.loc;</span><br><span class="line">        <span class="keyword">const</span> msg = waring.message;</span><br><span class="line">        <span class="keyword">if</span> (loc) &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(code, <span class="string">`<span class="subst">$&#123;loc.file&#125;</span> (<span class="subst">$&#123;loc.line&#125;</span>:<span class="subst">$&#123;loc.column&#125;</span>) <span class="subst">$&#123;message&#125;</span>`</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(code, msg)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="路径paths"><a href="#路径paths" class="headerlink" title="路径paths"></a>路径paths</h4><p><code>Function</code>，它获取一个ID并返回一个路径，或者<code>id：path</code>对的<code>Object</code>。在提供的位置，这些路径将被用于生成的包而不是模块ID，从而允许您（例如）从CDN加载依赖关系。</p>
+<h4 id="banner-footer"><a href="#banner-footer" class="headerlink" title="banner/footer"></a>banner/footer</h4><p>String 字符串以 前置/追加 到文件束(bundle)。(注意:“banner”和“footer”选项不会破坏sourcemaps)</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// rollup.config.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  ...,</span><br><span class="line">  banner: <span class="string">&#x27;/* my-library version &#x27;</span> + version + <span class="string">&#x27; */&#x27;</span>,</span><br><span class="line">  footer: <span class="string">&#x27;/* follow me on Twitter! @rich_harris */&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="intro-outro"><a href="#intro-outro" class="headerlink" title="intro/outro"></a>intro/outro</h4><p><code>String</code>类似于 <code>banner</code>和<code>footer</code>，除了代码在<em>内部</em>任何特定格式的包装器(wrapper)。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  ...,</span><br><span class="line">  intro: <span class="string">&#x27;var ENVIRONMENT = &quot;production&quot;;&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="onwarn"><a href="#onwarn" class="headerlink" title="onwarn"></a>onwarn</h4><p><code>Function</code> 将拦截警告信息。如果没有提供，警告将被复制并打印到控制台。</p>
+<p>警告是至少有一个<code>code</code> 和 <code>message</code>属性的对象，这意味着您可以控制如何处理不同类型的警告：</p>
+<h4 id="sourcemap"><a href="#sourcemap" class="headerlink" title="sourcemap"></a>sourcemap</h4><p>如果 <code>true</code>，将创建一个单独的sourcemap文件。如果 <code>inline</code>，sourcemap将作为数据URI附加到生成的<code>output</code>文件中。</p>
+<h3 id="额外配置"><a href="#额外配置" class="headerlink" title="额外配置"></a>额外配置</h3><p>请参考<a href="https://www.rollupjs.com/guide/big-list-of-options#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BDcore-functionality">https://www.rollupjs.com/guide/big-list-of-options#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BDcore-functionality</a></p>
+<h3 id="watch模式"><a href="#watch模式" class="headerlink" title="watch模式"></a>watch模式</h3><p>这些选项仅在运行 Rollup 时使用 <code>--watch</code> 标志或使用 <code>rollup.watch</code> 时生效。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// rollup.config.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  ...,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    include: <span class="string">&#x27;src/**&#x27;</span>,</span><br><span class="line">    exclude: <span class="string">&#x27;node_modules/**&#x27;</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.rollupjs.com/">Rollup官网</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>模块化</category>
+      </categories>
+      <tags>
+        <tag>模块化</tag>
+        <tag>Rollup</tag>
+      </tags>
+  </entry>
 </search>
