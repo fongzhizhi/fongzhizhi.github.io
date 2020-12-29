@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fongzhizhi.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":"ture","mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Lint工具用于检查代码的语法是否正确、风格是否符合要求。 JavaScript语言的最早的Lint工具，是Douglas Crockford开发的JSLint。由于该工具所有的语法规则，都是预设的，用户无法改变。所以，很快就有人抱怨，JSLint不是让你写成正确的JavaScript，而是让你像Douglas Crockford一样写JavaScript。 JSHint可以看作是JSLint的后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="项目规范化-ESLint的使用">
+<meta property="og:url" content="https://fongzhizhi.github.io/2020/12/29/%E9%A1%B9%E7%9B%AE%E8%A7%84%E8%8C%83%E5%8C%96-ESLint%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="风之之的Blog">
+<meta property="og:description" content="Lint工具用于检查代码的语法是否正确、风格是否符合要求。 JavaScript语言的最早的Lint工具，是Douglas Crockford开发的JSLint。由于该工具所有的语法规则，都是预设的，用户无法改变。所以，很快就有人抱怨，JSLint不是让你写成正确的JavaScript，而是让你像Douglas Crockford一样写JavaScript。 JSHint可以看作是JSLint的后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fongzhizhi.github.io/images/eslint.png">
+<meta property="article:published_time" content="2020-12-29T14:30:45.014Z">
+<meta property="article:modified_time" content="2020-12-29T14:31:33.005Z">
+<meta property="article:author" content="Dongoog">
+<meta property="article:tag" content="ESLint">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fongzhizhi.github.io/images/eslint.png">
+
+<link rel="canonical" href="https://fongzhizhi.github.io/2020/12/29/%E9%A1%B9%E7%9B%AE%E8%A7%84%E8%8C%83%E5%8C%96-ESLint%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>项目规范化-ESLint的使用 | 风之之的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="风之之的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风之之的Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">好想在哪见过你~</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fongzhizhi.github.io/2020/12/29/%E9%A1%B9%E7%9B%AE%E8%A7%84%E8%8C%83%E5%8C%96-ESLint%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.gif">
+      <meta itemprop="name" content="Dongoog">
+      <meta itemprop="description" content="这个人很懒，什么也没说.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之之的Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          项目规范化-ESLint的使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-29 22:30:45 / 修改时间：22:31:33" itemprop="dateCreated datePublished" datetime="2020-12-29T22:30:45+08:00">2020-12-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">工程化</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/12/29/%E9%A1%B9%E7%9B%AE%E8%A7%84%E8%8C%83%E5%8C%96-ESLint%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-meta-item leancloud_visitors" data-flag-title="项目规范化-ESLint的使用" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/12/29/%E9%A1%B9%E7%9B%AE%E8%A7%84%E8%8C%83%E5%8C%96-ESLint%E7%9A%84%E4%BD%BF%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/29/%E9%A1%B9%E7%9B%AE%E8%A7%84%E8%8C%83%E5%8C%96-ESLint%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>7.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Lint工具用于检查代码的语法是否正确、风格是否符合要求。</p>
+<p>JavaScript语言的最早的Lint工具，是Douglas Crockford开发的JSLint。由于该工具所有的语法规则，都是预设的，用户无法改变。所以，很快就有人抱怨，JSLint不是让你写成正确的JavaScript，而是让你像Douglas Crockford一样写JavaScript。</p>
+<p>JSHint可以看作是JSLint的后继者，最大特定就是允许用户自定义自己的语法规则，写在项目根目录下面的<code>.jshintrc</code>文件。</p>
+<p>JSLint和JSHint同时检查你的语法和风格。另一个工具JSCS则是只检查语法风格。</p>
+<p>最新的工具ESLint不仅允许你自定义语法规则，还允许用户创造插件，改变默认的JavaScript语法，比如支持ES6和JSX的语法。</p>
+<blockquote>
+<p>ESLint最初是由<a target="_blank" rel="noopener" href="http://nczonline.net/">Nicholas C. Zakas</a> 于2013年6月创建的开源项目。它的目标是提供一个插件化的javascript代码检测工具。</p>
+</blockquote>
+<p><img data-src="/images/eslint.png"></p>
+<a id="more"></a>
+
+<h2 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h2><p>安装npm模块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install eslint --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>在测试之前，我们首先编辑一个测试文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> name = <span class="string">&#x27;Jinx&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(add(<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">run()</span><br></pre></td></tr></table></figure>
+
+<p>使用命令行测试：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx eslint ./main.js</span><br></pre></td></tr></table></figure>
+
+<p>执行后出现以下提示：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ops! Something went wrong! :(</span><br><span class="line"></span><br><span class="line">ESLint: 7.16.0</span><br><span class="line"></span><br><span class="line">ESLint couldn&#x27;t find a configuration file. To set up a configuration file for this project, please run:</span><br><span class="line"></span><br><span class="line">    eslint --init</span><br><span class="line"></span><br><span class="line">ESLint looked for configuration files in D:\Test\eslint-test and its ancestors. If it found none, it then looked in your home directory.</span><br><span class="line"></span><br><span class="line">If you think you already have a configuration file or if you need more help, please stop by the ESLint chat room: https://eslint.org/chat/help      </span><br></pre></td></tr></table></figure>
+
+<p>这是说eslint未找打一个配置文件，可以使用<code>eslint --init</code>为你的项目初始化一个配置文件。</p>
+<p>执行<code>eslint --init</code>之后会有很多选项可供选择：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 你希望如何使用eslint?</span></span><br><span class="line"><span class="comment"># 从这里可以看出eslint主要的三个工作：代码语法检测、查找问题代码以及强制执行代码样式</span></span><br><span class="line">? How would you like to use ESLint? ...</span><br><span class="line">  To check syntax only</span><br><span class="line">  To check syntax <span class="keyword">and</span> find problems</span><br><span class="line">&gt; To check syntax, find problems, <span class="keyword">and</span> enforce code style</span><br><span class="line"></span><br><span class="line"><span class="comment"># 你的项目是什么模块类型？</span></span><br><span class="line"><span class="comment"># 这里我们暂时什么都没使用，选择None即可</span></span><br><span class="line">? What type of modules does your project use? ... </span><br><span class="line">  JavaScript modules (<span class="keyword">import</span>/export)</span><br><span class="line">  CommonJS (require/exports)</span><br><span class="line">&gt; <span class="literal">None</span> of these</span><br><span class="line"></span><br><span class="line"><span class="comment"># 你的项目使用了哪个框架?</span></span><br><span class="line">? Which framework does your project use? ...        </span><br><span class="line">  React</span><br><span class="line">  Vue.js</span><br><span class="line">&gt; <span class="literal">None</span> of these</span><br><span class="line"></span><br><span class="line"><span class="comment"># 你的项目是否使用了ts?</span></span><br><span class="line">? Does your project use TypeScript? » No / Yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 你的代码将在哪种环境运行？</span></span><br><span class="line"><span class="comment"># 浏览器或者Node环境</span></span><br><span class="line">? Where does your code run? ...  (Press &lt;space&gt; to select, &lt;a&gt; to toggle all, &lt;i&gt; to invert selection)</span><br><span class="line">√ Browser</span><br><span class="line">  Node</span><br><span class="line"></span><br><span class="line"><span class="comment"># 你想如何定义你的项目代码风格?</span></span><br><span class="line"><span class="comment"># 你可以使用自定义的风格，也可以使用目前主流的一些代码风格(推荐)</span></span><br><span class="line">? How would you like to define a style for your project? ... </span><br><span class="line">&gt; Use a popular style guide</span><br><span class="line">  Answer questions about your style</span><br><span class="line">  Inspect your JavaScript file(s)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 你想遵循以下哪种分代码风格?</span></span><br><span class="line"><span class="comment"># 根据个人或团队偏好来选择即可</span></span><br><span class="line">? Which style guide do you want to follow? ...</span><br><span class="line">  Airbnb: https://github.com/airbnb/javascript</span><br><span class="line">&gt; Standard: https://github.com/standard/standard        </span><br><span class="line">  Google: https://github.com/google/eslint-config-google</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置文件的格式？</span></span><br><span class="line">? What format do you want your config file to be in? ... </span><br><span class="line">&gt; JavaScript</span><br><span class="line">  YAML</span><br><span class="line">  JSON</span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择完成之后会进行配置文件的创建，以及安装一些依赖，选 yes 即可。</span></span><br></pre></td></tr></table></figure>
+
+<p>配置文件初始化结束，就可以在项目根目录看到<code>eslintrc.js</code>这样的配置文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  env: &#123;</span><br><span class="line">    browser: <span class="literal">true</span>,</span><br><span class="line">    es2021: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="keyword">extends</span>: [</span><br><span class="line">    <span class="string">&#x27;standard&#x27;</span></span><br><span class="line">  ],</span><br><span class="line">  parserOptions: &#123;</span><br><span class="line">    ecmaVersion: <span class="number">12</span></span><br><span class="line">  &#125;,</span><br><span class="line">  rules: &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们暂时不用管这个配置文件，再次使用<code>eslint</code>来检测代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx eslint ./main.js</span><br></pre></td></tr></table></figure>
+
+<p>然后我们发现命令行打印了这样的错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">D:\Test\eslint-test\main.js</span><br><span class="line">  9:1  error  Parsing error: Unexpected token run</span><br><span class="line"></span><br><span class="line">✖ 1 problem (1 error, 0 warnings)</span><br></pre></td></tr></table></figure>
+
+<p>这是语法错误，因为consologe.log缺少<code>)</code>导致，我们手动补充上，再次执行检测，发现错误变成了6个：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">D:\Test\eslint-test\main.js</span><br><span class="line">  1:13  error  Missing space before function parentheses      space-before-function-paren</span><br><span class="line">  2:1   error  Expected indentation of 2 spaces but found 4   indent</span><br><span class="line">  5:7   error  &#x27;name&#x27; is assigned a value but never used      no-unused-vars</span><br><span class="line">  7:1   error  Expected indentation of 0 spaces but found 4   indent</span><br><span class="line">  9:1   error  &#x27;run&#x27; is not defined                           no-undef</span><br><span class="line">  9:6   error  Newline required at end of file but not found  eol-last</span><br><span class="line"></span><br><span class="line">✖ 6 problems (6 errors, 0 warnings)</span><br><span class="line">  4 errors and 0 warnings potentially fixable with the `--fix` option.</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在语法错误的情况下，这些错误没有检测出来，语法错误修正后，剩下的错误就是问题代码和代码风格错误。</p>
+</blockquote>
+<p>对于代码风格问题，我们可以使用<code>--fix</code>的扩展命令进行修复，修复之后，还有两个报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">D:\Test\eslint-test\main.js</span><br><span class="line">  5:7  error  &#x27;name&#x27; is assigned a value but never used  no-unused-vars</span><br><span class="line">  9:1  error  &#x27;run&#x27; is not defined                       no-undef</span><br><span class="line"></span><br><span class="line">✖ 2 problems (2 errors, 0 warnings)</span><br></pre></td></tr></table></figure>
+
+<p>而身下的这两个就是问题代码提示了，<code>no-unused-vars</code>是提示我们<code>name</code>这个变量定义了却未使用，而<code>no-undef</code>是提示<code>run</code>这个变量未定义。</p>
+<blockquote>
+<p>eslint主要进行三方面的检测：</p>
+<ul>
+<li>语法检测。会阻断其他类型的检测。需要手动修复</li>
+<li>问题代码检测。需要手动修复。</li>
+<li>代码风格检测。使用<code>--fix</code>命令进行自动修正。</li>
+</ul>
+</blockquote>
+<p>关于命令行的更多使用请参考：<a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/user-guide/command-line-interface">命令行选项</a>。</p>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>虽然我们使用<code>eslint --init</code>进行了配置文件初始化，但有时候我们有一些自定义的需求，就需要重新修改配置文件。</p>
+<h3 id="环境-env"><a href="#环境-env" class="headerlink" title="环境 - env"></a>环境 - <code>env</code></h3><p>一个环境定义了一组预定义的全局变量。可用的环境包括：</p>
+<ul>
+<li><code>browser</code> - 浏览器环境中的全局变量。</li>
+<li><code>node</code> - Node.js 全局变量和 Node.js 作用域。</li>
+<li><code>commonjs</code> - CommonJS 全局变量和 CommonJS 作用域 (用于 Browserify/WebPack 打包的只在浏览器中运行的代码)。</li>
+<li><code>shared-node-browser</code> - Node.js 和 Browser 通用全局变量。</li>
+<li><code>es6</code> - 启用除了 modules 以外的所有 ECMAScript 6 特性（该选项会自动设置 <code>ecmaVersion</code> 解析器选项为 6）。</li>
+<li><code>worker</code> - Web Workers 全局变量。</li>
+<li><code>amd</code> - 将 <code>require()</code> 和 <code>define()</code> 定义为像 <a target="_blank" rel="noopener" href="https://github.com/amdjs/amdjs-api/wiki/AMD">amd</a> 一样的全局变量。</li>
+<li><code>mocha</code> - 添加所有的 Mocha 测试全局变量。</li>
+<li><code>jasmine</code> - 添加所有的 Jasmine 版本 1.3 和 2.0 的测试全局变量。</li>
+<li><code>jest</code> - Jest 全局变量。</li>
+<li><code>phantomjs</code> - PhantomJS 全局变量。</li>
+<li><code>protractor</code> - Protractor 全局变量。</li>
+<li><code>qunit</code> - QUnit 全局变量。</li>
+<li><code>jquery</code> - jQuery 全局变量。</li>
+<li><code>prototypejs</code> - Prototype.js 全局变量。</li>
+<li><code>shelljs</code> - ShellJS 全局变量。</li>
+<li><code>meteor</code> - Meteor 全局变量。</li>
+<li><code>mongo</code> - MongoDB 全局变量。</li>
+<li><code>applescript</code> - AppleScript 全局变量。</li>
+<li><code>nashorn</code> - Java 8 Nashorn 全局变量。</li>
+<li><code>serviceworker</code> - Service Worker 全局变量。</li>
+<li><code>atomtest</code> - Atom 测试全局变量。</li>
+<li><code>embertest</code> - Ember 测试全局变量。</li>
+<li><code>webextensions</code> - WebExtensions 全局变量。</li>
+<li><code>greasemonkey</code> - GreaseMonkey 全局变量。</li>
+</ul>
+<p>这些环境并不是互斥的，所以你可以同时定义多个。</p>
+<p>可以在源文件里、在配置文件中或使用 <a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/user-guide/command-line-interface">命令行</a> 的 <code>--env</code> 选项来指定环境。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;env&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;browser&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;node&quot;</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局变量globals"><a href="#全局变量globals" class="headerlink" title="全局变量globals"></a>全局变量<code>globals</code></h3><p>要在配置文件中配置全局变量，请将 <code>globals</code> 配置属性设置为一个对象，该对象包含以你希望使用的每个全局变量。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;globals&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;jquery&quot;</span>: <span class="string">&quot;writable&quot;</span>,</span><br><span class="line">        <span class="string">&quot;md5&quot;</span>: <span class="string">&quot;readonly&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>writable：允许重写变量。</li>
+<li>readonly：只读变量。</li>
+</ul>
+</blockquote>
+<h3 id="解析器选项-parserOptions"><a href="#解析器选项-parserOptions" class="headerlink" title="解析器选项 - parserOptions"></a>解析器选项 - <code>parserOptions</code></h3><p>ESLint 允许你指定你想要支持的 JavaScript 语言选项。默认情况下，ESLint 支持 ECMAScript 5 语法。你可以覆盖该设置，以启用对 ECMAScript 其它版本和 JSX 的支持。</p>
+<p>注意，支持 ES6 语法并不意味着同时支持新的 ES6 全局变量或类型（比如 <code>Set</code> 等新类型）。对于 ES6 语法，使用 <code>&#123; &quot;parserOptions&quot;: &#123; &quot;ecmaVersion&quot;: 6 &#125; &#125;</code>；对于新的 ES6 全局变量，使用 <code>&#123; &quot;env&quot;:&#123; &quot;es6&quot;: true &#125; &#125;</code>. <code>&#123; &quot;env&quot;: &#123; &quot;es6&quot;: true &#125; &#125;</code> 自动启用es6语法，但 <code>&#123; &quot;parserOptions&quot;: &#123; &quot;ecmaVersion&quot;: 6 &#125; &#125;</code> 不自动启用es6全局变量。</p>
+<p>解析器选项可以在 <code>.eslintrc.*</code> 文件使用 <code>parserOptions</code> 属性设置。可用的选项有：</p>
+<ul>
+<li><code>ecmaVersion</code> - 默认设置为 3，5（默认）， 你可以使用 6、7、8、9 或 10 来指定你想要使用的 ECMAScript 版本。你也可以用使用年份命名的版本号指定为 2015（同 6），2016（同 7），或 2017（同 8）或 2018（同 9）或 2019 (same as 10)</li>
+<li><code>sourceType</code> - 设置为 <code>&quot;script&quot;</code> (默认) 或 <code>&quot;module&quot;</code>（如果你的代码是 ECMAScript 模块)。</li>
+<li><code>ecmaFeatures</code> - 这是个对象，表示你想使用的额外的语言特性:<ul>
+<li><code>globalReturn</code> - 允许在全局作用域下使用 <code>return</code> 语句</li>
+<li><code>impliedStrict</code> - 启用全局 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode">strict mode</a> (如果 <code>ecmaVersion</code> 是 5 或更高)</li>
+<li><code>jsx</code> - 启用 <a target="_blank" rel="noopener" href="http://facebook.github.io/jsx/">JSX</a></li>
+<li><code>experimentalObjectRestSpread</code> - 启用实验性的 <a target="_blank" rel="noopener" href="https://github.com/sebmarkbage/ecmascript-rest-spread">object rest/spread properties</a> 支持。(<strong>重要：</strong>这是一个实验性的功能,在未来可能会有明显改变。 建议你写的规则 <strong>不要</strong> 依赖该功能，除非当它发生改变时你愿意承担维护成本。)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;parserOptions&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;ecmaVersion&quot;</span>: <span class="number">6</span>,</span><br><span class="line">        <span class="string">&quot;sourceType&quot;</span>: <span class="string">&quot;module&quot;</span>,</span><br><span class="line">        <span class="string">&quot;ecmaFeatures&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;jsx&quot;</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="扩展配置extends"><a href="#扩展配置extends" class="headerlink" title="扩展配置extends"></a>扩展配置<code>extends</code></h3><p>一个配置文件可以被基础配置中的已启用的规则继承。</p>
+<p><code>extends</code> 属性值可以是：</p>
+<ul>
+<li>指定配置的字符串(配置文件的路径、可共享配置的名称、<code>eslint:recommended</code> 或 <code>eslint:all</code>)</li>
+<li>字符串数组：每个配置继承它前面的配置</li>
+</ul>
+<h3 id="检测规则rules"><a href="#检测规则rules" class="headerlink" title="检测规则rules"></a>检测规则<code>rules</code></h3><p>ESLint 附带有大量的规则。你可以使用注释或配置文件修改你项目中要使用的规则。要改变一个规则设置，你必须将规则 ID 设置为下列值之一：</p>
+<ul>
+<li><code>&quot;off&quot;</code> 或 <code>0</code> - 关闭规则</li>
+<li><code>&quot;warn&quot;</code> 或 <code>1</code> - 开启规则，使用警告级别的错误：<code>warn</code> (不会导致程序退出)</li>
+<li><code>&quot;error&quot;</code> 或 <code>2</code> - 开启规则，使用错误级别的错误：<code>error</code> (当被触发的时候，程序会退出)</li>
+</ul>
+<p>规则配置比较多，可参考别的文件是怎么配置的。</p>
+<h3 id="插件-plugins"><a href="#插件-plugins" class="headerlink" title="插件 -plugins"></a>插件 -<code>plugins</code></h3><p>完全插件化正是<code>eslint</code>的设计初衷，所以插件的使用也是很简单的。在配置文件里配置插件时，可以使用 <code>plugins</code> 关键字来存放插件名字的列表。插件名称可以省略 <code>eslint-plugin-</code> 前缀。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;plugins&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;plugin1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;eslint-plugin-plugin2&quot;</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置注释Configuration-Comments"><a href="#配置注释Configuration-Comments" class="headerlink" title="配置注释Configuration Comments"></a>配置注释<strong>Configuration Comments</strong></h2><p>除了使用配置文件，<code>eslint</code>还支持使用配置注释的方式把规则来嵌入源码中。</p>
+<p>为了在文件注释里配置规则，使用以下格式的注释，在下面这个例子里，<a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/rules/eqeqeq"><code>eqeqeq</code></a> 规则被关闭，<a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/rules/curly"><code>curly</code></a> 规则被打开，定义为错误级别</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* eslint eqeqeq: &quot;off&quot;, curly: &quot;error&quot; */</span></span><br></pre></td></tr></table></figure>
+
+<p>如果一个规则有额外的选项，你可以使用数组字面量指定它们，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* eslint quotes: [&quot;error&quot;, &quot;double&quot;], curly: 2 */</span></span><br></pre></td></tr></table></figure>
+
+<p>更多配置文件的修改项请参考：<a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/user-guide/configuring">ESLint - 配置文件</a>。</p>
+<h2 id="结合自动化工具的使用"><a href="#结合自动化工具的使用" class="headerlink" title="结合自动化工具的使用"></a>结合自动化工具的使用</h2><p>比如结合<code>gulp</code>的使用，我们只需要安装<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-eslint">gulp-eslint</a>这个插件即可。</p>
+<p>gulp是管道流的操作模式，我们只需要在编译<code>js</code>之前进行eslint检测即可：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;src, task&#125; = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> eslint = <span class="built_in">require</span>(<span class="string">&#x27;gulp-eslint&#x27;</span>);</span><br><span class="line"> </span><br><span class="line">task(<span class="string">&#x27;default&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> src([<span class="string">&#x27;scripts/*.js&#x27;</span>])</span><br><span class="line">        <span class="comment">// eslint() attaches the lint output to the &quot;eslint&quot; property</span></span><br><span class="line">        <span class="comment">// of the file object so it can be used by other modules.</span></span><br><span class="line">        .pipe(eslint())</span><br><span class="line">        <span class="comment">// eslint.format() outputs the lint results to the console.</span></span><br><span class="line">        <span class="comment">// Alternatively use eslint.formatEach() (see Docs).</span></span><br><span class="line">        .pipe(eslint.format())</span><br><span class="line">        <span class="comment">// To have the process exit with an error code (1) on</span></span><br><span class="line">        <span class="comment">// lint error, return the stream and pipe to failAfterError last.</span></span><br><span class="line">        .pipe(eslint.failAfterError());</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="结合webpack的使用"><a href="#结合webpack的使用" class="headerlink" title="结合webpack的使用"></a>结合webpack的使用</h2><p>在webpack中也是一样的逻辑，我们可以安装eslint的loader，也可以使用eslint的插件。</p>
+<blockquote>
+<p>值得注意的是，<code>eslint-loader</code>目前已弃用，作者推荐使用<code>eslint-webpack-plugion</code>来代替。</p>
+</blockquote>
+<p>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install eslint-webpack-plugin --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ESLintPlugin = <span class="built_in">require</span>(<span class="string">&#x27;eslint-webpack-plugin&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  plugins: [<span class="keyword">new</span> ESLintPlugin(options)],</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>更多使用细节请参考：<a target="_blank" rel="noopener" href="https://webpack.js.org/plugins/eslint-webpack-plugin/">webpack-eslint-plugin</a>。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://javascript.ruanyifeng.com/tool/lint.html">Lint 工具</a></li>
+<li><a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/user-guide/getting-started">ESLint-起步</a></li>
+<li><a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/user-guide/configuring">ESLint - 配置文件</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>谢谢你请我吃糖!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Dongoog 微信">
+        <p>微信</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Dongoog 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Dongoog
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fongzhizhi.github.io/2020/12/29/%E9%A1%B9%E7%9B%AE%E8%A7%84%E8%8C%83%E5%8C%96-ESLint%E7%9A%84%E4%BD%BF%E7%94%A8/" title="项目规范化-ESLint的使用">https://fongzhizhi.github.io/2020/12/29/项目规范化-ESLint的使用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/ESLint/" rel="tag"><i class="fa fa-tag"></i> ESLint</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/16/%E7%BA%AF%E7%B2%B9%E7%9A%84es%20moudle%E6%89%93%E5%8C%85%E5%99%A8Rollup/" rel="prev" title="纯粹的es moudle打包器Rollup">
+      <i class="fa fa-chevron-left"></i> 纯粹的es moudle打包器Rollup
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="nav-number">1.</span> <span class="nav-text">快速上手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83-env"><span class="nav-number">2.1.</span> <span class="nav-text">环境 - env</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8Fglobals"><span class="nav-number">2.2.</span> <span class="nav-text">全局变量globals</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90%E5%99%A8%E9%80%89%E9%A1%B9-parserOptions"><span class="nav-number">2.3.</span> <span class="nav-text">解析器选项 - parserOptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E9%85%8D%E7%BD%AEextends"><span class="nav-number">2.4.</span> <span class="nav-text">扩展配置extends</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E8%A7%84%E5%88%99rules"><span class="nav-number">2.5.</span> <span class="nav-text">检测规则rules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6-plugins"><span class="nav-number">2.6.</span> <span class="nav-text">插件 -plugins</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%B3%A8%E9%87%8AConfiguration-Comments"><span class="nav-number">3.</span> <span class="nav-text">配置注释Configuration Comments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E5%90%88%E8%87%AA%E5%8A%A8%E5%8C%96%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">结合自动化工具的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E5%90%88webpack%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">结合webpack的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dongoog"
+      src="/images/avatar1.gif">
+  <p class="site-author-name" itemprop="name">Dongoog</p>
+  <div class="site-description" itemprop="description">这个人很懒，什么也没说.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fongzhizhi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fongzhizhi" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020/8 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dongoog</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'IMuRMK0DnpPsKX9v0voX4DEp-gzGzoHsz',
+      appKey     : '09kOINEna5kxsB8EFJjXjTGa',
+      placeholder: "来都来了...",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+  
+  
+  
+  
+    <script async src="/js/cursor/fireworks.js"></script>
+  
+
+
+
+
+    <script src="/js/cursor/activate-power-mode.min.js"></script>
+    <script>
+      POWERMODE.colorful = true;
+      POWERMODE.shake = false;
+      document.body.addEventListener('input', POWERMODE);
+    </script>
+
+  
+
+</body>
+</html>
